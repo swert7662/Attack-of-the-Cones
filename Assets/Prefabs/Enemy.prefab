@@ -69,7 +69,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0.05
   m_GravityScale: 0
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 353c115fcf7204f429f3b01809387fe7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -210,9 +210,9 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.499916, y: 0.28395346}
-      - {x: -0.002973318, y: -0.5876235}
-      - {x: 0.5040931, y: 0.29230875}
+    - - {x: -0.61648756, y: 0.36166838}
+      - {x: 0.0005591586, y: -0.69006526}
+      - {x: 0.59946984, y: 0.35589308}
   m_UseDelaunayMesh: 0
 --- !u!114 &4489653182307631585
 MonoBehaviour:
