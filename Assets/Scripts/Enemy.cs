@@ -82,10 +82,10 @@ public class Enemy : MonoBehaviour
         if (_target != null)
         {
             // Draw forward direction
-            Gizmos.color = Color.blue;
-            Vector3 forwardEnd = transform.position + transform.up * 2; // Adjust the multiplier to scale the arrow's length
+            Gizmos.color = Color.red;
+            Vector3 forwardEnd = transform.position + transform.up * 2; 
             Gizmos.DrawLine(transform.position, forwardEnd);
-            Gizmos.DrawSphere(forwardEnd, 0.1f); // Small sphere at the end of the line to represent the arrowhead
+            Gizmos.DrawSphere(forwardEnd, 0.1f); 
         }
 
         // Draw attack range circle

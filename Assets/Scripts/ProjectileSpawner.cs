@@ -14,27 +14,30 @@ public class ProjectileSpawner : MonoBehaviour
     private CircleCollider2D _attackRangeCollider;
     private System.Random _rand = new();
     private Transform _target;
-    
+    private float _timeSinceLastAttack;
+
     private void Start()
     {
         _attackRangeCollider = GetComponent<CircleCollider2D>();
         if (_attackRangeCollider != null) { _attackRangeCollider.radius = _attackRange; }
+        _timeSinceLastAttack = 0f;
     }
 
     private void Update()
     {
-        _target = ChooseTarget();
-        if (_target != null) { SpawnProjectile(); }
+        _timeSinceLastAttack += Time.deltaTime;
 
-    }
-
-    private IEnumerator SpawnProjectileCoroutine()
-    {
-        while (true)
+        if (_timeSinceLastAttack >= (1f / _attackSpeed))
         {
-            yield return new WaitForSeconds(1f / _attackSpeed);
+            _target = ChooseTarget();
+            if (_target != null)
+            {
+                SpawnProjectile();
+                _timeSinceLastAttack = 0f;
+            }
         }
     }
+
 
     void SpawnProjectile()
     {

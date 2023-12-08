@@ -11,11 +11,18 @@ public class PoolManager : MonoBehaviour
     [SerializeField] private bool _usePool = true;
 
     public static PoolManager Instance { get; private set; }
-
     private ObjectPool<Projectile> _projectilePool;
+    private GameObject _poolContainer;
+
     void Awake()
     {
-        _projectilePool = new ObjectPool<Projectile>(CreateProjectile, // On create
+        Instance = this;
+
+        _poolContainer = new GameObject($"PoolContainer - {_projectilePrefab.name}");
+        _poolContainer.transform.SetParent(transform);
+
+        _projectilePool = new ObjectPool<Projectile>(
+            CreateProjectile, // On create
             projectile => {
                 projectile.gameObject.SetActive(true); // On get from pool
             }, projectile => {
@@ -23,15 +30,12 @@ public class PoolManager : MonoBehaviour
             }, projectile => {
                 Destroy(projectile.gameObject); Debug.Log("Destroying Projectile."); // On destroy
             }, false, 10, 200); // Collection Check, Default, Max
-
-        //InvokeRepeating(nameof(SetupPool), 1f, 1f);
-        //StartCoroutine(SpawnProjectileCoroutine());
-        SetupPool();
     }
     private Projectile CreateProjectile()
     {
         Projectile projectileInstance = Instantiate(_projectilePrefab);
-        projectileInstance.SetPool(_projectilePool);
+        projectileInstance.transform.SetParent(_poolContainer.transform);
+        projectileInstance.gameObject.SetActive(false);
         return projectileInstance;
     }
     private void KillProjectile(Projectile projectile)
@@ -42,16 +46,8 @@ public class PoolManager : MonoBehaviour
 
     public Projectile GetProjectile()
     {
-        return _projectilePool.Get();
-    }
-
-    private void SetupPool()
-    {
-        for (var i = 0; i < _projectilePoolAmount; i++)
-        {
-            var projectile = _usePool ? _projectilePool.Get() : Instantiate(_projectilePrefab);
-            projectile.transform.position = transform.position;
-            projectile.Init(KillProjectile);
-        }
+        var projectile = _usePool ? _projectilePool.Get() : CreateProjectile();
+        projectile.Init(KillProjectile);
+        return projectile;
     }
 }
