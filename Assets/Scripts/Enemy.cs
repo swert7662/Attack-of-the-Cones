@@ -64,12 +64,25 @@ public class Enemy : MonoBehaviour
         OrientToPlayer();
     }
 
-    private void MoveTowardsPlayer()
+    /*private void MoveTowardsPlayer()
     {
         var direction = (_target.position - transform.position);
         transform.up = Vector3.MoveTowards(transform.up, direction, _rotationSpeed * Time.deltaTime); //MoveTowards has a slower turn effect than lerp
         transform.position += transform.up * _speed * Time.deltaTime;
+    }*/
+    private void MoveTowardsPlayer()
+    {
+        // Calculate direction
+        Vector3 direction = (_target.position - transform.position).normalized;
+
+        // Calculate rotation towards target
+        Quaternion targetRotation = Quaternion.LookRotation(Vector3.forward, direction);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+
+        // Move towards target
+        transform.position += direction * _speed * Time.deltaTime;
     }
+
 
     private void OrientToPlayer()
     {
@@ -81,16 +94,19 @@ public class Enemy : MonoBehaviour
     {
         if (_target != null)
         {
-            // Draw forward direction
+            // Calculate the normalized direction towards the target
+            Vector3 directionToTarget = (_target.position - transform.position).normalized;
+
+            // Draw forward direction using the calculated direction
             Gizmos.color = Color.red;
-            Vector3 forwardEnd = transform.position + transform.up * 2; 
+            Vector3 forwardEnd = transform.position + directionToTarget * 2; // Adjust the multiplier to control the length of the line
             Gizmos.DrawLine(transform.position, forwardEnd);
-            Gizmos.DrawSphere(forwardEnd, 0.1f); 
+            Gizmos.DrawSphere(forwardEnd, 0.1f);
         }
 
         // Draw attack range circle
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, _attackRange);
-        
     }
+
 }

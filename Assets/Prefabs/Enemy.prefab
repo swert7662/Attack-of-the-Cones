@@ -61,7 +61,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4256120587061930393}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -175,7 +175,7 @@ PolygonCollider2D:
   m_GameObject: {fileID: 4486706085530451090}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 353c115fcf7204f429f3b01809387fe7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

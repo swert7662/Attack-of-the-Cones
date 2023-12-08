@@ -109,7 +109,7 @@ CapsuleCollider2D:
   m_GameObject: {fileID: 5143773164298097529}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 353c115fcf7204f429f3b01809387fe7, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -181,10 +181,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackRange: 10
-  _attackSpeed: 1
-  _projectilePrefab: {fileID: 1213179218457457380, guid: 25c30d134c253a8479a395e1a607cac9, type: 3}
-  _spawnAmount: 10
-  _usePool: 1
+  _attackSpeed: 6
 --- !u!58 &5245864392604754838
 CircleCollider2D:
   m_ObjectHideFlags: 0
