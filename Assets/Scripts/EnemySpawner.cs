@@ -4,7 +4,8 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] _enemyPrefabs; // Array to hold enemy types
-    [SerializeField] private float _spawnRate = 2f; // Time in seconds between spawns
+    [SerializeField] private float _spawnRate; // Time in seconds between spawns
+    [SerializeField] private float _spawnMax;
 
     private void Start()
     {

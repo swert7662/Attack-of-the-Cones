@@ -28,11 +28,18 @@ public class Enemy : MonoBehaviour
         _isDying = false;
     }
 
-    void Update()
+    private void FixedUpdate()
     {
-        if (_health <= 0 && !_isDying) { StartCoroutine(Die()); }
-        if (!_isAttacking) { AttackPlayer(); }
-        if (!_isAttacking) { MoveTowardsPlayer();}
+        if (_health <= 0 && !_isDying)
+        {
+            StartCoroutine(Die());
+        }
+
+        if (!_isAttacking)
+        {
+            if (IsPlayerInRange()) { StartCoroutine(PerformAttack()); }
+            else { MoveTowardsPlayer(); }
+        }
     }
 
     private IEnumerator Die()
@@ -43,12 +50,9 @@ public class Enemy : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void AttackPlayer()
+    private bool IsPlayerInRange()
     {
-        if (Vector3.Distance(transform.position, _target.position) <= _attackRange && !_isAttacking)
-        {
-            StartCoroutine(PerformAttack());
-        }
+        return (Vector3.Distance(transform.position, _target.position) <= _attackRange && !_isAttacking);
     }
 
     private IEnumerator PerformAttack()
@@ -70,15 +74,18 @@ public class Enemy : MonoBehaviour
     private void OrientToPlayer()
     {
         transform.up = _target.position - transform.position;
+        Debug.Log("Orient");
     }
 
     void OnDrawGizmos()
     {
         if (_target != null)
         {
-            // Line that shows the direction the enemy is moving
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(transform.position, _target.position);
+            // Draw forward direction
+            Gizmos.color = Color.blue;
+            Vector3 forwardEnd = transform.position + transform.up * 2; // Adjust the multiplier to scale the arrow's length
+            Gizmos.DrawLine(transform.position, forwardEnd);
+            Gizmos.DrawSphere(forwardEnd, 0.1f); // Small sphere at the end of the line to represent the arrowhead
         }
 
         // Draw attack range circle

@@ -180,10 +180,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6220b10567671574a9e69c804aee040d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackRange: 10
+  _attackSpeed: 1
   _projectilePrefab: {fileID: 1213179218457457380, guid: 25c30d134c253a8479a395e1a607cac9, type: 3}
-  _spawnAmount: 1
+  _spawnAmount: 10
   _usePool: 1
-  _target: {fileID: 0}
 --- !u!58 &5245864392604754838
 CircleCollider2D:
   m_ObjectHideFlags: 0
