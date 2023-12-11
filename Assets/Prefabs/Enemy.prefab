@@ -167,9 +167,9 @@ MonoBehaviour:
   _attackSpeed: 1.5
   _attackPause: 1
   <MaxHealth>k__BackingField: 100
-  ProjectilePrefab: {fileID: 3943764580086284750, guid: eed2d3fa99af5f346bbdce5c0e10e54c, type: 3}
-  RandomMovementRange: 5
-  RandomMovementSpeed: 1
+  EnemyIdleBase: {fileID: 11400000, guid: 1ddce3aa95392b245a79c77e7cd45b80, type: 2}
+  EnemyFollowBase: {fileID: 11400000, guid: b38e02b96c3a7be4bbf746c2355a2aab, type: 2}
+  EnemyAttackBase: {fileID: 11400000, guid: ba17234aabeb4aa409e9455d2422babd, type: 2}
 --- !u!50 &6230651468449824944
 Rigidbody2D:
   serializedVersion: 4
