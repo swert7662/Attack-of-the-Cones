@@ -4,17 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
 {
-    [SerializeField] private float _deathTime = 2f;
-
-    [SerializeField] private float _speed = 5f;
-    [SerializeField] private float _rotationSpeed = 1.5f;
-
-    [SerializeField] private float _attackRange = 1.5f;
-    [SerializeField] private float _attackSpeed = 1.5f;
-    [SerializeField] private float _attackPause = 0.5f; // Duration of attack pause
-
     private Transform _target;
-    private bool _isAttacking;
     private bool _isDying;
 
     [field: SerializeField] public float MaxHealth { get; set; } = 100f;
@@ -84,6 +74,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     public void Damage(float damageAmount)
     {
+        Debug.Log(damageAmount + " Damage");
         CurrentHealth -= damageAmount;
         if (CurrentHealth <= 0 && !_isDying)
         {

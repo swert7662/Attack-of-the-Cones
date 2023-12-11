@@ -1,34 +1,36 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float _projectileSpeed = 1f;
+    [SerializeField] private float projectileSpeed = 1f;
+    [SerializeField] private float selfDestructTime = 2f;
+    [SerializeField] private float damage = 10f;
 
-    public float _selfDestructTime = 2f;
-    private float _lifeTime;
-
-    private Action<Projectile> _killAction;
-    private Rigidbody2D _rb;
-
-    public void Init(Action<Projectile> killAction)
-    {
-        _killAction = killAction;
-    }
+    private float lifeTime;
+    private Action<Projectile> killAction;
+    private Rigidbody2D rb;
 
     private void Awake()
     {
-        _rb = GetComponent<Rigidbody2D>();
-        _lifeTime = _selfDestructTime;
+        rb = GetComponent<Rigidbody2D>();
+        ResetLifeTime();
     }
 
     private void Update()
     {
-        _lifeTime -= Time.deltaTime;
-        if (_lifeTime <= 0) { Impact(); }
-        _rb.velocity = transform.up * _projectileSpeed;
+        UpdateLifeTime();
+    }
+
+    private void FixedUpdate()
+    {
+        MoveProjectile();
+    }
+
+    public void Init(Action<Projectile> killAction)
+    {
+        this.killAction = killAction;
     }
 
     public void Shoot(Vector2 direction, Vector2 position)
@@ -39,31 +41,58 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Enemy"))
+        HandleCollision(collision);
+        Impact();
+    }
+
+    private void MoveProjectile()
+    {
+        rb.velocity = transform.up * projectileSpeed;
+    }
+
+    private void UpdateLifeTime()
+    {
+        lifeTime -= Time.deltaTime;
+        if (lifeTime <= 0)
         {
-            Debug.Log("Hit Enemy");
+            Debug.Log("SelfDestructing");
             Impact();
+        }
+    }
+
+    private void HandleCollision(Collision2D collision)
+    {
+        var damageable = collision.collider.GetComponent<IDamageable>() ?? collision.collider.GetComponentInParent<IDamageable>();
+
+        if (damageable != null)
+        {
+            Debug.Log("Hit damageable");
+            damageable.Damage(damage);
         }
     }
 
     private void Impact()
     {
         ResetProjectile();
-        _killAction(this);
+        killAction?.Invoke(this);
     }
 
     public void ResetProjectile()
     {
-        _rb.velocity = Vector2.zero;
-        _lifeTime = _selfDestructTime;
+        rb.velocity = Vector2.zero;
+        ResetLifeTime();
+    }
+
+    private void ResetLifeTime()
+    {
+        lifeTime = selfDestructTime;
     }
 
     void OnDrawGizmos()
     {
-        // Draw forward direction
         Gizmos.color = Color.blue;
         Vector3 forwardEnd = transform.position + transform.up * 2;
         Gizmos.DrawLine(transform.position, forwardEnd);
-        Gizmos.DrawSphere(forwardEnd, 0.1f); 
+        Gizmos.DrawSphere(forwardEnd, 0.1f);
     }
 }

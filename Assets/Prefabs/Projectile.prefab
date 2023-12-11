@@ -162,8 +162,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89cf1fc020b43704cacea15e0b0b104c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _projectileSpeed: 10
-  _selfDestructTime: 2
+  projectileSpeed: 10
+  selfDestructTime: 5
+  damage: 10
 --- !u!1 &6312395370013832717
 GameObject:
   m_ObjectHideFlags: 0
