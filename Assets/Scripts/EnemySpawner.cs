@@ -23,12 +23,9 @@ public class EnemySpawner : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        int randomIndex = Random.Range(0, _enemyPrefabs.Length); // Choose a random enemy prefab
-        GameObject enemyToSpawn = _enemyPrefabs[randomIndex];
-
-        if (enemyToSpawn != null)
-        {
-            Instantiate(enemyToSpawn, transform.position, Quaternion.identity); // Spawn the enemy at the spawner's position
-        }
+        //int randomIndex = Random.Range(0, _enemyPrefabs.Length); // Choose a random enemy prefab
+        //GameObject enemyToSpawn = _enemyPrefabs[randomIndex];
+        var Enemy = PoolManager.Instance.GetEnemy();
+        Enemy.transform.position = transform.position;
     }
 }

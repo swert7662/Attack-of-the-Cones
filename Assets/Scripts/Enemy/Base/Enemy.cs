@@ -5,8 +5,8 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
 {
     private Transform _target;
-    private bool _isDying;
 
+    [SerializeField] private Healthbar _healthbar;
     [field: SerializeField] public float MaxHealth { get; set; } = 100f;
     public float CurrentHealth { get; set; }
     public Rigidbody2D RB { get; set; }
@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public EnemyAttackState AttackState { get; set; }
     public bool IsAggroed { get; set; }
     public bool IsWithinStrikingDistance { get; set; }
+    public bool IsDead { get; set; }
 
     #endregion
 
@@ -34,6 +35,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public EnemyAttackSOBase EnemyAttackBaseInstance { get; set; }
 
     #endregion
+
+    #region Awake, Start, Update, FixedUpdate
 
     private void Awake()
     {
@@ -50,7 +53,6 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     private void Start()
     {
-        CurrentHealth = MaxHealth;
         RB = GetComponent<Rigidbody2D>();
 
         EnemyIdleBaseInstance.Initialize(gameObject, this);
@@ -58,6 +60,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         EnemyAttackBaseInstance.Initialize(gameObject, this);
 
         StateMachine.Initialize(IdleState);
+        CurrentHealth = MaxHealth;
+        _healthbar.UpdateHealthbar(MaxHealth, CurrentHealth);
     }
 
     private void Update()
@@ -70,13 +74,15 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         StateMachine.CurrentEnemyState.PhysicsUpdate();
     }
 
+    #endregion
+
     #region Health Functions
 
     public void Damage(float damageAmount)
     {
-        Debug.Log(damageAmount + " Damage");
         CurrentHealth -= damageAmount;
-        if (CurrentHealth <= 0 && !_isDying)
+        _healthbar.UpdateHealthbar(MaxHealth, CurrentHealth);
+        if (CurrentHealth <= 0 && !IsDead)
         {
             Die();
         }
@@ -84,9 +90,29 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     public void Die()
     {
-        _isDying = true;
-        Debug.Log("Dying");
-        Destroy(gameObject);
+        IsDead = true;
+        ResetEnemy();
+        killAction?.Invoke(this);
+    }
+
+    private void ResetEnemy()
+    {
+        Debug.Log("Resetting Enemy");
+        StateMachine.CurrentEnemyState = IdleState;
+        CurrentHealth = MaxHealth;
+        _healthbar.UpdateHealthbar(MaxHealth, CurrentHealth);
+
+        //transform.position = Vector3.zero;
+        IsDead = false;
+        IsAggroed = false;
+        IsWithinStrikingDistance = false;
+    }
+
+    private Action<Enemy> killAction;
+
+    public void Init(Action<Enemy> killAction)
+    {
+        this.killAction = killAction;
     }
 
     #endregion
@@ -95,7 +121,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public void MoveEnemy(Vector2 velocity)
     {
         RB.velocity = velocity;
-        //CheckLRDirection(velocity);
+        Debug.Log($"Velocity: {RB.velocity}");
+        CheckLRDirection(velocity);
     }
     public void CheckLRDirection(Vector2 velocity)
     {
@@ -142,18 +169,4 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     #endregion
 
 
-    void OnDrawGizmos()
-    {
-        if (_target != null)
-        {
-            // Calculate the normalized direction towards the target
-            Vector3 directionToTarget = (_target.position - transform.position).normalized;
-
-            // Draw forward direction using the calculated direction
-            Gizmos.color = Color.red;
-            Vector3 forwardEnd = transform.position + directionToTarget * 2; // Adjust the multiplier to control the length of the line
-            Gizmos.DrawLine(transform.position, forwardEnd);
-            Gizmos.DrawSphere(forwardEnd, 0.1f);
-        }
-    }
 }
