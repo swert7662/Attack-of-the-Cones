@@ -16,7 +16,7 @@ TagManager:
   - UI
   - PlayerProjectile
   - Enemy
-  - 
+  - EnemyProjectile
   - 
   - 
   - 
@@ -43,4 +43,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 2782293223
+    locked: 0
+  - name: Enemy
+    uniqueID: 2974589503
+    locked: 0
+  - name: Player
+    uniqueID: 864875543
+    locked: 0
+  - name: Projectile
+    uniqueID: 2970628663
     locked: 0

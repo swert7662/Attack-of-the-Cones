@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
+[System.Serializable]
 public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckable
 {
     private Transform _target;
@@ -13,8 +14,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public bool IsFacingRight { get; set; } = true;
 
     #region State Machine Variables
-
-    public EnemyStateMachine StateMachine { get; set; }
+    public EnemyStateMachine StateMachine { get; set; } 
     public EnemyIdleState IdleState { get; set; }
     public EnemyFollowState FollowState { get; set; }
     public EnemyAttackState AttackState { get; set; }
@@ -90,14 +90,12 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     public void Die()
     {
-        IsDead = true;
         ResetEnemy();
-        killAction?.Invoke(this);
+        ObjectPoolManager.DespawnObject(gameObject);
     }
 
     private void ResetEnemy()
     {
-        Debug.Log("Resetting Enemy");
         StateMachine.CurrentEnemyState = IdleState;
         CurrentHealth = MaxHealth;
         _healthbar.UpdateHealthbar(MaxHealth, CurrentHealth);
@@ -108,20 +106,12 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
         IsWithinStrikingDistance = false;
     }
 
-    private Action<Enemy> killAction;
-
-    public void Init(Action<Enemy> killAction)
-    {
-        this.killAction = killAction;
-    }
-
     #endregion
 
     #region Movement Functions
     public void MoveEnemy(Vector2 velocity)
     {
         RB.velocity = velocity;
-        Debug.Log($"Velocity: {RB.velocity}");
         CheckLRDirection(velocity);
     }
     public void CheckLRDirection(Vector2 velocity)
@@ -168,5 +158,29 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     #endregion
 
+    #region Gizmos
+    void OnDrawGizmos()
+    {
+        if (StateMachine != null && EnemyIdleBaseInstance != null)
+        {
+            // Check if the current state is EnemyIdleRandomWander
+            if (StateMachine.CurrentEnemyState is EnemyIdleState && EnemyIdleBaseInstance is EnemyIdleRandomWander)
+            {
+                EnemyIdleRandomWander idleRandomWander = (EnemyIdleRandomWander)EnemyIdleBaseInstance;
 
+                // Access the target position and direction
+                Vector3 targetPos = idleRandomWander.GetCurrentTargetPosition();
+                Vector3 direction = idleRandomWander.GetCurrentDirection();
+
+                // Draw a small sphere at the target position
+                Gizmos.color = Color.green;
+                Gizmos.DrawSphere(targetPos, 0.4f);
+
+                // Draw a line indicating the direction
+                Gizmos.color = Color.blue;
+                Gizmos.DrawLine(transform.position, transform.position + direction * 2); // Length of the direction line
+            }
+        }
+    }
+    #endregion
 }

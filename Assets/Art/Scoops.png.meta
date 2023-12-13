@@ -126,40 +126,19 @@ TextureImporter:
       name: Scoops_0
       rect:
         serializedVersion: 2
-        x: 69
-        y: 1469
+        x: 67
+        y: 1467
         width: 791
         height: 535
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0357c75024fcdfb4cae0682602dcd266
-      internalID: -1451089714
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Scoops_1
-      rect:
-        serializedVersion: 2
-        x: 1810
-        y: 1415
-        width: 861
-        height: 593
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: b533cd06e535a484498870ba30dc1700
-      internalID: 1767114758
+      spriteID: 4dea5878c8c1a7a47a2d890eb92c3d0d
+      internalID: -1569327912
       vertices: []
       indices: 
       edges: []
@@ -168,19 +147,19 @@ TextureImporter:
       name: Scoops_2
       rect:
         serializedVersion: 2
-        x: 979
-        y: 747
-        width: 758
-        height: 510
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        x: 1811
+        y: 1434
+        width: 832
+        height: 575
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 67688beddd16a274ab8df408fc01d924
-      internalID: 1609849750
+      spriteID: 539adde2ca3d929409ffbe191e2b0c14
+      internalID: -865958988
       vertices: []
       indices: 
       edges: []
@@ -189,19 +168,19 @@ TextureImporter:
       name: Scoops_3
       rect:
         serializedVersion: 2
-        x: 65
-        y: 77
-        width: 776
-        height: 523
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        x: 979
+        y: 747
+        width: 758
+        height: 510
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ddca9417c0b678c4eba66de5e1a27514
-      internalID: 32417885
+      spriteID: abd46cf9177098545af16dbfb36cdd5e
+      internalID: -835476959
       vertices: []
       indices: 
       edges: []
@@ -210,19 +189,40 @@ TextureImporter:
       name: Scoops_4
       rect:
         serializedVersion: 2
-        x: 1836
-        y: 74
-        width: 826
-        height: 564
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        x: 61
+        y: 77
+        width: 775
+        height: 523
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a8498e6f597b8a144a6c99793e3f6f7e
-      internalID: 1080196384
+      spriteID: 1540d0cddf4c5104e828baf6eb1aad45
+      internalID: 1654891560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Scoops_5
+      rect:
+        serializedVersion: 2
+        x: 1836
+        y: 74
+        width: 820
+        height: 564
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aedb9d395feafc24ba5803dc03872701
+      internalID: 587574576
       vertices: []
       indices: 
       edges: []
@@ -238,11 +238,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Scoops_0: -1451089714
-      Scoops_1: 1767114758
-      Scoops_2: 1609849750
-      Scoops_3: 32417885
-      Scoops_4: 1080196384
+      Scoops_0: -1569327912
+      Scoops_1: 1961792527
+      Scoops_2: -865958988
+      Scoops_3: -835476959
+      Scoops_4: 1654891560
+      Scoops_5: 587574576
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

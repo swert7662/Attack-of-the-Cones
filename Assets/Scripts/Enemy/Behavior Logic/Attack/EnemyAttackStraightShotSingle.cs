@@ -1,11 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 [CreateAssetMenu(fileName = "Attack-Straight Shot Single", menuName = "Enemy Logic/Attack Logic/Straight Shot Single")]
 public class EnemyAttackStraightShotSingle : EnemyAttackSOBase
 {
-    [SerializeField] private Rigidbody2D ProjectilePrefab;
+    [SerializeField] private Rigidbody2D _projectilePrefab;
     [SerializeField] private float _timeBetweenAttacks = 2f;
     [SerializeField] private float _timeTillExit = 3f; // Time till enemy exits attack state
     [SerializeField] private float _distanceToCountExit = 3f; // Distance to count as exit
@@ -39,10 +40,9 @@ public class EnemyAttackStraightShotSingle : EnemyAttackSOBase
         {
             _timer = 0f;
 
-            Vector2 direction = (playerTransform.position - enemy.transform.position).normalized;
+            Vector2 direction = (playerTransform.position - enemy.transform.position);
 
-            Rigidbody2D projectile = GameObject.Instantiate(ProjectilePrefab, enemy.transform.position, Quaternion.identity);
-            projectile.velocity = direction * _projectileSpeed;
+            ObjectPoolManager.SpawnObject(_projectilePrefab.gameObject, direction, transform.position, ObjectPoolManager.PoolType.Projectile); // Shoot projectile at target
         }
 
         if (Vector2.Distance(playerTransform.position, enemy.transform.position) > _distanceToCountExit) //Dont use Distance check, use a trigger check

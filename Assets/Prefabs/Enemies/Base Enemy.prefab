@@ -70,9 +70,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1320377793
+  m_SortingLayer: 2
+  m_SortingOrder: 1
   m_Sprite: {fileID: 749816701, guid: 1f216f63ddcf9434db3e1dc8f391e261, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -209,7 +209,7 @@ GameObject:
   - component: {fileID: 1829782706104926841}
   - component: {fileID: 6230651468449824944}
   m_Layer: 7
-  m_Name: WaffleConeEnemy
+  m_Name: Base Enemy
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -224,7 +224,7 @@ Transform:
   m_GameObject: {fileID: 4256120587061930393}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 10, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -303,7 +303,7 @@ Transform:
   m_GameObject: {fileID: 4486706085530451090}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -2}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -355,9 +355,9 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.50787485, y: 0.513726}
-      - {x: -0.010302119, y: -0.66291225}
-      - {x: 0.50171846, y: 0.5188121}
+    - - {x: -0.43103993, y: 0.5436065}
+      - {x: -0.014570724, y: -0.6373004}
+      - {x: 0.43342078, y: 0.5358867}
   m_UseDelaunayMesh: 0
 --- !u!114 &4489653182307631585
 MonoBehaviour:
@@ -409,7 +409,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 1}
-  m_SizeDelta: {x: 16, y: 16}
+  m_SizeDelta: {x: 2, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &7903210996417476217
 Canvas:
@@ -431,8 +431,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -1320377793
+  m_SortingOrder: 3
   m_TargetDisplay: 0
 --- !u!114 &6803691051729773023
 MonoBehaviour:
@@ -598,7 +598,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 16, y: 16}
+  m_SizeDelta: {x: 10, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3844623488784070331
 CanvasRenderer:
@@ -630,7 +630,7 @@ MonoBehaviour:
       m_Calls: []
   m_Sprite: {fileID: -907882287, guid: 7200f0ac61e7b934da8660c5fec3a194, type: 3}
   m_Type: 3
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 0
   m_FillAmount: 1
@@ -738,7 +738,7 @@ GameObject:
   - component: {fileID: 2766586922017122766}
   - component: {fileID: 4268801785191376802}
   m_Layer: 7
-  m_Name: Image
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -798,10 +798,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1320377793
+  m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: -147279925, guid: 1f216f63ddcf9434db3e1dc8f391e261, type: 3}
+  m_Sprite: {fileID: -688204362, guid: 1f216f63ddcf9434db3e1dc8f391e261, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

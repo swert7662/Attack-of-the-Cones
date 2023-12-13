@@ -98,5 +98,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyPrefabs:
-  - {fileID: 4256120587061930393, guid: 6170a03262b0f1d449fa82e32775775a, type: 3}
+  - {fileID: 4256120587061930393, guid: 5fa058b4faf92ab40860e17df195e83f, type: 3}
+  - {fileID: 4256120587061930393, guid: 6a3474e05ed26424da0ef03d5bddb8c7, type: 3}
+  - {fileID: 4256120587061930393, guid: 243bdb0481ca49c449cc867071e151bc, type: 3}
   _spawnRate: 2
+  _spawnMax: 0

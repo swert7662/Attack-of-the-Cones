@@ -7,14 +7,17 @@ using UnityEngine.Pool;
 
 public class ProjectileSpawner : MonoBehaviour
 {
+    #region Variables and Properties
     [SerializeField] private float _attackRange; 
-    [SerializeField] private float _attackSpeed; 
+    [SerializeField] private float _attackSpeed;
+    [SerializeField] private Projectile _projectilePrefab;
     
     private List<GameObject> _enemiesInRange = new();
     private CircleCollider2D _attackRangeCollider;
     private System.Random _rand = new();
     private Transform _target;
     private float _timeSinceLastAttack;
+    #endregion
 
     private void Start()
     {
@@ -32,19 +35,18 @@ public class ProjectileSpawner : MonoBehaviour
             _target = ChooseTarget();
             if (_target != null)
             {
-                SpawnProjectile();
+                ProjectileSpawn();
                 _timeSinceLastAttack = 0f;
             }
         }
     }
 
-
-    void SpawnProjectile()
+    void ProjectileSpawn()
     {
-        var projectile = PoolManager.Instance.GetProjectile();
-        projectile.Shoot(_target.position - transform.position, transform.position);
+        ObjectPoolManager.SpawnObject(_projectilePrefab.gameObject, _target.position - transform.position, transform.position, ObjectPoolManager.PoolType.Projectile); // Shoot projectile at target
     }
-    
+
+    #region Targeting & Trigger Handling
     private Transform ChooseTarget()
     {
         if (_enemiesInRange.Count == 0) { return null; }
@@ -68,6 +70,7 @@ public class ProjectileSpawner : MonoBehaviour
             _enemiesInRange.Remove(other.gameObject);
         }
     }
+    #endregion
 
     private void OnDrawGizmos()
     {

@@ -459,7 +459,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: BGHealth
+      name: FatHealthBarBG
       rect:
         serializedVersion: 2
         x: 0
@@ -606,13 +606,13 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Healthbar2
+      name: FatHealthBar
       rect:
         serializedVersion: 2
-        x: 112
-        y: 240
-        width: 16
-        height: 16
+        x: 115
+        y: 247
+        width: 10
+        height: 2
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -3220,7 +3220,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      BGHealth: 1558491874
+      FatHealthBar: -907882287
+      FatHealthBarBG: 1558491874
       Health: -768267444
       Health Sprite Sheet_0: -1533027629
       Health Sprite Sheet_1: -1588645877
@@ -3366,7 +3367,6 @@ TextureImporter:
       Health Sprite Sheet_98: -539038976
       Health Sprite Sheet_99: -1741899072
       HealthBG: 1226455568
-      Healthbar2: -907882287
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

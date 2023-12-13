@@ -1,63 +1,61 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
 public class Projectile : MonoBehaviour
 {
+    #region Variables and Properties
     [SerializeField] private float projectileSpeed = 1f;
     [SerializeField] private float selfDestructTime = 2f;
     [SerializeField] private float damage = 10f;
 
-    private float lifeTime;
-    private Action<Projectile> killAction;
     private Rigidbody2D rb;
 
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody2D>();
-        ResetLifeTime();
-    }
+    private Coroutine _returnToPoolTimerCoroutine;
+    #endregion
 
-    private void Update()
-    {
-        UpdateLifeTime();
-    }
+    #region Awake, Enable, and FixedUpdate
+    private void Awake() { rb = GetComponent<Rigidbody2D>(); }
 
-    private void FixedUpdate()
-    {
-        MoveProjectile();
-    }
+    private void OnEnable() { _returnToPoolTimerCoroutine = StartCoroutine(ReturnToPoolAfterTimer()); }
 
-    public void Init(Action<Projectile> killAction)
-    {
-        this.killAction = killAction;
-    }
+    private void FixedUpdate() { MoveProjectile(); }
+    #endregion
 
-    public void Shoot(Vector2 direction, Vector2 position)
-    {
-        transform.position = position;
-        transform.up = direction;
-    }
+    #region Physics Methods
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        HandleCollision(collision);
-        Impact();
-    }
+    //public void Shoot(Vector2 direction, Vector2 position)
+    //{
+    //    transform.position = position;
+    //    transform.up = direction;
+    //}
 
     private void MoveProjectile()
     {
         rb.velocity = transform.up * projectileSpeed;
     }
+    #endregion
 
-    private void UpdateLifeTime()
+    #region Pooling Methods
+    private IEnumerator ReturnToPoolAfterTimer()
     {
-        lifeTime -= Time.deltaTime;
-        if (lifeTime <= 0)
+        float elapsedTime = 0f;
+        while (elapsedTime < selfDestructTime)
         {
-            Debug.Log("SelfDestructing");
-            Impact();
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
+        Impact();
+    }
+    public void ResetProjectile() { rb.velocity = Vector2.zero; }
+    #endregion
+
+    #region Collision Handling
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        HandleCollision(collision);
+        Impact();
     }
 
     private void HandleCollision(Collision2D collision)
@@ -73,21 +71,12 @@ public class Projectile : MonoBehaviour
 
     private void Impact()
     {
-        ResetProjectile();
-        killAction?.Invoke(this);
+        // Add impact effects can be added here later
+        ObjectPoolManager.DespawnObject(gameObject);
     }
+    #endregion
 
-    public void ResetProjectile()
-    {
-        rb.velocity = Vector2.zero;
-        ResetLifeTime();
-    }
-
-    private void ResetLifeTime()
-    {
-        lifeTime = selfDestructTime;
-    }
-
+    #region Gizmos
     void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
@@ -95,4 +84,5 @@ public class Projectile : MonoBehaviour
         Gizmos.DrawLine(transform.position, forwardEnd);
         Gizmos.DrawSphere(forwardEnd, 0.1f);
     }
+    #endregion
 }

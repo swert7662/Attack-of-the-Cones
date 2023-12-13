@@ -33,8 +33,8 @@ public class EnemyIdleRandomWander : EnemyIdleSOBase
 
         _direction = (_targetPos - enemy.transform.position).normalized;
         enemy.MoveEnemy(_direction * RandomMovementSpeed);
-        
-        if ((enemy.transform.position - _targetPos).magnitude < 0.5f)
+
+        if (new Vector2(enemy.transform.position.x - _targetPos.x, enemy.transform.position.y - _targetPos.y).magnitude < 1f)
         {
             _targetPos = GetRandomPointInCircle();
         }
@@ -68,6 +68,5 @@ public class EnemyIdleRandomWander : EnemyIdleSOBase
     public Vector3 GetCurrentDirection()
     {
         return _direction;
-    }
-
+    }   
 }
