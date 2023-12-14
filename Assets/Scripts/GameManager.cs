@@ -3,10 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
+    public Canvas _canvasGameObject;
+
+    private bool _isPaused = false;
 
     void Awake()
     {
@@ -20,6 +25,8 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Update() { if (Input.GetKeyDown(KeyCode.Escape)) { TogglePause(); } }
+
     public void StartGame()
     {
         Debug.Log("Start Game Called");
@@ -32,9 +39,11 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void PauseGame()
+    public void TogglePause()
     {
-        Debug.Log("Pause Called");
-        Time.timeScale = 0;
+        Debug.Log("Toggle Pause Called");
+        _isPaused = !_isPaused;
+        Time.timeScale = _isPaused ? 0f : 1f;
+        _canvasGameObject.gameObject.SetActive(_isPaused);
     }
 }
