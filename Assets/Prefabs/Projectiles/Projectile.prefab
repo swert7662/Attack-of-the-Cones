@@ -165,6 +165,7 @@ MonoBehaviour:
   projectileSpeed: 10
   selfDestructTime: 5
   damage: 5
+  _chainLightning: {fileID: 1414384902848028741, guid: 9337883f2e416ca41a50e50bb72889d6, type: 3}
 --- !u!1 &6312395370013832717
 GameObject:
   m_ObjectHideFlags: 0

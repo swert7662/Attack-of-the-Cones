@@ -11,12 +11,15 @@ public class ObjectPoolManager : MonoBehaviour
 
     private static GameObject _enemiesEmpty;
     private static GameObject _projectilesEmpty;
+    private static GameObject _particleEmpty;
 
     public enum PoolType
     {
         Enemy,
         Projectile,
+        Particle,
         None
+        
     }
 
     public static PoolType PoolingType;
@@ -35,6 +38,9 @@ public class ObjectPoolManager : MonoBehaviour
 
         _projectilesEmpty = new GameObject("Projectiles");
         _projectilesEmpty.transform.SetParent(_objectPoolEmptyContainer.transform);
+
+        _particleEmpty = new GameObject("Particles");
+        _particleEmpty.transform.SetParent(_objectPoolEmptyContainer.transform);
     }
 
     private static GameObject SetParentObject(PoolType poolType)
@@ -45,6 +51,8 @@ public class ObjectPoolManager : MonoBehaviour
                 return _enemiesEmpty;
             case PoolType.Projectile:
                 return _projectilesEmpty;
+            case PoolType.Particle:
+                return _particleEmpty;
             default:
                 return null;
         }
@@ -125,6 +133,40 @@ public class ObjectPoolManager : MonoBehaviour
     }
     #endregion
 
+    #region SpawnObject Method Overload with parent transform
+    //uses GameObject, Vector3, Quaternion & Parent Transform
+    public static GameObject SpawnObject(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation, Transform parentTransform)
+    {
+        PooledObjectInfo pool = ObjectPools.Find(p => p.LookupString == objectToSpawn.name);
+
+        if (pool == null)
+        {
+            pool = new PooledObjectInfo() { LookupString = objectToSpawn.name };
+            ObjectPools.Add(pool);
+        }
+
+        GameObject spawnableObject = pool.InactiveObjects.FirstOrDefault();
+
+        if (spawnableObject == null)
+        {
+            spawnableObject = Instantiate(objectToSpawn);
+            spawnableObject.name = objectToSpawn.name;
+        }
+        else
+        {
+            pool.InactiveObjects.Remove(spawnableObject);
+            spawnableObject.SetActive(true);
+        }
+
+        spawnableObject.transform.position = spawnPosition;
+        spawnableObject.transform.rotation = spawnRotation;
+        spawnableObject.transform.SetParent(parentTransform);
+
+        return spawnableObject;
+    }
+    #endregion
+
+
     #region DespawnObject Method
     public static void DespawnObject(GameObject objectToDespawn)
     {
@@ -134,9 +176,6 @@ public class ObjectPoolManager : MonoBehaviour
         if (pool == null)
         {
             Debug.LogWarning("No pool exists for " + objectToDespawn.name);
-            //These lines create a new pool if one doesn't exist for the object being despawned 
-            //pool = new PooledObjectInfo() { LookupString = objectToDespawn.name };
-            //ObjectPools.Add(pool);
         }
         else
         {
@@ -145,6 +184,20 @@ public class ObjectPoolManager : MonoBehaviour
         }
     }
     #endregion
+
+    // Overload for DespawnObject Method with timer
+    public static void DespawnObject(GameObject objectToDespawn, float timer)
+    {
+        Debug.Log("Despawning " + objectToDespawn.name + " in " + timer + " seconds");
+        IEnumerator DespawnTimer()
+        {
+            yield return new WaitForSeconds(timer);
+            Debug.Log("Despawning " + objectToDespawn.name);
+            DespawnObject(objectToDespawn);
+        }
+
+        objectToDespawn.GetComponent<MonoBehaviour>().StartCoroutine(DespawnTimer());
+    }
 }
 
 public class PooledObjectInfo //This is a helper class to store the inactive objects in a list

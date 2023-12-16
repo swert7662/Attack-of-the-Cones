@@ -10,6 +10,8 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float selfDestructTime = 2f;
     [SerializeField] private float damage = 10f;
 
+    [SerializeField] private GameObject _chainLightning;
+
     private Rigidbody2D rb;
 
     private Coroutine _returnToPoolTimerCoroutine;
@@ -64,8 +66,14 @@ public class Projectile : MonoBehaviour
 
         if (damageable != null)
         {
-            Debug.Log("Hit damageable");
             damageable.Damage(damage);
+            if (GameManager.Instance.IsCooldownElapsed("ElectricSpawner", 1f)) // 1f is the cooldown duration in seconds
+            {
+                //GameObject lightningGO = Instantiate(_chainLightning, collision.transform.position, Quaternion.identity);
+                GameObject lightningGO = ObjectPoolManager.SpawnObject(_chainLightning, collision.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
+                lightningGO.GetComponent<ElectricSpawner>().AddTarget(collision.gameObject);
+                //ObjectPoolManager.DespawnObject(lightningGO, 1f);
+            }
         }
     }
 

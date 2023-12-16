@@ -7,9 +7,9 @@ public class EnemyAggroCheck : MonoBehaviour
     public GameObject PlayerTarget { get; set; }
     private Enemy _enemy;
 
-    private void Awake()
+    private void Start()
     {
-        PlayerTarget = GameObject.FindGameObjectWithTag("Player");
+        PlayerTarget = GameManager.Instance._playerGameObject;
         _enemy = GetComponentInParent<Enemy>();
     }
 

@@ -7,6 +7,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 {
     private Transform _target;
 
+    [SerializeField] private ParticleSystem _deathSprinkles;
+
     [SerializeField] private Healthbar _healthbar;
     [field: SerializeField] public float MaxHealth { get; set; } = 100f;
     public float CurrentHealth { get; set; }
@@ -40,6 +42,7 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
 
     private void Awake()
     {
+        // Check if the scriptable objects are null and instantiate them if they are not
         EnemyIdleBaseInstance = Instantiate(EnemyIdleBase);
         EnemyFollowBaseInstance = Instantiate(EnemyFollowBase);
         EnemyAttackBaseInstance = Instantiate(EnemyAttackBase);
@@ -91,7 +94,8 @@ public class Enemy : MonoBehaviour, IDamageable, IEnemyMoveable, ITriggerCheckab
     public void Die()
     {
         ResetEnemy();
-        ObjectPoolManager.DespawnObject(gameObject);
+        ObjectPoolManager.SpawnObject(_deathSprinkles.gameObject, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Particle); //Quaternion.Euler(-270, 90, 0)  Quaternion.identity
+        ObjectPoolManager.DespawnObject(this.gameObject);
     }
 
     private void ResetEnemy()

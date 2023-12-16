@@ -80,8 +80,65 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 2
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3819561017712128424, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4256120587061930393, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8646593711329516288}
   m_SourcePrefab: {fileID: 100100000, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+--- !u!1 &5731370454589856407 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4256120587061930393, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+  m_PrefabInstance: {fileID: 8401795027955806990}
+  m_PrefabAsset: {fileID: 0}
+--- !u!60 &8646593711329516288
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5731370454589856407}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 6200000, guid: 353c115fcf7204f429f3b01809387fe7, type: 2}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 6.851117, y: 12.61}
+    newSize: {x: 6.851117, y: 12.61}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.43103993, y: 0.5436065}
+      - {x: -0.014570724, y: -0.6373004}
+      - {x: 0.43342078, y: 0.5358867}
+  m_UseDelaunayMesh: 0

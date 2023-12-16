@@ -15,7 +15,7 @@ public class EnemyAttackSOBase : ScriptableObject
         this.gameObject = gameObject;
         this.enemy = enemy;
         transform = gameObject.transform;
-        playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+        playerTransform = GameManager.Instance._playerTransform;
     }
 
     public virtual void DoEnterLogic() { }
