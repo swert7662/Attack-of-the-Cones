@@ -16,18 +16,21 @@ public class ProjectileSpawner : MonoBehaviour
     private CircleCollider2D _attackRangeCollider;
     private System.Random _rand = new();
     private Transform _target;
+    private LayerMask _enemyLayerMask;
     private float _timeSinceLastAttack;
     #endregion
 
-    private void Start()
+    private void Awake()
     {
         _attackRangeCollider = GetComponent<CircleCollider2D>();
+        _enemyLayerMask = GameManager.Instance._enemyLayer;
         if (_attackRangeCollider != null) { _attackRangeCollider.radius = _attackRange; }
         _timeSinceLastAttack = 0f;
     }
 
     private void Update()
     {
+        UpdateEnemiesInRange();
         _timeSinceLastAttack += Time.deltaTime;
 
         if (_timeSinceLastAttack >= (1f / _attackSpeed))
@@ -54,8 +57,21 @@ public class ProjectileSpawner : MonoBehaviour
         return _enemiesInRange.OrderBy(n => _rand.Next()).FirstOrDefault()?.transform;
     }
 
+    // add to enemies in range list using OverlapCircleAll
+    private void UpdateEnemiesInRange()
+    {
+        _enemiesInRange.Clear();
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, _attackRange, _enemyLayerMask);
+        foreach (Collider2D enemy in enemies)
+        {
+            _enemiesInRange.Add(enemy.gameObject);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Debug that shows what is in range
+        Debug.Log($"Object {other.gameObject.name} entered the trigger");
         if (other.gameObject.CompareTag("Enemy"))
         {
             Debug.Log("Enemy in range");

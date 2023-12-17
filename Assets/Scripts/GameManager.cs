@@ -61,10 +61,11 @@ public class GameManager : MonoBehaviour
         // then it will add the abilityName to the dictionary and return true
         if (!_cooldowns.ContainsKey(abilityName) || Time.time >= _cooldowns[abilityName])
         {
+            Debug.Log($"{abilityName} is ready to go!");
             _cooldowns[abilityName] = Time.time + cooldownDuration;
             return true;
         }
-
+        Debug.Log($"{abilityName} is on cooldown");
         return false;
     }
 }

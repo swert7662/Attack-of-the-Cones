@@ -18,7 +18,7 @@ public class LineConnector : MonoBehaviour
             Debug.LogError("LineConnector: No LineRenderer component found on " + gameObject.name);
             return;
         }
-        _lineRenderer.positionCount = 3;
+        _lineRenderer.positionCount = 5;
         _midpointCalculator = new MidpointCalculator();
     }
     public void Initialize(Vector3 startPoint, Vector3 endPoint, float duration)
@@ -35,13 +35,15 @@ public class LineConnector : MonoBehaviour
 
     private void UpdateLineMidpoint()
     {
-        Vector3 midpoint = _midpointCalculator.CalculateRandomOffsetMidpoint(_startPoint, _endPoint);
-        UpdateLinePositions(midpoint);
+        Vector3 center = _midpointCalculator.CalculateRandomOffsetMidpoint(_startPoint, _endPoint);
+        Vector3 midpointA = _midpointCalculator.CalculateRandomOffsetMidpoint(_startPoint, center);
+        Vector3 midpointB = _midpointCalculator.CalculateRandomOffsetMidpoint(center, _endPoint);
+        UpdateLinePositions(center, midpointA, midpointB);
     }
 
-    private void UpdateLinePositions(Vector3 midpoint)
+    private void UpdateLinePositions(Vector3 center, Vector3 midpointA, Vector3 midpointB)
     {
-        _lineRenderer.SetPositions(new[] { _startPoint, midpoint, _endPoint });
+        _lineRenderer.SetPositions(new[] { _startPoint, midpointA, center, midpointB, _endPoint });
     }
 
     void OnDrawGizmos()

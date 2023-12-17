@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class ElectricSpawner : MonoBehaviour
+public class ElectricSpawner: MonoBehaviour
 {
     [SerializeField] private GameObject _lineLightningPrefab; // Reference to LineLightning prefab
     [SerializeField] private float _damage;
     [SerializeField] private float _attackRange;
-    [SerializeField] private float _maxTargets = 2;
+    [SerializeField] private float _maxTargets;
 
     private List<GameObject> _chainedEnemies = new();
     private List<GameObject> _enemiesInRange = new();
@@ -16,27 +16,9 @@ public class ElectricSpawner : MonoBehaviour
     private System.Random _rand = new();
     private bool _isInitialized = false;
 
-    private void Start()
-    {
-        if (!_isInitialized)
-        {
-            //Debug.Log("ElectricSpawner Start called");
-            InitializeChainAttack();
-            ResetSpawner();
-            ObjectPoolManager.DespawnObject(this.gameObject, 1f);
-            _isInitialized = true;
-        }        
-    }
-
     private void OnEnable()
     {
-        if (_isInitialized)
-        {
-            //Debug.Log("ElectricSpawner OnEnable called");
-            InitializeChainAttack();
-            ResetSpawner();
-            ObjectPoolManager.DespawnObject(this.gameObject, 1f);
-        }
+        ResetSpawner();
     }
 
     private void InitializeChainAttack()
@@ -44,6 +26,7 @@ public class ElectricSpawner : MonoBehaviour
         CreateEnemyChain();
         UpdateLineConnectors();
         ApplyEffectsToTargets();
+        ObjectPoolManager.DespawnObject(this.gameObject);
     }
 
     private void CreateEnemyChain()
@@ -51,6 +34,7 @@ public class ElectricSpawner : MonoBehaviour
         for (int i = 0; i < _maxTargets - 1; i++)
         {
             if (i >= _chainedEnemies.Count) { break;}
+
             //Debug.Log("Creating enemy chain");
             UpdateEnemiesInRange(_chainedEnemies[i].transform);
             GameObject _targetEnemyGO = ChooseTarget();
@@ -83,11 +67,31 @@ public class ElectricSpawner : MonoBehaviour
             LineConnector lineConnector = lineConnectorObject.GetComponent<LineConnector>();
             if (lineConnector != null)
             {
-                lineConnector.Initialize(_chainedEnemies[i].transform.position, _chainedEnemies[i + 1].transform.position, .5f);
+                lineConnector.Initialize(_chainedEnemies[i].transform.position, _chainedEnemies[i + 1].transform.position, .3f);
                 _lineConnectors.Add(lineConnector);
                 //ObjectPoolManager.DespawnObject(lineConnectorObject, 0.5f);
             }
             else { Debug.LogWarning("LineConnector component not found on " + lineConnectorObject.name); }
+        }
+        // The same code above but with a foreach loop
+        foreach (var enemy in _chainedEnemies)
+        {
+            if (enemy == null)
+                continue;
+
+            int index = _chainedEnemies.IndexOf(enemy);
+            if (index < _chainedEnemies.Count - 1)
+            {
+                GameObject lineConnectorObject = ObjectPoolManager.SpawnObject(_lineLightningPrefab, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
+                LineConnector lineConnector = lineConnectorObject.GetComponent<LineConnector>();
+                if (lineConnector != null)
+                {
+                    lineConnector.Initialize(_chainedEnemies[index].transform.position, _chainedEnemies[index + 1].transform.position, .3f);
+                    _lineConnectors.Add(lineConnector);
+                    //ObjectPoolManager.DespawnObject(lineConnectorObject, 0.5f);
+                }
+                else { Debug.LogWarning("LineConnector component not found on " + lineConnectorObject.name); }
+            }
         }
     }
 
@@ -109,6 +113,12 @@ public class ElectricSpawner : MonoBehaviour
                 Debug.LogWarning("Damageable component not found in the parent of " + enemy.name);
             }
         }
+    }
+
+    public void StartChainAttack(GameObject target)
+    {
+        AddTarget(target);
+        InitializeChainAttack();
     }
 
     // Allows other scripts to add a target to the chained enemies list
