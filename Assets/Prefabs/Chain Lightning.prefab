@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _lineLightningPrefab: {fileID: 4083429415441626580, guid: 649bfad9c3e25c14aa732350ebf1e616, type: 3}
-  _damage: 20
-  _attackRange: 5
+  _lightningImpactPrefab: {fileID: 4957501069395831859, guid: de8f15cfd3bb9b642aacc506738aa591, type: 3}
+  _damage: 50
+  _attackRange: 10
   _maxTargets: 4

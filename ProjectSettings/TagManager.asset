@@ -56,3 +56,6 @@ TagManager:
   - name: Projectile
     uniqueID: 2970628663
     locked: 0
+  - name: FX
+    uniqueID: 3482851155
+    locked: 0

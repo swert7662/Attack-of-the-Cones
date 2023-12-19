@@ -6,6 +6,8 @@ using System.Linq;
 public class ElectricSpawner: MonoBehaviour
 {
     [SerializeField] private GameObject _lineLightningPrefab; // Reference to LineLightning prefab
+    [SerializeField] private GameObject _lightningImpactPrefab;
+
     [SerializeField] private float _damage;
     [SerializeField] private float _attackRange;
     [SerializeField] private float _maxTargets;
@@ -14,7 +16,6 @@ public class ElectricSpawner: MonoBehaviour
     private List<GameObject> _enemiesInRange = new();
     private List<LineConnector> _lineConnectors = new();
     private System.Random _rand = new();
-    private bool _isInitialized = false;
 
     private void OnEnable()
     {
@@ -86,7 +87,7 @@ public class ElectricSpawner: MonoBehaviour
                 LineConnector lineConnector = lineConnectorObject.GetComponent<LineConnector>();
                 if (lineConnector != null)
                 {
-                    lineConnector.Initialize(_chainedEnemies[index].transform.position, _chainedEnemies[index + 1].transform.position, .3f);
+                    lineConnector.Initialize(_chainedEnemies[index].transform.position, _chainedEnemies[index + 1].transform.position, .6f);
                     _lineConnectors.Add(lineConnector);
                     //ObjectPoolManager.DespawnObject(lineConnectorObject, 0.5f);
                 }
@@ -106,6 +107,7 @@ public class ElectricSpawner: MonoBehaviour
             if (damageable != null)
             {
                 damageable.Damage(_damage);
+                ObjectPoolManager.SpawnObject(_lightningImpactPrefab, enemy.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
                 Debug.Log($"Hit {enemy.name} with lightning");
             }
             else

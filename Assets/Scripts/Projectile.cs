@@ -13,12 +13,17 @@ public class Projectile : MonoBehaviour
     [SerializeField] private GameObject _chainLightning;
 
     private Rigidbody2D rb;
+    private ParticleSpawner ParticleSpawner;
 
     private Coroutine _returnToPoolTimerCoroutine;
     #endregion
 
     #region Awake, Enable, and FixedUpdate
-    private void Awake() { rb = GetComponent<Rigidbody2D>(); }
+    private void Awake() 
+    { 
+        rb = GetComponent<Rigidbody2D>(); 
+        ParticleSpawner = GetComponent<ParticleSpawner>();
+    }
 
     private void OnEnable() { _returnToPoolTimerCoroutine = StartCoroutine(ReturnToPoolAfterTimer()); }
 
@@ -62,10 +67,11 @@ public class Projectile : MonoBehaviour
 
     private void HandleCollision(Collision2D collision)
     {
+        ParticleSpawner.SpawnImpactParticles(collision.GetContact(0).point, collision.GetContact(0).normal);
         var damageable = collision.collider.GetComponent<IDamageable>() ?? collision.collider.GetComponentInParent<IDamageable>();
-
         if (damageable != null)
         {
+            ParticleSpawner.SpawnExitParticles(collision.GetContact(0).point, collision.GetContact(0).normal, collision.collider.GetComponent<CapsuleCollider2D>());
             damageable.Damage(damage);
             ChainLightning(collision);
         }

@@ -5,7 +5,7 @@ using UnityEngine.Pool;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private List<Enemy> _enemies;
+    [SerializeField] private List<GameObject> _enemies;
     [SerializeField] private float _spawnRate;
     [SerializeField] private float _spawnRadius;
     private Vector3 _nextSpawnPoint;
@@ -40,7 +40,7 @@ public class EnemySpawner : MonoBehaviour
     {
         int randomIndex = Random.Range(0, _enemies.Count);
         var enemy = _enemies[randomIndex];
-        ObjectPoolManager.SpawnObject(enemy.gameObject, CalculateNextSpawnPoint(), Quaternion.identity, ObjectPoolManager.PoolType.Enemy);
+        ObjectPoolManager.SpawnObject(enemy, CalculateNextSpawnPoint(), Quaternion.identity, ObjectPoolManager.PoolType.Enemy);
     }
 
     private void OnDrawGizmos()

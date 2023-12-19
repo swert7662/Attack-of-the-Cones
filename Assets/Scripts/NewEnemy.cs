@@ -10,21 +10,26 @@ public class NewEnemy : MonoBehaviour, IDamageable
     public float _attackRange;
 
     [SerializeField] private ParticleSystem _deathSprinkles;
-
     [SerializeField] private Healthbar _healthbar;
+
     [field: SerializeField] public float MaxHealth { get; set; } = 100f;
     public float CurrentHealth { get; set; }
 
     private Transform _target;
+    private Animator _animator;
+    private DamageFlash _damageFlash;
 
     private void Awake()
     {
         _target = GameManager.Instance._playerTransform;
+        _animator = GetComponentInChildren<Animator>();
+        _damageFlash = GetComponentInChildren<DamageFlash>();
         CurrentHealth = MaxHealth;
     }
 
     private void Update()
     {
+        FlipTowardsTarget();
         //If not in attack range, move towards the player
         if (Vector3.Distance(transform.position, _target.position) > _attackRange)
         {
@@ -38,7 +43,9 @@ public class NewEnemy : MonoBehaviour, IDamageable
     {
         // debug that says how much damage was taken
         Debug.Log($"{gameObject.name} took {damageAmount} damage");
-        CurrentHealth -= damageAmount;
+        _animator.SetTrigger("Hit");
+        _damageFlash.Flash();
+        CurrentHealth -= damageAmount;        
         _healthbar.UpdateHealthbar(MaxHealth, CurrentHealth);
         if (CurrentHealth <= 0)
         {
@@ -61,6 +68,20 @@ public class NewEnemy : MonoBehaviour, IDamageable
         //IsAggroed = false;
         //IsWithinStrikingDistance = false;
     }
+
+    private void FlipTowardsTarget()
+    {
+        bool shouldFlip = (transform.position.x > _target.position.x && _animator.transform.localScale.x > 0) ||
+                          (transform.position.x < _target.position.x && _animator.transform.localScale.x < 0);
+
+        if (shouldFlip)
+        {
+            Vector3 scale = _animator.transform.localScale;
+            scale.x *= -1;
+            _animator.transform.localScale = scale;
+        }
+    }
+
 
     #endregion
 }
