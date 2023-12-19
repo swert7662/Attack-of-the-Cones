@@ -9,6 +9,9 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float projectileSpeed = 1f;
     [SerializeField] private float selfDestructTime = 2f;
     [SerializeField] private float damage = 10f;
+    
+    [SerializeField] private AudioClip _shootSFX;
+    [SerializeField] private AudioClip _impactSFX;
 
     [SerializeField] private GameObject _chainLightning;
 
@@ -25,7 +28,11 @@ public class Projectile : MonoBehaviour
         ParticleSpawner = GetComponent<ParticleSpawner>();
     }
 
-    private void OnEnable() { _returnToPoolTimerCoroutine = StartCoroutine(ReturnToPoolAfterTimer()); }
+    private void OnEnable() 
+    {
+        PlaySFX(_shootSFX);
+        _returnToPoolTimerCoroutine = StartCoroutine(ReturnToPoolAfterTimer()); 
+    }
 
     private void FixedUpdate() { MoveProjectile(); }
     #endregion
@@ -61,8 +68,17 @@ public class Projectile : MonoBehaviour
     #region Collision Handling
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        //Get random float between 0.8 and 1.2
+        PlaySFX(_impactSFX);
         HandleCollision(collision);
         Impact();
+    }
+
+    private void PlaySFX(AudioClip clip)
+    {
+        float randomPitch = UnityEngine.Random.Range(0.8f, 1.2f);
+        float randomVolume = UnityEngine.Random.Range(0.6f, .8f);
+        AudioManager.Instance.PlaySound(clip, randomVolume, randomPitch);
     }
 
     private void HandleCollision(Collision2D collision)

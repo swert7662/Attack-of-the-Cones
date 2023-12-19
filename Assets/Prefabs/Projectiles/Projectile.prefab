@@ -181,6 +181,8 @@ MonoBehaviour:
   projectileSpeed: 10
   selfDestructTime: 5
   damage: 5
+  _shootSFX: {fileID: 8300000, guid: 16e705180f15c234dbf0e81467a40032, type: 3}
+  _impactSFX: {fileID: 8300000, guid: df700ecce7c27424daa699a64033522c, type: 3}
   _chainLightning: {fileID: 0}
 --- !u!1 &6312395370013832717
 GameObject:

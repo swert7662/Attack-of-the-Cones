@@ -8,6 +8,9 @@ public class ElectricSpawner: MonoBehaviour
     [SerializeField] private GameObject _lineLightningPrefab; // Reference to LineLightning prefab
     [SerializeField] private GameObject _lightningImpactPrefab;
 
+    [SerializeField] private AudioClip _impactSFX;
+    [SerializeField] private AudioClip _arcSFX;
+
     [SerializeField] private float _damage;
     [SerializeField] private float _attackRange;
     [SerializeField] private float _maxTargets;
@@ -64,6 +67,7 @@ public class ElectricSpawner: MonoBehaviour
                 Debug.LogWarning("Null enemy found in chain");
                 continue; // Skip if any of the chained enemies is null
             }
+            AudioManager.Instance.PlayClipPortion(_arcSFX, 0.1f, 0.3f);
             GameObject lineConnectorObject = ObjectPoolManager.SpawnObject(_lineLightningPrefab, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
             LineConnector lineConnector = lineConnectorObject.GetComponent<LineConnector>();
             if (lineConnector != null)
@@ -119,6 +123,7 @@ public class ElectricSpawner: MonoBehaviour
 
     public void StartChainAttack(GameObject target)
     {
+        PlaySFX(_impactSFX);
         AddTarget(target);
         InitializeChainAttack();
     }
@@ -162,6 +167,14 @@ public class ElectricSpawner: MonoBehaviour
             }
         }
     }
+
+    private void PlaySFX(AudioClip clip)
+    {
+        float randomPitch = UnityEngine.Random.Range(0.8f, 1.2f);
+        float randomVolume = UnityEngine.Random.Range(0.4f, .6f);
+        AudioManager.Instance.PlaySound(clip, randomVolume, randomPitch);
+    }
+
     public void ResetSpawner()
     {
         // Clear all lists

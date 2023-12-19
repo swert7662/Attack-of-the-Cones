@@ -4909,3 +4909,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2b8604fd0733e47b112f8b5d87ee54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _sprinkleSFX: {fileID: 8300000, guid: 9f0866535b545b24a9ada1e8296f1650, type: 3}

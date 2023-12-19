@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _lineLightningPrefab: {fileID: 4083429415441626580, guid: 649bfad9c3e25c14aa732350ebf1e616, type: 3}
   _lightningImpactPrefab: {fileID: 4957501069395831859, guid: de8f15cfd3bb9b642aacc506738aa591, type: 3}
+  _impactSFX: {fileID: 8300000, guid: 72ffa128bb5761c4f96f49b1d8273dfa, type: 3}
+  _arcSFX: {fileID: 8300000, guid: 8ec385c7582287e4391d38714d445376, type: 3}
   _damage: 50
   _attackRange: 10
   _maxTargets: 4
