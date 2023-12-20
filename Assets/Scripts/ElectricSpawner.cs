@@ -39,7 +39,6 @@ public class ElectricSpawner: MonoBehaviour
         {
             if (i >= _chainedEnemies.Count) { break;}
 
-            //Debug.Log("Creating enemy chain");
             UpdateEnemiesInRange(_chainedEnemies[i].transform);
             GameObject _targetEnemyGO = ChooseTarget();
 
@@ -59,25 +58,6 @@ public class ElectricSpawner: MonoBehaviour
 
         _lineConnectors.Clear();
 
-        // Create new line connectors
-        for (int i = 0; i < _chainedEnemies.Count - 1; i++)
-        {
-            if (_chainedEnemies[i] == null || _chainedEnemies[i + 1] == null)
-            {
-                Debug.LogWarning("Null enemy found in chain");
-                continue; // Skip if any of the chained enemies is null
-            }
-            AudioManager.Instance.PlayClipPortion(_arcSFX, 0.1f, 0.3f);
-            GameObject lineConnectorObject = ObjectPoolManager.SpawnObject(_lineLightningPrefab, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
-            LineConnector lineConnector = lineConnectorObject.GetComponent<LineConnector>();
-            if (lineConnector != null)
-            {
-                lineConnector.Initialize(_chainedEnemies[i].transform.position, _chainedEnemies[i + 1].transform.position, .3f);
-                _lineConnectors.Add(lineConnector);
-                //ObjectPoolManager.DespawnObject(lineConnectorObject, 0.5f);
-            }
-            else { Debug.LogWarning("LineConnector component not found on " + lineConnectorObject.name); }
-        }
         // The same code above but with a foreach loop
         foreach (var enemy in _chainedEnemies)
         {
@@ -93,7 +73,6 @@ public class ElectricSpawner: MonoBehaviour
                 {
                     lineConnector.Initialize(_chainedEnemies[index].transform.position, _chainedEnemies[index + 1].transform.position, .6f);
                     _lineConnectors.Add(lineConnector);
-                    //ObjectPoolManager.DespawnObject(lineConnectorObject, 0.5f);
                 }
                 else { Debug.LogWarning("LineConnector component not found on " + lineConnectorObject.name); }
             }
@@ -112,7 +91,6 @@ public class ElectricSpawner: MonoBehaviour
             {
                 damageable.Damage(_damage);
                 ObjectPoolManager.SpawnObject(_lightningImpactPrefab, enemy.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
-                Debug.Log($"Hit {enemy.name} with lightning");
             }
             else
             {
@@ -133,7 +111,6 @@ public class ElectricSpawner: MonoBehaviour
     {
         if (target != null && target.CompareTag("Enemy") && !_chainedEnemies.Contains(target) && target.activeInHierarchy)
         {
-            Debug.Log("Adding target to chained enemies: " + target.name);
             _chainedEnemies.Add(target);
         }
         else
@@ -147,9 +124,7 @@ public class ElectricSpawner: MonoBehaviour
         var availableTargets = _enemiesInRange.Except(_chainedEnemies).ToList();
         if (!availableTargets.Any()) { return null; }
 
-        //return availableTargets.OrderBy(n => _rand.Next()).FirstOrDefault();
         GameObject chosenTarget = availableTargets.OrderBy(n => _rand.Next()).FirstOrDefault();
-        //Debug.Log("Chosen target: " + (chosenTarget != null ? chosenTarget.name : "null"));
         return chosenTarget;
     }
 

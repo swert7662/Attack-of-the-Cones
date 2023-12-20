@@ -18,12 +18,14 @@ public class NewEnemy : MonoBehaviour, IDamageable
     private Transform _target;
     private Animator _animator;
     private DamageFlash _damageFlash;
+    private Vector3 _originalScale;
 
     private void Awake()
     {
         _target = GameManager.Instance._playerTransform;
         _animator = GetComponentInChildren<Animator>();
         _damageFlash = GetComponentInChildren<DamageFlash>();
+        _originalScale = _animator.transform.localScale;
         CurrentHealth = MaxHealth;
     }
 
@@ -64,6 +66,7 @@ public class NewEnemy : MonoBehaviour, IDamageable
     {
         CurrentHealth = MaxHealth;
         _healthbar.UpdateHealthbar(MaxHealth, CurrentHealth);
+        _animator.transform.localScale = _originalScale;
 
         //IsAggroed = false;
         //IsWithinStrikingDistance = false;

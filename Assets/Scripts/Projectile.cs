@@ -39,12 +39,6 @@ public class Projectile : MonoBehaviour
 
     #region Physics Methods
 
-    //public void Shoot(Vector2 direction, Vector2 position)
-    //{
-    //    transform.position = position;
-    //    transform.up = direction;
-    //}
-
     private void MoveProjectile()
     {
         rb.velocity = transform.up * projectileSpeed;
@@ -110,12 +104,12 @@ public class Projectile : MonoBehaviour
     #endregion
 
     #region Gizmos
-    void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Vector3 forwardEnd = transform.position + transform.up * 2;
-        Gizmos.DrawLine(transform.position, forwardEnd);
-        Gizmos.DrawSphere(forwardEnd, 0.1f);
-    }
+    //void OnDrawGizmos()
+    //{
+    //    Gizmos.color = Color.blue;
+    //    Vector3 forwardEnd = transform.position + transform.up * 2;
+    //    Gizmos.DrawLine(transform.position, forwardEnd);
+    //    Gizmos.DrawSphere(forwardEnd, 0.1f);
+    //}
     #endregion
 }

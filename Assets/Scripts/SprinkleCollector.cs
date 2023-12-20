@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class SprinkleCollector : MonoBehaviour
 {
+    [SerializeField] private AudioClip _sprinkleSFX;
+
     private ParticleSystem _sprinkles;
     private Transform _collectorTransform;
-
-    [SerializeField] private AudioClip _sprinkleSFX;
+    private int _collectedParticleCount = 0;
 
     private List<ParticleSystem.Particle> _particles = new List<ParticleSystem.Particle>();
 
@@ -21,33 +22,51 @@ public class SprinkleCollector : MonoBehaviour
         }
     }
 
-    private void OnParticleSystemStopped()
-    {
-        Debug.Log("OnParticleSystemStopped");
-        ObjectPoolManager.DespawnObject(gameObject);
-    }
-
-    private void PlaySFX(AudioClip clip)
-    {
-        float randomPitch = UnityEngine.Random.Range(0.8f, 1.2f);
-        float randomVolume = UnityEngine.Random.Range(0.6f, .8f);
-        AudioManager.Instance.PlaySound(clip, .4f, 1);
-    }
-
     private void OnParticleTrigger()
     {
-        
-        
         int triggerParticles = _sprinkles.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, _particles);
+        
+        int playCount = Mathf.Min(triggerParticles, 10); // Cap at 10 plays
+
+        for (int i = 0; i < playCount; i++)
+        {
+            AudioManager.Instance.PlaySoundNoPitch(_sprinkleSFX, .4f);
+        }
 
         for (int i = 0; i < triggerParticles; i++)
         {
-            PlaySFX(_sprinkleSFX);
             ParticleSystem.Particle p = _particles[i];
             p.remainingLifetime = 0;
             _particles[i] = p;
+            _collectedParticleCount ++;
         }
 
         _sprinkles.SetTriggerParticles(ParticleSystemTriggerEventType.Enter, _particles);
+
+        if (_collectedParticleCount >= _sprinkles.main.maxParticles)
+        {
+            Debug.Log("Despawning particle system");
+            ObjectPoolManager.DespawnObject(gameObject);
+        }        
+    }
+    private void DespawnParticleSystem()
+    {
+        ObjectPoolManager.DespawnObject(gameObject);
+    }
+
+    private void OnEnable()
+    {
+        ResetCollector();
+    }
+
+    private void OnDisable()
+    {
+        ResetCollector();
+    }
+
+    private void ResetCollector()
+    {
+        _collectedParticleCount = 0;
+        _particles.Clear();
     }
 }

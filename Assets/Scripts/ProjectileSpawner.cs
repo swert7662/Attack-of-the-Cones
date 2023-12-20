@@ -70,11 +70,8 @@ public class ProjectileSpawner : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        // Debug that shows what is in range
-        Debug.Log($"Object {other.gameObject.name} entered the trigger");
         if (other.gameObject.CompareTag("Enemy"))
         {
-            Debug.Log("Enemy in range");
             _enemiesInRange.Add(other.gameObject);
         }
     }

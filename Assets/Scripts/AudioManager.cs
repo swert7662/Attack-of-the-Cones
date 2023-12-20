@@ -10,6 +10,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource _musicSource;
     [SerializeField] private AudioSource _effectSource;
     [SerializeField] private AudioSource _extendedEffect;
+    [SerializeField] private AudioSource _noPitchEffectSource;
     //[SerializeField] private AudioSource _ambientSource;
 
     private void Awake()
@@ -30,6 +31,12 @@ public class AudioManager : MonoBehaviour
         _effectSource.pitch = pitch;
         _effectSource.PlayOneShot(clip, volume);
     }
+
+    public void PlaySoundNoPitch(AudioClip clip, float volume = 1)
+    {
+        _noPitchEffectSource.PlayOneShot(clip, volume);
+    }
+
     public void PlayClipPortion(AudioClip clip, float startAt, float duration, float pitch = 1)
     {
         StartCoroutine(PlayClipForDuration(clip, startAt, duration, pitch));
