@@ -17,7 +17,7 @@ public class EnemyAggroCheck : MonoBehaviour
     {
         if (collision.gameObject == PlayerTarget)
         {
-            _enemy.SetAggroStatus(true);
+            //_enemy.SetAggroStatus(true);
         }
     }
 
@@ -25,7 +25,7 @@ public class EnemyAggroCheck : MonoBehaviour
     {
         if (collision.gameObject == PlayerTarget)
         {
-            _enemy.SetAggroStatus(false);
+            //_enemy.SetAggroStatus(false);
         }
     }
 }

@@ -1,0 +1,910 @@
+fileFormatVersion: 2
+guid: a9765d461fd5c584ab0ac5bd3540f31e
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_29
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d2909bae3c851d4bab85b5474d1e60c
+      internalID: -771405951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_30
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db55bbcd3184e0e46855d099fd6af314
+      internalID: -922042133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_31
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ea270dddbf20ca48858cd548ce940d8
+      internalID: -591011462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_32
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a5f9b19536b2b04394f0c1422594585
+      internalID: 1761603250
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_33
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 96efdbaeaca96fa4e9ffe45c21db1818
+      internalID: -1213512005
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_34
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4fd8d904023589c4ca093ac2787c95c6
+      internalID: -283114369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_35
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df7fab1a7f4a7c6418476b00c30fc568
+      internalID: -1206045993
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_36
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03356005e69925546b8ddef926b4e2d8
+      internalID: 184236818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_37
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7691365bf96c3a4bb67b4e015b5319c
+      internalID: 114932711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_38
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d188e9e29f46ce4bb293dd7d9f9f37d
+      internalID: 1199912013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_39
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e19d6f4832bab294fae93e43ff4e7a06
+      internalID: 2113759497
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_41
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b75188df8c1e5bc40af3653d61fb4670
+      internalID: -1358298951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_42
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba53ab3f2d9a3cb4f8d062871d31ad44
+      internalID: 1939408399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_44
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36b1a77ded90a5d4299fe3f9a50237b8
+      internalID: -725929871
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_45
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4354b9ecca180e458dc2100f671af65
+      internalID: -1273379612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_46
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bfd12e1c759206f4a9d5ffd3c544ad5d
+      internalID: 1569662710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_47
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65e29a8eddf338f458b9df365d56760a
+      internalID: -432043281
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_48
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 20a38a49af0218f46bdf7cfd8b6bf646
+      internalID: -535470490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_49
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7df8a471df7e0fb4a80d0d26fa852443
+      internalID: -221233493
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_50
+      rect:
+        serializedVersion: 2
+        x: 24
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ea4f8a842847b747ab52e6507c31fe9
+      internalID: 767560733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_51
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21373eadaef55364086a6070fb33caa4
+      internalID: -1731470785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_52
+      rect:
+        serializedVersion: 2
+        x: 72
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 217a665f9e6431a4f939ffba618942c0
+      internalID: 950151630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_53
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 853b5347bbd1abe48b19d2ad7d46e086
+      internalID: -770721276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_54
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f37da021def898642b60929594dcfa6e
+      internalID: -516369235
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_55
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90300d6a529e07f46b3da0724d537fb4
+      internalID: -669976774
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_56
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d994d177ad7432e48a58b5d4e5823baa
+      internalID: 1997952637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_57
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b5aa57920b7386043946d52d9d6528e7
+      internalID: -369103383
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_58
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad80d7c4c6108324e8c600e13946ef0b
+      internalID: -1666623141
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_66
+      rect:
+        serializedVersion: 2
+        x: 136
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b6ae4f57b9bafe4f91e990d49c5e8ed
+      internalID: 6556312
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_67
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3c25e4394f286441ba8931f94a140c6
+      internalID: 1608631790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_68
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 468fb4a9054d3cc40ad4805179d9eb24
+      internalID: 1627717715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-HorVertFlip_69
+      rect:
+        serializedVersion: 2
+        x: 184
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 190e76d13f7e9654fbab4ec7483c11f9
+      internalID: -734346543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      TilesetGraveyard-HorVertFlip_0: -1399413629
+      TilesetGraveyard-HorVertFlip_1: -236869006
+      TilesetGraveyard-HorVertFlip_10: -1364814048
+      TilesetGraveyard-HorVertFlip_11: -1376623419
+      TilesetGraveyard-HorVertFlip_12: -1500150009
+      TilesetGraveyard-HorVertFlip_13: -1560859492
+      TilesetGraveyard-HorVertFlip_14: -980650289
+      TilesetGraveyard-HorVertFlip_15: -1933818069
+      TilesetGraveyard-HorVertFlip_16: -1169074969
+      TilesetGraveyard-HorVertFlip_17: 1888941608
+      TilesetGraveyard-HorVertFlip_18: -801932118
+      TilesetGraveyard-HorVertFlip_19: -1527965925
+      TilesetGraveyard-HorVertFlip_2: 1111005082
+      TilesetGraveyard-HorVertFlip_20: 1242500412
+      TilesetGraveyard-HorVertFlip_21: 1330953826
+      TilesetGraveyard-HorVertFlip_22: 2053193603
+      TilesetGraveyard-HorVertFlip_23: 151188025
+      TilesetGraveyard-HorVertFlip_24: -871591108
+      TilesetGraveyard-HorVertFlip_25: -941220559
+      TilesetGraveyard-HorVertFlip_26: 542420763
+      TilesetGraveyard-HorVertFlip_27: -292657870
+      TilesetGraveyard-HorVertFlip_28: 413516649
+      TilesetGraveyard-HorVertFlip_29: -771405951
+      TilesetGraveyard-HorVertFlip_3: 55935139
+      TilesetGraveyard-HorVertFlip_30: -922042133
+      TilesetGraveyard-HorVertFlip_31: -591011462
+      TilesetGraveyard-HorVertFlip_32: 1761603250
+      TilesetGraveyard-HorVertFlip_33: -1213512005
+      TilesetGraveyard-HorVertFlip_34: -283114369
+      TilesetGraveyard-HorVertFlip_35: -1206045993
+      TilesetGraveyard-HorVertFlip_36: 184236818
+      TilesetGraveyard-HorVertFlip_37: 114932711
+      TilesetGraveyard-HorVertFlip_38: 1199912013
+      TilesetGraveyard-HorVertFlip_39: 2113759497
+      TilesetGraveyard-HorVertFlip_4: -530646216
+      TilesetGraveyard-HorVertFlip_40: 458792259
+      TilesetGraveyard-HorVertFlip_41: -1358298951
+      TilesetGraveyard-HorVertFlip_42: 1939408399
+      TilesetGraveyard-HorVertFlip_43: -88036237
+      TilesetGraveyard-HorVertFlip_44: -725929871
+      TilesetGraveyard-HorVertFlip_45: -1273379612
+      TilesetGraveyard-HorVertFlip_46: 1569662710
+      TilesetGraveyard-HorVertFlip_47: -432043281
+      TilesetGraveyard-HorVertFlip_48: -535470490
+      TilesetGraveyard-HorVertFlip_49: -221233493
+      TilesetGraveyard-HorVertFlip_5: -1320197398
+      TilesetGraveyard-HorVertFlip_50: 767560733
+      TilesetGraveyard-HorVertFlip_51: -1731470785
+      TilesetGraveyard-HorVertFlip_52: 950151630
+      TilesetGraveyard-HorVertFlip_53: -770721276
+      TilesetGraveyard-HorVertFlip_54: -516369235
+      TilesetGraveyard-HorVertFlip_55: -669976774
+      TilesetGraveyard-HorVertFlip_56: 1997952637
+      TilesetGraveyard-HorVertFlip_57: -369103383
+      TilesetGraveyard-HorVertFlip_58: -1666623141
+      TilesetGraveyard-HorVertFlip_59: -2019431361
+      TilesetGraveyard-HorVertFlip_6: 2102987247
+      TilesetGraveyard-HorVertFlip_60: 1527099559
+      TilesetGraveyard-HorVertFlip_61: -691005073
+      TilesetGraveyard-HorVertFlip_62: 1229687287
+      TilesetGraveyard-HorVertFlip_63: 229903421
+      TilesetGraveyard-HorVertFlip_64: -1309816263
+      TilesetGraveyard-HorVertFlip_65: 668575403
+      TilesetGraveyard-HorVertFlip_66: 6556312
+      TilesetGraveyard-HorVertFlip_67: 1608631790
+      TilesetGraveyard-HorVertFlip_68: 1627717715
+      TilesetGraveyard-HorVertFlip_69: -734346543
+      TilesetGraveyard-HorVertFlip_7: 765292133
+      TilesetGraveyard-HorVertFlip_70: -739235330
+      TilesetGraveyard-HorVertFlip_71: 603500189
+      TilesetGraveyard-HorVertFlip_72: 381119209
+      TilesetGraveyard-HorVertFlip_73: 1487353438
+      TilesetGraveyard-HorVertFlip_74: 38571357
+      TilesetGraveyard-HorVertFlip_75: 1768094703
+      TilesetGraveyard-HorVertFlip_76: -1306822767
+      TilesetGraveyard-HorVertFlip_77: -730705292
+      TilesetGraveyard-HorVertFlip_78: 1032314363
+      TilesetGraveyard-HorVertFlip_79: 979267239
+      TilesetGraveyard-HorVertFlip_8: -457841570
+      TilesetGraveyard-HorVertFlip_80: -1577049469
+      TilesetGraveyard-HorVertFlip_81: -308763804
+      TilesetGraveyard-HorVertFlip_82: 1298960525
+      TilesetGraveyard-HorVertFlip_83: -796134244
+      TilesetGraveyard-HorVertFlip_84: 314379161
+      TilesetGraveyard-HorVertFlip_85: 1020435351
+      TilesetGraveyard-HorVertFlip_86: 457282831
+      TilesetGraveyard-HorVertFlip_87: 1683613289
+      TilesetGraveyard-HorVertFlip_88: 1251809725
+      TilesetGraveyard-HorVertFlip_89: -1765641539
+      TilesetGraveyard-HorVertFlip_9: 160042608
+      TilesetGraveyard-HorVertFlip_90: -1276334118
+      TilesetGraveyard-HorVertFlip_91: -1345392283
+      TilesetGraveyard-HorVertFlip_92: -1269315748
+      TilesetGraveyard-HorVertFlip_93: 1031847996
+      TilesetGraveyard-HorVertFlip_94: -696269109
+      TilesetGraveyard-HorVertFlip_95: 874765367
+      TilesetGraveyard-HorVertFlip_96: -77981857
+      TilesetGraveyard-HorVertFlip_97: -1823450639
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

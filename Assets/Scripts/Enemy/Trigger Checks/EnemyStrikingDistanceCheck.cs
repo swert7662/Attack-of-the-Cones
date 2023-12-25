@@ -17,7 +17,7 @@ public class EnemyStrikingDistanceCheck : MonoBehaviour
     {
         if (collision.gameObject == PlayerTarget)
         {
-            _enemy.SetStrikingDistanceStatus(true);
+            //_enemy.SetStrikingDistanceStatus(true);
         }
     }
 
@@ -25,7 +25,7 @@ public class EnemyStrikingDistanceCheck : MonoBehaviour
     {
         if (collision.gameObject == PlayerTarget)
         {
-            _enemy.SetStrikingDistanceStatus(false);
+            //_enemy.SetStrikingDistanceStatus(false);
         }
     }
 }

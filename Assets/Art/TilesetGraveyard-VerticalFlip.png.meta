@@ -1,0 +1,952 @@
+fileFormatVersion: 2
+guid: 65ab311f39fb52d4eb14887b52505cb9
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_29
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08caeecd07c3ea848b71144d9119263f
+      internalID: -1126929679
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_30
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d8a067a217cee874dbb6f555b0d011ad
+      internalID: 746336522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_31
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 91fd3a36fecd56b43ba6d1d42c4c9281
+      internalID: -509883361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_32
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1267efff152d5a74797758589c60fc7f
+      internalID: 1592018262
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_33
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a6e10a5eeefd3e44d86e473fb5698297
+      internalID: -855012730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_34
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 736e420b5383a044ea742724a941b6ff
+      internalID: -1392581710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_35
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f706d7c6fd26bcc4fb4ec73e0d31317e
+      internalID: 1299192567
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_36
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b34e947ffe1dd0043a4038d43061fe18
+      internalID: -637201452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_37
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3a397f4732f7d104a8af26822f88857b
+      internalID: 788988276
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_38
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 112
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a1d6da7e0440af2468e131584d2068db
+      internalID: 320000936
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_39
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02e6e0413f978724c9ae7397fba45554
+      internalID: -1731079152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_40
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 51ce00e30a9d0c74bbc92bb67a8a9b53
+      internalID: -124464087
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_41
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 58e65fb0eeacdd84b8c71f796d9b727c
+      internalID: -1506339554
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_42
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bbe01a82a62e9b844afee2fe86f7c4a3
+      internalID: 971201753
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_43
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2d5e08b8843f8a74fb90973c9422267d
+      internalID: 584744392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_44
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4fee78f6813ed843aca6f453a46bb5d
+      internalID: 1524171614
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_45
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b58a16c7b00c5243aa6d5b52e4ed2c5
+      internalID: -170746970
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_46
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63974a669d026954b822aa3fc49798c0
+      internalID: -289963460
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_47
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c5e6557f2b2573498936452eb0cc4e6
+      internalID: -1318645344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_48
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 96
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 410594b4879812b40a32e435815f3adf
+      internalID: -903715868
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_49
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f90c4ca34e3a9a841bc4c41f41cb6b05
+      internalID: 1738450662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_50
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fab47a205e707d40938e26eeb551f4d
+      internalID: -2086569040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_51
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e28a62e29e3e5ed4cb169e205c2ca434
+      internalID: -863544314
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_52
+      rect:
+        serializedVersion: 2
+        x: 64
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c7874c2a1bd4fc46b7cea0b6576279e
+      internalID: -447443083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_53
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b3c3745e8460574a870df1f23c9b92b
+      internalID: 810467773
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_54
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffe9e1ef665b3b7499df52a48a9a1f1e
+      internalID: -1127176000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_55
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d47f0690928c96446b3f182d1e974e1f
+      internalID: -1562828129
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_56
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3722bb8fc994ab548865dab2d39ae41e
+      internalID: -1967522266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_57
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61164758a77ebf24088a020b92a5dd1d
+      internalID: -227119443
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_58
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 80
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3df2af597d096474fadc27dad50a26aa
+      internalID: -410197666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_62
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 08cb9d6ac1301d34d8fe915489dc0b67
+      internalID: 871026421
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_63
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16af6e3f2148c7b49b86082d7364f449
+      internalID: 742939893
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_64
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d969fecc42ca2c34aa34b4051c4b83fc
+      internalID: 2132013366
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TilesetGraveyard-VerticalFlip_65
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 48
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de61a440e400735459113aec6e688629
+      internalID: -247269552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      TilesetGraveyard-VerticalFlip_0: 205051759
+      TilesetGraveyard-VerticalFlip_1: 162875234
+      TilesetGraveyard-VerticalFlip_10: -780520637
+      TilesetGraveyard-VerticalFlip_11: 249828526
+      TilesetGraveyard-VerticalFlip_12: -171927401
+      TilesetGraveyard-VerticalFlip_13: -1635877798
+      TilesetGraveyard-VerticalFlip_14: 385034289
+      TilesetGraveyard-VerticalFlip_15: -149180463
+      TilesetGraveyard-VerticalFlip_16: 1538777478
+      TilesetGraveyard-VerticalFlip_17: -2024635581
+      TilesetGraveyard-VerticalFlip_18: 177148063
+      TilesetGraveyard-VerticalFlip_19: 547154599
+      TilesetGraveyard-VerticalFlip_2: 337988190
+      TilesetGraveyard-VerticalFlip_20: 1902018603
+      TilesetGraveyard-VerticalFlip_21: 2076846859
+      TilesetGraveyard-VerticalFlip_22: 798332167
+      TilesetGraveyard-VerticalFlip_23: 361171855
+      TilesetGraveyard-VerticalFlip_24: -1345929241
+      TilesetGraveyard-VerticalFlip_25: -592879159
+      TilesetGraveyard-VerticalFlip_26: -695358495
+      TilesetGraveyard-VerticalFlip_27: -1705566496
+      TilesetGraveyard-VerticalFlip_28: 1023823214
+      TilesetGraveyard-VerticalFlip_29: -1126929679
+      TilesetGraveyard-VerticalFlip_3: -251240862
+      TilesetGraveyard-VerticalFlip_30: 746336522
+      TilesetGraveyard-VerticalFlip_31: -509883361
+      TilesetGraveyard-VerticalFlip_32: 1592018262
+      TilesetGraveyard-VerticalFlip_33: -855012730
+      TilesetGraveyard-VerticalFlip_34: -1392581710
+      TilesetGraveyard-VerticalFlip_35: 1299192567
+      TilesetGraveyard-VerticalFlip_36: -637201452
+      TilesetGraveyard-VerticalFlip_37: 788988276
+      TilesetGraveyard-VerticalFlip_38: 320000936
+      TilesetGraveyard-VerticalFlip_39: -1731079152
+      TilesetGraveyard-VerticalFlip_4: -1400844238
+      TilesetGraveyard-VerticalFlip_40: -124464087
+      TilesetGraveyard-VerticalFlip_41: -1506339554
+      TilesetGraveyard-VerticalFlip_42: 971201753
+      TilesetGraveyard-VerticalFlip_43: 584744392
+      TilesetGraveyard-VerticalFlip_44: 1524171614
+      TilesetGraveyard-VerticalFlip_45: -170746970
+      TilesetGraveyard-VerticalFlip_46: -289963460
+      TilesetGraveyard-VerticalFlip_47: -1318645344
+      TilesetGraveyard-VerticalFlip_48: -903715868
+      TilesetGraveyard-VerticalFlip_49: 1738450662
+      TilesetGraveyard-VerticalFlip_5: -295983725
+      TilesetGraveyard-VerticalFlip_50: -2086569040
+      TilesetGraveyard-VerticalFlip_51: -863544314
+      TilesetGraveyard-VerticalFlip_52: -447443083
+      TilesetGraveyard-VerticalFlip_53: 810467773
+      TilesetGraveyard-VerticalFlip_54: -1127176000
+      TilesetGraveyard-VerticalFlip_55: -1562828129
+      TilesetGraveyard-VerticalFlip_56: -1967522266
+      TilesetGraveyard-VerticalFlip_57: -227119443
+      TilesetGraveyard-VerticalFlip_58: -410197666
+      TilesetGraveyard-VerticalFlip_59: 1365109082
+      TilesetGraveyard-VerticalFlip_6: 117956319
+      TilesetGraveyard-VerticalFlip_60: -873751573
+      TilesetGraveyard-VerticalFlip_61: -1667376471
+      TilesetGraveyard-VerticalFlip_62: 871026421
+      TilesetGraveyard-VerticalFlip_63: 742939893
+      TilesetGraveyard-VerticalFlip_64: 2132013366
+      TilesetGraveyard-VerticalFlip_65: -247269552
+      TilesetGraveyard-VerticalFlip_66: -198281652
+      TilesetGraveyard-VerticalFlip_67: -1689291576
+      TilesetGraveyard-VerticalFlip_68: -1362942263
+      TilesetGraveyard-VerticalFlip_69: 1902019195
+      TilesetGraveyard-VerticalFlip_7: 1862478536
+      TilesetGraveyard-VerticalFlip_70: -322174943
+      TilesetGraveyard-VerticalFlip_71: 82072305
+      TilesetGraveyard-VerticalFlip_72: 2072274083
+      TilesetGraveyard-VerticalFlip_73: 1068460964
+      TilesetGraveyard-VerticalFlip_74: 371533840
+      TilesetGraveyard-VerticalFlip_75: 72629807
+      TilesetGraveyard-VerticalFlip_76: 1716603244
+      TilesetGraveyard-VerticalFlip_77: -834340672
+      TilesetGraveyard-VerticalFlip_78: -2117625754
+      TilesetGraveyard-VerticalFlip_79: 507056399
+      TilesetGraveyard-VerticalFlip_8: 728187094
+      TilesetGraveyard-VerticalFlip_80: -1598048196
+      TilesetGraveyard-VerticalFlip_81: -85176889
+      TilesetGraveyard-VerticalFlip_82: 593129726
+      TilesetGraveyard-VerticalFlip_83: -2040840693
+      TilesetGraveyard-VerticalFlip_84: 855378171
+      TilesetGraveyard-VerticalFlip_85: -1503263359
+      TilesetGraveyard-VerticalFlip_86: 1460633064
+      TilesetGraveyard-VerticalFlip_87: -2113182568
+      TilesetGraveyard-VerticalFlip_88: -937016536
+      TilesetGraveyard-VerticalFlip_89: -1992559107
+      TilesetGraveyard-VerticalFlip_9: 1818514218
+      TilesetGraveyard-VerticalFlip_90: 888774911
+      TilesetGraveyard-VerticalFlip_91: -1954126798
+      TilesetGraveyard-VerticalFlip_92: 294137482
+      TilesetGraveyard-VerticalFlip_93: -1868123504
+      TilesetGraveyard-VerticalFlip_94: 1949578113
+      TilesetGraveyard-VerticalFlip_95: 1057409720
+      TilesetGraveyard-VerticalFlip_96: 1776409335
+      TilesetGraveyard-VerticalFlip_97: -1132229735
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
