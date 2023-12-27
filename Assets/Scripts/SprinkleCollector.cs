@@ -47,7 +47,9 @@ public class SprinkleCollector : MonoBehaviour
         {
             Debug.Log("Despawning particle system");
             ObjectPoolManager.DespawnObject(gameObject);
-        }        
+        }
+        // Debug log showing how much XP is being added
+        GameManager.Instance.AddXP(triggerParticles);
     }
     private void DespawnParticleSystem()
     {

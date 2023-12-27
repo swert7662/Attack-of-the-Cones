@@ -1,6 +1,14 @@
+using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+public enum WallDirection
+{
+    North,
+    East,
+    South,
+    West
+}
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -27,6 +35,10 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private int _xOffset = 0;
     [SerializeField] private int _yOffset = 0;
 
+    [SerializeField] private GameObject _outerWallParent; // Assign this in the Inspector
+    [SerializeField] private float _wallToRoadRatio;
+    private List<GameObject> _wallCubes = new List<GameObject>();
+
     [SerializeField] private Tilemap _decorationTilemap;
     [SerializeField] private RuleTile _decorationTile;
 
@@ -45,6 +57,7 @@ public class LevelGenerator : MonoBehaviour
     { 
         GenerateFloorTiles();
         GenerateRoadTiles();
+        GenerateWallCubes();
         //GeneratePondTiles();
         //GenerateFenceTiles();
         //GenerateDecorationTiles();
@@ -122,6 +135,27 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
+    public void GenerateWallCubes()
+    {
+        float wallThickness = _roadWidth * _wallToRoadRatio;
+
+        CreateWallCube(new Vector3(wallThickness / 2f, _height / 2f, 0), new Vector3(wallThickness, _height, 1), WallDirection.West);
+        CreateWallCube(new Vector3(_width - wallThickness / 2f, _height / 2f, 0), new Vector3(wallThickness, _height, 1), WallDirection.East);
+        CreateWallCube(new Vector3(_width / 2f, _height - wallThickness / 2f, 0), new Vector3(_width, wallThickness, 1), WallDirection.North);
+        CreateWallCube(new Vector3(_width / 2f, wallThickness / 2f, 0), new Vector3(_width, wallThickness, 1), WallDirection.South);
+    }
+
+    private void CreateWallCube(Vector3 position, Vector3 scale, WallDirection direction)
+    {
+        GameObject wallCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        wallCube.name = direction.ToString() + " Wall";
+        wallCube.transform.position = position - new Vector3(_width / 2, _height / 2, 0); // Adjust for grid offset
+        wallCube.transform.localScale = scale;
+        wallCube.transform.SetParent(_outerWallParent.transform);
+        wallCube.layer = LayerMask.NameToLayer("Outerwall");
+        _wallCubes.Add(wallCube);
+    }
+
     //private void CreatePerlinRoad()
     //{
     //    for (int x = 0; x < _width; x++)
@@ -182,5 +216,12 @@ public class LevelGenerator : MonoBehaviour
     {
         _floorTilemap.ClearAllTiles();
         _roadTilemap.ClearAllTiles();
+
+        // Clear and remove all wall cubes
+        foreach (GameObject wallCube in _wallCubes)
+        {
+            Destroy(wallCube);
+        }
+        _wallCubes.Clear();
     }
 }

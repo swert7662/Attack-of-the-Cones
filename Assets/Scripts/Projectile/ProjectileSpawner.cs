@@ -1,3 +1,4 @@
+using Com.LuisPedroFonseca.ProCamera2D;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ public class ProjectileSpawner : MonoBehaviour
     #region Variables and Properties
     [SerializeField] private float _attackRange; 
     [SerializeField] private float _attackSpeed;
+    [SerializeField] private float _fireShakeForce = .2f;
     [SerializeField] private Projectile _projectilePrefab;
     
     private List<GameObject> _enemiesInRange = new();
@@ -19,7 +21,9 @@ public class ProjectileSpawner : MonoBehaviour
     private LayerMask _enemyLayerMask;
     private float _timeSinceLastAttack;
     #endregion
-
+    private Vector2 _lastForceDirection;
+    //public float _angleNum = 90;
+    private float _lastAngle;
     private void Awake()
     {
         _attackRangeCollider = GetComponent<CircleCollider2D>();
@@ -46,7 +50,20 @@ public class ProjectileSpawner : MonoBehaviour
 
     void ProjectileSpawn()
     {
-        ObjectPoolManager.SpawnObject(_projectilePrefab.gameObject, _target.position - transform.position, transform.position, ObjectPoolManager.PoolType.Projectile); // Shoot projectile at target
+        Vector3 direction = _target.position - transform.position;
+
+        ObjectPoolManager.SpawnObject(_projectilePrefab.gameObject, direction, transform.position, ObjectPoolManager.PoolType.Projectile); // Shoot projectile at target
+
+        RecoilShake(direction);
+    }
+
+    private void RecoilShake(Vector3 direction)
+    {
+        var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+        _lastAngle = angle;
+        var radians = angle * Mathf.Deg2Rad;
+        var vForce = new Vector2((float)Mathf.Sin(radians), (float)Mathf.Cos(radians)) * _fireShakeForce;
+        ProCamera2DShake.Instance.ApplyShakesTimed(new Vector2[] { vForce }, new Vector3[] { Vector3.zero }, new float[] { .05f });
     }
 
     #region Targeting & Trigger Handling
@@ -89,5 +106,14 @@ public class ProjectileSpawner : MonoBehaviour
     {
         Gizmos.color = Color.black; // Set the color of the Gizmo
         Gizmos.DrawWireSphere(transform.position, _attackRange); // Draw a wire sphere with the attackRange as the radius
+
+        Gizmos.color = Color.red; // Set the color of the Gizmo
+        var radians = _lastAngle * Mathf.Deg2Rad;
+
+        // Calculate the direction vector from the angle
+        Vector3 direction = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0) * 5; // Multiplied by 2 for better visibility
+
+        // Draw a ray from the object's position in the direction of the angle
+        Gizmos.DrawRay(transform.position, direction);
     }
 }

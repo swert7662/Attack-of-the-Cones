@@ -4918,3 +4918,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprinkleSFX: {fileID: 8300000, guid: 9f0866535b545b24a9ada1e8296f1650, type: 3}
+  _xpBar: {fileID: 1839564542778995573, guid: 31faf4b80457c84488b0555898ea9daf, type: 3}

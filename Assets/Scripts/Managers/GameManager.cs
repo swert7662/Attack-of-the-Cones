@@ -9,20 +9,17 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public Canvas _canvasGameObject;
+    public GameObject _pauseScreen;
     public GameObject _playerGameObject;
     public Transform _playerTransform;
     public LayerMask _enemyLayer;
 
     private Dictionary<string, float> _cooldowns = new Dictionary<string, float>();
     private bool _isPaused = false;
+    private XPBar _xpBar;
 
     void Awake()
     {
-        _playerGameObject = GameObject.FindGameObjectWithTag("Player");
-        _playerTransform = _playerGameObject.transform;
-        _enemyLayer = LayerMask.GetMask("Enemy");
-        
         // Singleton pattern
         if (Instance != null)
         {
@@ -31,6 +28,14 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        _playerGameObject = GameObject.FindGameObjectWithTag("Player");
+        _playerTransform = _playerGameObject.transform;
+        _enemyLayer = LayerMask.GetMask("Enemy");
+        _xpBar = FindObjectOfType<XPBar>();
     }
 
     private void Update() { if (Input.GetKeyDown(KeyCode.Escape)) { TogglePause(); } }
@@ -52,7 +57,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("Toggle Pause Called");
         _isPaused = !_isPaused;
         Time.timeScale = _isPaused ? 0f : 1f;
-        _canvasGameObject.gameObject.SetActive(_isPaused);
+        _pauseScreen.gameObject.SetActive(_isPaused);
+    }
+
+    public void AddXP(int xp)
+    {
+        if (_xpBar != null)
+        {
+            _xpBar.UpdateXP(xp);
+        }
     }
 
     public bool IsCooldownElapsed(string abilityName, float cooldownDuration)

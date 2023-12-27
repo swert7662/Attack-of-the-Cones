@@ -188,11 +188,11 @@ public class ObjectPoolManager : MonoBehaviour
     // Overload for DespawnObject Method with timer
     public static void DespawnObject(GameObject objectToDespawn, float timer)
     {
-        Debug.Log("Despawning " + objectToDespawn.name + " in " + timer + " seconds");
+        //Debug.Log("Despawning " + objectToDespawn.name + " in " + timer + " seconds");
         IEnumerator DespawnTimer()
         {
             yield return new WaitForSeconds(timer);
-            Debug.Log("Despawning " + objectToDespawn.name);
+            //Debug.Log("Despawning " + objectToDespawn.name);
             DespawnObject(objectToDespawn);
         }
 
