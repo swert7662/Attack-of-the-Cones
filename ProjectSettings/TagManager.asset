@@ -19,7 +19,7 @@ TagManager:
   - EnemyProjectile
   - Collectibles
   - Outerwall
-  - 
+  - Flow Field
   - 
   - 
   - 
@@ -58,4 +58,7 @@ TagManager:
     locked: 0
   - name: FX
     uniqueID: 3482851155
+    locked: 0
+  - name: OuterWall
+    uniqueID: 166026955
     locked: 0

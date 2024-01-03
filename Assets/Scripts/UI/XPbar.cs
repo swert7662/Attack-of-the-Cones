@@ -1,13 +1,16 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class XPBar : MonoBehaviour
 {
     [SerializeField] private Image _leftFill, _centerFill, _rightFill;
+    [SerializeField] private TextMeshProUGUI _levelText, _shadowLevelText;
     [SerializeField] private float maxXP = 100; // Set this to your maximum XP
 
     private float LeftWidth, CenterWidth, RightWidth, TotalWidth;
     private float currentXP = 0;
+    private float currentLevel = 1;
 
     private void Awake()
     {
@@ -34,6 +37,10 @@ public class XPBar : MonoBehaviour
     {
         currentXP -= maxXP; // Reset current XP, keeping any overflow
         maxXP += 50; // Increase max XP by a fixed amount (e.g., 50)
+        currentLevel++;
+
+        _levelText.text = "Lvl " + currentLevel.ToString();
+        _shadowLevelText.text = "Lvl " + currentLevel.ToString();
 
         UpdateBarFills(); // Update the bar to reflect the new level
     }

@@ -2,13 +2,6 @@ using System.Collections.Generic;
 using Unity.VisualScripting.Antlr3.Runtime.Tree;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-public enum WallDirection
-{
-    North,
-    East,
-    South,
-    West
-}
 
 public class LevelGenerator : MonoBehaviour
 {
@@ -22,30 +15,13 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField] private Tilemap _floorTilemap;
     [SerializeField] private RuleTile _floorTile;
 
-    //[SerializeField, Range(0f, 1f)]
-    //private float _roadPerlinScale = 0.1f; // Perlin scale for paths
-    //[SerializeField, Range(0f, 1f)]
-    //private float _roadThreshold = 0.5f; // Threshold for path generation
-    [SerializeField] private Tilemap _roadTilemap;
-    [SerializeField] private RuleTile _roadTile;
-    [SerializeField] private int _roadWidth = 3; // Width of the road in tiles
-    [SerializeField] private int _roadSpacing = 10; // Spacing between roads in tiles
-    [SerializeField] private bool _generateXRoads = true;
-    [SerializeField] private bool _generateYRoads = true;
-    [SerializeField] private int _xOffset = 0;
-    [SerializeField] private int _yOffset = 0;
-
-    [SerializeField] private GameObject _outerWallParent; // Assign this in the Inspector
-    [SerializeField] private float _wallToRoadRatio;
-    private List<GameObject> _wallCubes = new List<GameObject>();
-
     [SerializeField] private Tilemap _decorationTilemap;
     [SerializeField] private RuleTile _decorationTile;
 
     private void Awake()
     {
         _floorTilemap = GetComponentInChildren<Tilemap>();
-        transform.position = new Vector3(-_width / 2, -_height / 2, 0);
+        _floorTilemap.transform.position = new Vector3(-_width / 2, -_height / 2, 0);
     }
 
     private void Start()
@@ -56,8 +32,8 @@ public class LevelGenerator : MonoBehaviour
     public void GenerateLevel() 
     { 
         GenerateFloorTiles();
-        GenerateRoadTiles();
-        GenerateWallCubes();
+        //GenerateRoadTiles();
+        //GenerateWallCubes();
         //GeneratePondTiles();
         //GenerateFenceTiles();
         //GenerateDecorationTiles();
@@ -67,11 +43,6 @@ public class LevelGenerator : MonoBehaviour
     {
         FillTilemap(_floorTilemap, _floorTile);
         _floorTilemap.RefreshAllTiles();
-    }
-
-    private void GenerateRoadTiles()
-    {
-        CreateGrid();
     }
 
     private void GeneratePondTiles()
@@ -102,126 +73,15 @@ public class LevelGenerator : MonoBehaviour
 
                 if (perlinValue > _floorThreshold)
                 {
-                    Vector2Int pos = new Vector2Int(x, y);
-                    tilemap.SetTile((Vector3Int)pos, tile);
+                    Vector3Int pos = new Vector3Int(x, y, 1);
+                    tilemap.SetTile(pos, tile);
                 }
             }
         }
     }
-
-    private void CreateGrid()
-    {
-        for (int x = 0; x < _width; x++)
-        {
-            for (int y = 0; y < _height; y++)
-            {
-                bool placeTile = false;
-
-                if (_generateXRoads && (x + _xOffset) % _roadSpacing < _roadWidth)
-                {
-                    placeTile = true;
-                }
-
-                if (_generateYRoads && (y + _yOffset) % _roadSpacing < _roadWidth)
-                {
-                    placeTile = true;
-                }
-
-                if (placeTile && IsTileEmpty(_roadTilemap, new Vector2Int(x, y)))
-                {
-                    _roadTilemap.SetTile(new Vector3Int(x, y, 0), _roadTile);
-                }
-            }
-        }
-    }
-
-    public void GenerateWallCubes()
-    {
-        float wallThickness = _roadWidth * _wallToRoadRatio;
-
-        CreateWallCube(new Vector3(wallThickness / 2f, _height / 2f, 0), new Vector3(wallThickness, _height, 1), WallDirection.West);
-        CreateWallCube(new Vector3(_width - wallThickness / 2f, _height / 2f, 0), new Vector3(wallThickness, _height, 1), WallDirection.East);
-        CreateWallCube(new Vector3(_width / 2f, _height - wallThickness / 2f, 0), new Vector3(_width, wallThickness, 1), WallDirection.North);
-        CreateWallCube(new Vector3(_width / 2f, wallThickness / 2f, 0), new Vector3(_width, wallThickness, 1), WallDirection.South);
-    }
-
-    private void CreateWallCube(Vector3 position, Vector3 scale, WallDirection direction)
-    {
-        GameObject wallCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        wallCube.name = direction.ToString() + " Wall";
-        wallCube.transform.position = position - new Vector3(_width / 2, _height / 2, 0); // Adjust for grid offset
-        wallCube.transform.localScale = scale;
-        wallCube.transform.SetParent(_outerWallParent.transform);
-        wallCube.layer = LayerMask.NameToLayer("Outerwall");
-        _wallCubes.Add(wallCube);
-    }
-
-    //private void CreatePerlinRoad()
-    //{
-    //    for (int x = 0; x < _width; x++)
-    //    {
-    //        for (int y = 0; y < _height; y++)
-    //        {
-    //            float perlinValue = Mathf.PerlinNoise(x * _roadPerlinScale, y * _roadPerlinScale);
-
-    //            if (perlinValue > _roadThreshold)
-    //            {
-    //                Vector2Int pos = new Vector2Int(x, y);
-    //                if (IsTileEmpty(_roadTilemap, pos))
-    //                {
-    //                    _roadTilemap.SetTile((Vector3Int)pos, _roadTile);
-    //                }
-    //            }
-    //        }
-    //    }
-    //    /*
-    //     // Adjustments for gradient calculation
-    //        float dx = 0.01f;
-    //        float dy = 0.01f;
-
-    //for (int x = 0; x < _width; x++)
-    //{
-    //    for (int y = 0; y < _height; y++)
-    //    {
-    //        // Calculate gradient
-    //        float perlinValue = Mathf.PerlinNoise(x * pathPerlinScale, y * pathPerlinScale);
-    //        float perlinValueX = Mathf.PerlinNoise((x + dx) * pathPerlinScale, y * pathPerlinScale);
-    //        float perlinValueY = Mathf.PerlinNoise(x * pathPerlinScale, (y + dy) * pathPerlinScale);
-
-    //        float gradX = perlinValueX - perlinValue;
-    //        float gradY = perlinValueY - perlinValue;
-    //        float gradMagnitude = Mathf.Sqrt(gradX * gradX + gradY * gradY);
-
-    //        // Adjusted threshold for path generation based on observed gradient magnitudes
-    //        if (gradMagnitude > 0.0001f && gradMagnitude < 0.0015f) // Adjust these values as needed
-    //        {
-    //            for (int px = -pathWidth; px <= pathWidth; px++)
-    //            {
-    //                for (int py = -pathWidth; py <= pathWidth; py++)
-    //                {
-    //                    Vector2Int pos = new Vector2Int(x + px, y + py);
-    //                    if(IsTileEmpty(_roadTilemap, pos))
-    //                    {
-    //                        _roadTilemap.SetTile((Vector3Int)pos, _roadTile);
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
-    //     */
-    //}
 
     public void ClearTileMap()
     {
         _floorTilemap.ClearAllTiles();
-        _roadTilemap.ClearAllTiles();
-
-        // Clear and remove all wall cubes
-        foreach (GameObject wallCube in _wallCubes)
-        {
-            Destroy(wallCube);
-        }
-        _wallCubes.Clear();
     }
 }

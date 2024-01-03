@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public GameObject _pauseScreen;
+    public Timer _timer;
     public GameObject _playerGameObject;
     public Transform _playerTransform;
     public LayerMask _enemyLayer;
@@ -56,6 +57,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Toggle Pause Called");
         _isPaused = !_isPaused;
+        _timer.ToggleTimer(_isPaused);
         Time.timeScale = _isPaused ? 0f : 1f;
         _pauseScreen.gameObject.SetActive(_isPaused);
     }
