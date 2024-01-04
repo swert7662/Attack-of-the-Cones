@@ -20,6 +20,14 @@ PrefabInstance:
       propertyPath: m_PreserveAspect
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2766586922017122766, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2766586922017122766, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3534324036376189668, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -99,6 +107,14 @@ PrefabInstance:
     - target: {fileID: 6533589501904632563, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
       propertyPath: m_SizeDelta.y
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333614904916807264, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7333614904916807264, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.55
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 3819561017712128424, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}

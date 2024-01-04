@@ -1,18 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class NewEnemy : MonoBehaviour, IDamageable
 {
-    public float _speed;
-    public float _attackRange;
+    [SerializeField] private EnemyStats _enemyStats;
 
     [SerializeField] private ParticleSystem _deathSprinkles;
     [SerializeField] private Healthbar _healthbar;
 
-    [field: SerializeField] public float MaxHealth { get; set; } = 100f;
+    public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
 
     private Transform _target;
@@ -26,16 +21,17 @@ public class NewEnemy : MonoBehaviour, IDamageable
         _animator = GetComponentInChildren<Animator>();
         _damageFlash = GetComponentInChildren<DamageFlash>();
         _originalScale = _animator.transform.localScale;
-        CurrentHealth = MaxHealth;
+        MaxHealth = _enemyStats.maxHealth;
+        CurrentHealth = _enemyStats.maxHealth;
     }
 
     private void Update()
     {
         FlipTowardsTarget();
-        //If not in attack range, move towards the player
-        if (Vector3.Distance(transform.position, _target.position) > _attackRange)
+
+        if (Vector3.Distance(transform.position, _target.position) > _enemyStats.attackRange)
         {
-            transform.position = Vector3.MoveTowards(transform.position, _target.position, _speed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _target.position, _enemyStats.speed * Time.deltaTime);
         }
     }
 
@@ -48,7 +44,7 @@ public class NewEnemy : MonoBehaviour, IDamageable
         _animator.SetTrigger("Hit");
         _damageFlash.Flash();
         CurrentHealth -= damageAmount;        
-        _healthbar.UpdateHealthbar(MaxHealth, CurrentHealth);
+        _healthbar.UpdateHealthbar(_enemyStats.maxHealth, CurrentHealth);
         if (CurrentHealth <= 0)
         {
             Die();
@@ -58,14 +54,24 @@ public class NewEnemy : MonoBehaviour, IDamageable
     public void Die()
     {
         ResetEnemy();
-        ObjectPoolManager.SpawnObject(_deathSprinkles.gameObject, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Particle); //Quaternion.Euler(-270, 90, 0)  Quaternion.identity
+        GameObject deathSprinkleInstance = ObjectPoolManager.SpawnObject(_deathSprinkles.gameObject, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
+
+        if (deathSprinkleInstance != null)
+        {
+            ParticleSystem deathSprinklesPS = deathSprinkleInstance.GetComponent<ParticleSystem>();
+
+            var emissionModule = deathSprinklesPS.emission;
+            emissionModule.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0.0f, (short)_enemyStats.expPoints) });
+
+            deathSprinklesPS.Play();
+        }
         ObjectPoolManager.DespawnObject(this.gameObject);
     }
 
     private void ResetEnemy()
     {
-        CurrentHealth = MaxHealth;
-        _healthbar.UpdateHealthbar(MaxHealth, CurrentHealth);
+        CurrentHealth = _enemyStats.maxHealth;
+        _healthbar.UpdateHealthbar(_enemyStats.maxHealth, CurrentHealth);
         _animator.transform.localScale = _originalScale;
 
         //IsAggroed = false;

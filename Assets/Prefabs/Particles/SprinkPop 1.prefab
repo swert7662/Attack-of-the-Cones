@@ -605,7 +605,7 @@ ParticleSystem:
         m_RotationOrder: 4
     randomizeRotationDirection: 0.55
     gravitySource: 1
-    maxNumParticles: 20
+    maxNumParticles: 200
     customEmitterVelocity: {x: 0, y: 0, z: 0}
     size3D: 1
     rotation3D: 1
@@ -4878,7 +4878,7 @@ ParticleSystemRenderer:
   m_RenderMode: 0
   m_MeshDistribution: 0
   m_SortMode: 0
-  m_MinParticleSize: 0
+  m_MinParticleSize: 0.05
   m_MaxParticleSize: 1
   m_CameraVelocityScale: 0
   m_VelocityScale: 0
@@ -4918,4 +4918,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sprinkleSFX: {fileID: 8300000, guid: 9f0866535b545b24a9ada1e8296f1650, type: 3}
-  _xpBar: {fileID: 1839564542778995573, guid: 31faf4b80457c84488b0555898ea9daf, type: 3}
