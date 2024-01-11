@@ -15,6 +15,7 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
+        /*
         if (Instance == null)
         {
             Instance = this;
@@ -24,6 +25,7 @@ public class AudioManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        */
     }
 
     public void PlaySound(AudioClip clip, float volume = 1, float pitch = 1)

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Unity.Burst;
 using UnityEngine.Pool;
 
 public class EnemySpawner : MonoBehaviour

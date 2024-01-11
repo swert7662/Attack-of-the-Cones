@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Entities;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -19,6 +20,9 @@ public class GameManager : MonoBehaviour
     private bool _isPaused = false;
     private XPBar _xpBar;
 
+    private EntityManager entityManager;
+    private Entity entity;
+
     void Awake()
     {
         // Singleton pattern
@@ -29,6 +33,8 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        entityManager = World.DefaultGameObjectInjectionWorld.EntityManager;
     }
 
     private void Start()
@@ -39,7 +45,15 @@ public class GameManager : MonoBehaviour
         _xpBar = FindObjectOfType<XPBar>();
     }
 
-    private void Update() { if (Input.GetKeyDown(KeyCode.Escape)) { TogglePause(); } }
+    private void Update() 
+    { 
+        if (Input.GetKeyDown(KeyCode.Escape)) { TogglePause(); }
+
+        if (entity != Entity.Null && entityManager != null)
+        {
+            entityManager.SetComponentData(entity, new TargetPosition { Position = _playerTransform.position });
+        }
+    }
 
     public void StartGame()
     {
