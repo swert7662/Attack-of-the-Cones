@@ -1,8 +1,30 @@
+using System;
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IHealth
 {
-    public float speed = 5.0f;    
+    [SerializeField] private float speed = 5.0f;    
+    [SerializeField] private float health = 100.0f;
+    [SerializeField] private float damageCooldown = .5f;
+
+    private float lastDamageTime = -1.0f;
+
+    public float MaxHealth { get; set; }
+    public float CurrentHealth { get; set; }
+    public Vector2 Extents { get; set; }
+
+    public event Action<GameObject> OnDamageTaken;
+
+    private void Awake()
+    {
+        MaxHealth = health;
+        CurrentHealth = health;
+        CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
+        if (collider != null)
+        {
+            Extents = collider.bounds.extents;
+        }
+    }
 
     private void Update()
     {
@@ -22,6 +44,32 @@ public class PlayerController : MonoBehaviour
         transform.Translate(movement);
     }
 
+    private void OnCollisionStay2D(Collision2D collision)
+    {
+        //Get the game object we collided with
+        GameObject collisionGameObject = collision.gameObject;
+
+        if (collisionGameObject.CompareTag("Enemy") && Time.time - lastDamageTime > damageCooldown)
+        {
+            Damage(collisionGameObject.GetComponent<NewEnemy>().AttackDamage);
+            lastDamageTime = Time.time;
+        }
+    }   
+
+    public void Damage(float damageAmount)
+    {
+        CurrentHealth -= damageAmount;
+
+        OnDamageTaken?.Invoke(gameObject);
+
+        if (CurrentHealth <= 0) { Die(); }
+    }
+
+    public void Die()
+    {
+        Debug.Log("Player died!");
+    }
+    #region Old Movement
     private void MouseBasedMovement()
     {
         // Convert the mouse position to world coordinates
@@ -31,4 +79,5 @@ public class PlayerController : MonoBehaviour
         // Move the player towards the mouse position
         transform.position = Vector3.MoveTowards(transform.position, mousePosition, speed * Time.deltaTime);
     }
+    #endregion
 }

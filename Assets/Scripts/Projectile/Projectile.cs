@@ -8,29 +8,27 @@ public class Projectile : MonoBehaviour
     #region Variables and Properties
     [SerializeField] private float projectileSpeed = 1f;
     [SerializeField] private float selfDestructTime = 2f;
-    [SerializeField] private float damage = 10f;
-    
-    [SerializeField] private AudioClip _shootSFX;
-    [SerializeField] private AudioClip _impactSFX;
-
-    [SerializeField] private GameObject _chainLightning;
+    [SerializeField] private float damage = 10f;    
 
     private Rigidbody2D rb;
-    private ParticleSpawner ParticleSpawner;
 
     private Coroutine _returnToPoolTimerCoroutine;
+
+    public static event Action OnProjectileShoot;
+    public static event Action<Vector2, Vector2> OnProjectileImpact;
+    public static event Action<Vector2, Vector2, Vector3> OnProjectileExit;
+    public static event Action<GameObject, Vector2> OnAdditionalEffectsTrigger;
     #endregion
 
     #region Awake, Enable, and FixedUpdate
     private void Awake() 
     { 
         rb = GetComponent<Rigidbody2D>(); 
-        ParticleSpawner = GetComponent<ParticleSpawner>();
     }
 
     private void OnEnable() 
     {
-        PlaySFX(_shootSFX);
+        OnProjectileShoot?.Invoke();
         _returnToPoolTimerCoroutine = StartCoroutine(ReturnToPoolAfterTimer()); 
     }
 
@@ -54,7 +52,7 @@ public class Projectile : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        Impact();
+        Despawn();
     }
     public void ResetProjectile() { rb.velocity = Vector2.zero; }
     #endregion
@@ -62,41 +60,27 @@ public class Projectile : MonoBehaviour
     #region Collision Handling
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        //Get random float between 0.8 and 1.2
-        PlaySFX(_impactSFX);
         HandleCollision(collision);
-        Impact();
-    }
-
-    private void PlaySFX(AudioClip clip)
-    {
-        float randomPitch = UnityEngine.Random.Range(0.8f, 1.2f);
-        float randomVolume = UnityEngine.Random.Range(0.6f, .8f);
-        AudioManager.Instance.PlaySound(clip, randomVolume, randomPitch);
+        Despawn();
     }
 
     private void HandleCollision(Collision2D collision)
     {
-        ParticleSpawner.SpawnImpactParticles(collision.GetContact(0).point, collision.GetContact(0).normal);
-        var damageable = collision.collider.GetComponent<IDamageable>() ?? collision.collider.GetComponentInParent<IDamageable>();
+        Vector2 hitPoint = collision.GetContact(0).point;
+        Vector2 hitNormal = collision.GetContact(0).normal;
+
+        OnProjectileImpact?.Invoke(hitPoint, hitNormal);
+
+        IHealth damageable = collision.collider.GetComponent<IHealth>() ?? collision.collider.GetComponentInParent<IHealth>();
         if (damageable != null)
         {
-            ParticleSpawner.SpawnExitParticles(collision.GetContact(0).point, collision.GetContact(0).normal, collision.collider.GetComponent<CapsuleCollider2D>());
+            OnProjectileExit?.Invoke(hitPoint, hitNormal, damageable.Extents);
             damageable.Damage(damage);
-            ChainLightning(collision);
+            OnAdditionalEffectsTrigger?.Invoke(collision.gameObject, hitPoint);
         }
     }
 
-    private void ChainLightning(Collision2D collision)
-    {
-        if (GameManager.Instance.IsCooldownElapsed("ElectricSpawner", 1f)) // 1f is the cooldown duration in seconds
-        {
-            GameObject lightningGO = ObjectPoolManager.SpawnObject(_chainLightning, collision.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
-            lightningGO.GetComponent<ElectricSpawner>().StartChainAttack(collision.gameObject);
-        }
-    }
-
-    private void Impact()
+    private void Despawn()
     {
         // Add impact effects can be added here later
         ObjectPoolManager.DespawnObject(gameObject);

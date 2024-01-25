@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ef11aead7a4166408645da0f36fc881, type: 3}
   m_Name: StartingStats
   m_EditorClassIdentifier: 
-  speed: 1
+  speed: 2
+  attackDamage: 5
   attackRange: 1
   maxHealth: 100
   expPoints: 5

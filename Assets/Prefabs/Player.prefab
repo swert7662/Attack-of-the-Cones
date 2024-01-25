@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8292110332582660724}
   - component: {fileID: 2111617020279062893}
   - component: {fileID: 103667398345530328}
+  - component: {fileID: 8822643414805694326}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -58,7 +59,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 394f0672866961e4cb1648c4c347f30c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -103,6 +104,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
+  health: 100
 --- !u!70 &2111617020279062893
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -165,6 +167,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &8822643414805694326
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5143773164298097529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2878d412e3e780449ac498a9b6f9bacf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _color: {r: 1, g: 0, b: 0, a: 0}
+  _flashDuration: 0
 --- !u!1 &6321952983628190449
 GameObject:
   m_ObjectHideFlags: 0
@@ -212,6 +228,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _attackRange: 10
   _attackSpeed: 6
+  _fireShakeForce: 0.2
   _projectilePrefab: {fileID: 2557257945587370443, guid: ee75162f293b47d4fa4d4062e8a29a81, type: 3}
 --- !u!58 &5245864392604754838
 CircleCollider2D:
@@ -297,7 +314,7 @@ MonoBehaviour:
   - {fileID: 7688753420689209999, guid: 487e19adeef3e584da527b8b280d2fc0, type: 3}
   - {fileID: 3234286034179912139, guid: 73564f3ac3a462149a22f73f95a9d751, type: 3}
   _spawnRate: 1
-  _spawnRadius: 15
+  _spawnPoints: []
 --- !u!1001 &5182217141148985439
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -15,6 +15,26 @@ public class DamageFlash : MonoBehaviour
 
     private int _flashAmount = Shader.PropertyToID("_FlashAmount");
     private int _flashColor = Shader.PropertyToID("_DamageColor");
+    private void OnEnable()
+    {
+        // Subscribe to the OnDamageTaken event
+        var damageTaker = GetComponentInParent<IHealth>(); // Assuming IHealth interface is used for all damageable entities
+        if (damageTaker != null)
+        {
+            damageTaker.OnDamageTaken += HandleDamageTaken;
+        }
+    }
+
+    private void OnDisable()
+    {
+        // Unsubscribe to avoid memory leaks
+        var damageTaker = GetComponentInParent<IHealth>();
+        if (damageTaker != null)
+        {
+            damageTaker.OnDamageTaken -= HandleDamageTaken;
+        }
+    }
+
 
     private void Awake()
     {
@@ -25,7 +45,6 @@ public class DamageFlash : MonoBehaviour
             _materials[i] = _spriteRenderers[i].material;
         }
     }
-
     private void Update()
     {
         if (_isFlashing)
@@ -43,6 +62,13 @@ public class DamageFlash : MonoBehaviour
             {
                 _isFlashing = false;
             }           
+        }
+    }
+    private void HandleDamageTaken(GameObject damagedObject)
+    {
+        if (damagedObject == this.gameObject)
+        {
+            Flash();
         }
     }
 

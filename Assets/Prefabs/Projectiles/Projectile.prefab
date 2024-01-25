@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1560668973868375279}
   - component: {fileID: 5069257452553647640}
   - component: {fileID: 3943764580086284750}
-  - component: {fileID: -2751741731489833976}
   - component: {fileID: 1213179218457457380}
   m_Layer: 0
   m_Name: Projectile
@@ -151,21 +150,6 @@ Rigidbody2D:
   m_SleepingMode: 0
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!114 &-2751741731489833976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2639366333099265486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1fefd01f7f0f994b8445622b9c0ff48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _particlePrefab: {fileID: 5156599630834807611, guid: fd972d8db724d8b49ac037914e634da4, type: 3}
-  _particleSecondaryEffect: {fileID: 5156599630834807611, guid: fc85c7e020d2d9543b178f5e2714d2af, type: 3}
-  _particalOffset: 0.5
 --- !u!114 &1213179218457457380
 MonoBehaviour:
   m_ObjectHideFlags: 0

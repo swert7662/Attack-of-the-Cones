@@ -8,6 +8,30 @@ public class Healthbar : MonoBehaviour
     [SerializeField] private Image _healthbarSprite;
 
     //private float  _targetFillAmount;
+    private void OnEnable()
+    {
+        // Subscribe to the OnDamageTaken event
+        var damageTaker = GetComponentInParent<IHealth>(); // Assuming IHealth interface is used for all damageable entities
+        if (damageTaker != null)
+        {
+            damageTaker.OnDamageTaken += HandleHealthBarUpdate;
+        }
+    }
+
+    private void OnDisable()
+    {
+        // Unsubscribe to avoid memory leaks
+        var damageTaker = GetComponentInParent<IHealth>();
+        if (damageTaker != null)
+        {
+            damageTaker.OnDamageTaken -= HandleHealthBarUpdate;
+        }
+    }
+
+    private void HandleHealthBarUpdate(GameObject damagedObject)
+    {
+        UpdateHealthbar(damagedObject.GetComponent<IHealth>().MaxHealth, damagedObject.GetComponent<IHealth>().CurrentHealth);
+    }
 
     public void UpdateHealthbar (float maxHealth, float currentHealth)
     {

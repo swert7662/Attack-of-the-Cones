@@ -23,6 +23,16 @@ public class GameManager : MonoBehaviour
     private EntityManager entityManager;
     private Entity entity;
 
+    private void OnEnable()
+    {
+        SprinkleCollector.OnSprinklePickup += AddXP;
+    }
+
+    private void OnDisable()
+    {
+        SprinkleCollector.OnSprinklePickup -= AddXP;
+    }
+
     void Awake()
     {
         // Singleton pattern
@@ -76,7 +86,7 @@ public class GameManager : MonoBehaviour
         _pauseScreen.gameObject.SetActive(_isPaused);
     }
 
-    public void AddXP(int xp)
+    private void AddXP(int xp)
     {
         if (_xpBar != null)
         {

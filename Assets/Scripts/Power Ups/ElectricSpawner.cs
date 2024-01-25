@@ -2,14 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using System;
 
 public class ElectricSpawner: MonoBehaviour
 {
     [SerializeField] private GameObject _lineLightningPrefab; // Reference to LineLightning prefab
-    [SerializeField] private GameObject _lightningImpactPrefab;
-
-    [SerializeField] private AudioClip _impactSFX;
-    [SerializeField] private AudioClip _arcSFX;
 
     [SerializeField] private float _damage;
     [SerializeField] private float _attackRange;
@@ -19,6 +16,8 @@ public class ElectricSpawner: MonoBehaviour
     private List<GameObject> _enemiesInRange = new();
     private List<LineConnector> _lineConnectors = new();
     private System.Random _rand = new();
+
+    public static event Action<Vector2> OnLightningStrike;
 
     private void OnEnable()
     {
@@ -86,22 +85,19 @@ public class ElectricSpawner: MonoBehaviour
             if (enemy == null)
                 continue;
 
-            IDamageable damageable = enemy.GetComponent<IDamageable>();
+            IHealth damageable = enemy.GetComponent<IHealth>();
             if (damageable != null)
             {
+                OnLightningStrike?.Invoke(enemy.transform.position);
                 damageable.Damage(_damage);
-                ObjectPoolManager.SpawnObject(_lightningImpactPrefab, enemy.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
+                //ObjectPoolManager.SpawnObject(_lightningImpactPrefab, enemy.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
             }
-            else
-            {
-                Debug.LogWarning("Damageable component not found in the parent of " + enemy.name);
-            }
+            else { Debug.LogWarning("Damageable component not found in the parent of " + enemy.name); }
         }
     }
 
     public void StartChainAttack(GameObject target)
     {
-        PlaySFX(_impactSFX);
         AddTarget(target);
         InitializeChainAttack();
     }
@@ -113,10 +109,7 @@ public class ElectricSpawner: MonoBehaviour
         {
             _chainedEnemies.Add(target);
         }
-        else
-        {
-            Debug.LogWarning("Invalid or duplicate target attempted to be added: " + (target != null ? target.name : "null"));
-        }
+        else { Debug.LogWarning("Invalid or duplicate target attempted to be added: " + (target != null ? target.name : "null")); }
     }
 
     private GameObject ChooseTarget()
@@ -135,19 +128,12 @@ public class ElectricSpawner: MonoBehaviour
 
         foreach (var hit in hits)
         {
-            if (hit.gameObject.CompareTag("Enemy") && !_chainedEnemies.Contains(hit.gameObject))
+            if (!_chainedEnemies.Contains(hit.gameObject))
             {
                 _enemiesInRange.Add(hit.gameObject);
                 //_enemiesInRange.Add(hit.transform.parent.gameObject);
             }
         }
-    }
-
-    private void PlaySFX(AudioClip clip)
-    {
-        float randomPitch = UnityEngine.Random.Range(0.8f, 1.2f);
-        float randomVolume = UnityEngine.Random.Range(0.4f, .6f);
-        AudioManager.Instance.PlaySound(clip, randomVolume, randomPitch);
     }
 
     public void ResetSpawner()

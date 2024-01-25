@@ -1,16 +1,17 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SprinkleCollector : MonoBehaviour
 {
-    [SerializeField] private AudioClip _sprinkleSFX;
-
     private ParticleSystem _sprinkles;
     private Transform _collectorTransform;
     private int _collectedParticleCount = 0;
 
     private List<ParticleSystem.Particle> _particles = new List<ParticleSystem.Particle>();
+
+    public static event Action<int> OnSprinklePickup;
 
     private void Awake()
     {
@@ -25,13 +26,8 @@ public class SprinkleCollector : MonoBehaviour
     private void OnParticleTrigger()
     {
         int triggerParticles = _sprinkles.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, _particles);
-        
-        int playCount = Mathf.Min(triggerParticles, 10); // Cap at 10 plays
 
-        for (int i = 0; i < playCount; i++)
-        {
-            AudioManager.Instance.PlaySoundNoPitch(_sprinkleSFX, .4f);
-        }
+        OnSprinklePickup?.Invoke(triggerParticles);
 
         for (int i = 0; i < triggerParticles; i++)
         {
@@ -48,8 +44,6 @@ public class SprinkleCollector : MonoBehaviour
             Debug.Log("Despawning particle system");
             ObjectPoolManager.DespawnObject(gameObject);
         }
-        // Debug log showing how much XP is being added
-        GameManager.Instance.AddXP(triggerParticles);
     }
     private void DespawnParticleSystem()
     {

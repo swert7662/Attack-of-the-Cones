@@ -10,7 +10,7 @@ public class EnemyAttackStraightShotSingle : EnemyAttackSOBase
     [SerializeField] private float _timeBetweenAttacks = 2f;
     [SerializeField] private float _timeTillExit = 3f; // Time till enemy exits attack state
     [SerializeField] private float _distanceToCountExit = 3f; // Distance to count as exit
-    [SerializeField] private float _projectileSpeed = 10f;
+    [SerializeField] private float _projectileSpeed;
 
     private float _timer;
     private float _exitTimer;

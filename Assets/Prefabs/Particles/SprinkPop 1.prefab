@@ -981,7 +981,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 20
+        scalar: 5
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -1032,7 +1032,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
       cycleCount: 1
-      repeatInterval: 1
+      repeatInterval: 0.01
       probability: 1
   SizeModule:
     enabled: 1
@@ -4917,4 +4917,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c2b8604fd0733e47b112f8b5d87ee54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sprinkleSFX: {fileID: 8300000, guid: 9f0866535b545b24a9ada1e8296f1650, type: 3}
