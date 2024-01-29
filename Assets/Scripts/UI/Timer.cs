@@ -3,26 +3,43 @@ using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    public float totalTimeInSeconds = 300; // 5 minutes
+    public float totalTimeInSeconds = 0; // 5 minutes
     private float currentTime;
     public TextMeshProUGUI timerText;
     private bool isTimerRunning;
     private int minutes;
     private int seconds;
 
+    [SerializeField] private TextMeshProUGUI shadowTimerText;
+    [SerializeField] private EnemyStats enemyStats; 
+    [SerializeField] private float updateInterval = 15f; 
+
+    private float lastUpdateTime;
+
     void Start()
     {
         currentTime = totalTimeInSeconds;
         UpdateTimerDisplay();
         StartTimer();
+        lastUpdateTime = 0f;
+        enemyStats.SetStats();
     }
 
     void Update()
     {
         if (isTimerRunning)
         {
-            currentTime -= Time.deltaTime;
+            currentTime += Time.deltaTime;
             UpdateTimerDisplay();
+
+            if (currentTime - lastUpdateTime >= updateInterval)
+            {
+                if (enemyStats != null)
+                {
+                    enemyStats.UpdateStats();
+                }
+                lastUpdateTime = currentTime;
+            }
 
             if (currentTime <= 0)
             {
@@ -49,6 +66,7 @@ public class Timer : MonoBehaviour
         seconds = Mathf.FloorToInt(currentTime % 60);
 
         timerText.text = string.Format("{0:0}:{1:00}", minutes, seconds);
+        shadowTimerText.text = timerText.text;
 
         //float milliseconds = (currentTime % 1) * 1000;
 

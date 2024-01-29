@@ -10,6 +10,11 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float selfDestructTime = 2f;
     [SerializeField] private float damage = 10f;    
 
+    private Transform targetTransform;
+    private Transform startingTransform;
+    public float journeyTime = 3.0f;
+    private float startTime;
+
     private Rigidbody2D rb;
 
     private Coroutine _returnToPoolTimerCoroutine;
@@ -29,6 +34,8 @@ public class Projectile : MonoBehaviour
     private void OnEnable() 
     {
         OnProjectileShoot?.Invoke();
+        startingTransform = transform;
+        startTime = Time.time;
         _returnToPoolTimerCoroutine = StartCoroutine(ReturnToPoolAfterTimer()); 
     }
 
@@ -40,8 +47,29 @@ public class Projectile : MonoBehaviour
     private void MoveProjectile()
     {
         rb.velocity = transform.up * projectileSpeed;
+        //Vector3 center = (startingTransform.position + targetTransform.position) * 0.5F;
+
+        //// move the center a bit downwards to make the arc vertical
+        //center -= new Vector3(0, .25f, 0);
+
+        //// Interpolate over the arc relative to center
+        //Vector3 riseRelCenter = startingTransform.position - center;
+        //Vector3 setRelCenter = targetTransform.position - center;
+
+        //// The fraction of the animation that has happened so far is
+        //// equal to the elapsed time divided by the desired time for
+        //// the total journey.
+        //float fracComplete = (Time.time - startTime) / journeyTime;
+
+        //transform.position = Vector3.Slerp(riseRelCenter, setRelCenter, fracComplete);
+        //transform.position += center;
     }
     #endregion
+
+    public void SetTarget(Transform target)
+    {
+        targetTransform = target;
+    }
 
     #region Pooling Methods
     private IEnumerator ReturnToPoolAfterTimer()
@@ -83,6 +111,8 @@ public class Projectile : MonoBehaviour
     private void Despawn()
     {
         // Add impact effects can be added here later
+        startingTransform = null;
+        startTime = 0f;
         ObjectPoolManager.DespawnObject(gameObject);
     }
     #endregion

@@ -39,6 +39,18 @@ public class EnemySpawner : MonoBehaviour
         var enemy = _enemies[randomIndex];
         ObjectPoolManager.SpawnObject(enemy, SpawnPointSelect(), Quaternion.identity, ObjectPoolManager.PoolType.Enemy);
     }
+    void OnDrawGizmos()
+    {
+        if (Application.isPlaying)
+        {
+            // Draw a sphere at each spawn point
+            foreach (Transform spawnPoint in _spawnPoints)
+            {
+                Gizmos.color = Color.red;
+                Gizmos.DrawSphere(spawnPoint.position, 0.5f);
+            }
+        }
+    }
 
     #region Old Code
     private float CalculateNextSpawnAngle()
@@ -50,17 +62,6 @@ public class EnemySpawner : MonoBehaviour
     {
         return transform.position + new Vector3(_spawnRadius * Mathf.Cos(_nextSpawnAngle), _spawnRadius * Mathf.Sin(_nextSpawnAngle), 0f);
     }
-    private void OnDrawGizmos()
-    {
-        //// Draw the spawn radius
-        //Gizmos.color = Color.yellow;
-        //Gizmos.DrawWireSphere(transform.position, _spawnRadius);
-
-        //// Draw the next spawn point
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawSphere(CalculateNextSpawnPoint(), 0.5f); // Adjust the size as needed
-    }
-
     #endregion
 
 }

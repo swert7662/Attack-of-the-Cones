@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IHealth
 {
-    event Action<GameObject> OnDamageTaken;
+    event Action<GameObject, Vector2, float> OnDamageTaken;
     // Other health-related methods and properties
 
     void Damage(float damageAmount);

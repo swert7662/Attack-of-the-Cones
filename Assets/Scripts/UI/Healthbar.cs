@@ -28,7 +28,7 @@ public class Healthbar : MonoBehaviour
         }
     }
 
-    private void HandleHealthBarUpdate(GameObject damagedObject)
+    private void HandleHealthBarUpdate(GameObject damagedObject, Vector2 extents, float damageTaken)
     {
         UpdateHealthbar(damagedObject.GetComponent<IHealth>().MaxHealth, damagedObject.GetComponent<IHealth>().CurrentHealth);
     }

@@ -1,14 +1,15 @@
 using System;
 using UnityEngine;
 
-public class NewEnemy : MonoBehaviour, IHealth
+public class NewEnemy : MonoBehaviour, IHealth, IDespawn
 {
     [SerializeField] private EnemyStats _enemyStats;
 
     [SerializeField] private float despawnRange; // Example range, adjust as needed
     [SerializeField] private float despawnTime; // Time in seconds before despawning
 
-    public event Action<GameObject> OnDamageTaken;
+    public event Action<GameObject, Vector2, float> OnDamageTaken;
+    //public static event Action<Vector2, Vector2, Vector3, float> OnDamagedEvent;
     public static event Action<Vector3, short> OnEnemyDeath;
 
     public float MaxHealth { get; set; }
@@ -22,15 +23,15 @@ public class NewEnemy : MonoBehaviour, IHealth
     private Vector3 _currentDirection;
     private float _updateInterval = 1f; // Time between direction updates
     private float _timeUntilNextUpdate = 0f;
-    private float despawnTimer;
-    private bool isOutOfRange = false;
+    //private float despawnTimer;
+    //private bool isOutOfRange = false;
 
     private void OnEnable()
     {
         MaxHealth = _enemyStats.maxHealth;
         CurrentHealth = _enemyStats.maxHealth;
         AttackDamage = _enemyStats.attackDamage;
-        OnDamageTaken?.Invoke(gameObject); // Call on enable to reset healthbar
+        OnDamageTaken?.Invoke(gameObject, Extents, 0f); // Call on enable to reset healthbar
     }
 
     private void Awake()
@@ -47,22 +48,12 @@ public class NewEnemy : MonoBehaviour, IHealth
     private void Update()
     {
         //FlipTowardsTarget();
-        if (isOutOfRange)
-        {
-            //Debug.Log(this.ToString() + " Enemy is out of range for : " + despawnTimer);
-            CheckDespawnCondition();
-        }
 
         // Update the direction at fixed intervals
         if (Time.time >= _timeUntilNextUpdate)
         {
             UpdateDirection();
             _timeUntilNextUpdate = Time.time + _updateInterval;
-
-            if (!isOutOfRange)
-            {
-                CheckDespawnCondition();
-            }
         }
 
         MoveInCurrentDirection();
@@ -75,7 +66,7 @@ public class NewEnemy : MonoBehaviour, IHealth
         CurrentHealth -= damageAmount;
         _animator.SetTrigger("Hit");
 
-        OnDamageTaken?.Invoke(gameObject); //Calls out to damage flash and healthbar
+        OnDamageTaken?.Invoke(gameObject, Extents, damageAmount); //Calls out to damage flash, healthbar, and damage popup
 
         if (CurrentHealth <= 0) { Die(); }
     }
@@ -117,42 +108,16 @@ public class NewEnemy : MonoBehaviour, IHealth
     }
     #endregion
 
-    #region Range Check
-    private bool IsOutOfRange()
-    {
-        return Vector3.Distance(transform.position, GameManager.Instance._playerTransform.position) > despawnRange;
-    }
-
-    private void CheckDespawnCondition()
-    {
-        isOutOfRange = IsOutOfRange();
-
-        if (isOutOfRange)
-        {
-            despawnTimer += Time.deltaTime;
-            if (despawnTimer >= despawnTime)
-            {
-                Despawn();
-            }
-        }
-        else
-        {
-            // Reset the timer if the enemy comes back within range
-            despawnTimer = 0;
-        }
-    }
-    #endregion
-
     #region Reset and Despawn
-    private void ResetEnemy()
+    public void ResetForPool()
     {
         CurrentHealth = _enemyStats.maxHealth;
-        despawnTimer = 0;
+        //despawnTimer = 0;
         _animator.transform.localScale = _originalScale;
     }
-    private void Despawn()
+    public void Despawn()
     {
-        ResetEnemy();
+        ResetForPool();
         ObjectPoolManager.DespawnObject(gameObject);
     }
     #endregion

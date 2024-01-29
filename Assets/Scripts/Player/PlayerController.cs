@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour, IHealth
     public float CurrentHealth { get; set; }
     public Vector2 Extents { get; set; }
 
-    public event Action<GameObject> OnDamageTaken;
+    public event Action<GameObject, Vector2, float> OnDamageTaken;
 
     private void Awake()
     {
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour, IHealth
     {
         CurrentHealth -= damageAmount;
 
-        OnDamageTaken?.Invoke(gameObject);
+        OnDamageTaken?.Invoke(gameObject, Extents, damageAmount);
 
         if (CurrentHealth <= 0) { Die(); }
     }

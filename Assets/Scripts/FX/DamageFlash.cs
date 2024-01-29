@@ -64,7 +64,7 @@ public class DamageFlash : MonoBehaviour
             }           
         }
     }
-    private void HandleDamageTaken(GameObject damagedObject)
+    private void HandleDamageTaken(GameObject damagedObject, Vector2 extentsUNUSED, float damageTaken)
     {
         if (damagedObject == this.gameObject)
         {

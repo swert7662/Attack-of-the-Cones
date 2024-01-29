@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.UIElements;
 
 public class ObjectPoolManager : MonoBehaviour
 {
@@ -85,7 +86,7 @@ public class ObjectPoolManager : MonoBehaviour
         }
         else //This line reuses an inactive object if there is one in the pool
         {
-            spawnableObject.transform.position = spawnPosition;
+            spawnableObject.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, 0);
             spawnableObject.transform.rotation = spawnRotation;
             pool.InactiveObjects.Remove(spawnableObject);
             spawnableObject.SetActive(true);            
@@ -126,7 +127,7 @@ public class ObjectPoolManager : MonoBehaviour
             spawnableObject.SetActive(true);
         }
 
-        spawnableObject.transform.position = position;
+        spawnableObject.transform.position = new Vector3(position.x, position.y, 0); ;
         spawnableObject.transform.up = direction;
 
         return spawnableObject;
