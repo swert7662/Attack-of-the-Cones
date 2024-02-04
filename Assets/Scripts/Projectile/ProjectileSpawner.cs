@@ -13,21 +13,22 @@ public class ProjectileSpawner : MonoBehaviour
     [SerializeField] private float _attackSpeed;
     [SerializeField] private float _fireShakeForce = .2f;
     [SerializeField] private Projectile _projectilePrefab;
-    
+
+    [SerializeField] private EnemyStats _enemyStats;
+
     private List<GameObject> _enemiesInRange = new();
     private CircleCollider2D _attackRangeCollider;
     private System.Random _rand = new();
     private Transform _target;
-    private LayerMask _enemyLayerMask;
+    
     private float _timeSinceLastAttack;
     #endregion
-    private Vector2 _lastForceDirection;
-    //public float _angleNum = 90;
-    private float _lastAngle;
+
     private void Awake()
     {
+        if (_enemyStats == null) { Debug.LogError("EnemyStats is null!"); }
+
         _attackRangeCollider = GetComponent<CircleCollider2D>();
-        _enemyLayerMask = GameManager.Instance._enemyLayer;
         if (_attackRangeCollider != null) { _attackRangeCollider.radius = _attackRange; }
         _timeSinceLastAttack = 0f;
     }
@@ -48,6 +49,11 @@ public class ProjectileSpawner : MonoBehaviour
         }
     }
 
+    public void SetProjectile(Projectile projectile)
+    {
+        _projectilePrefab = projectile;
+    }
+
     void ProjectileSpawn()
     {
         Vector3 direction = _target.position - transform.position;
@@ -62,7 +68,6 @@ public class ProjectileSpawner : MonoBehaviour
     private void RecoilShake(Vector3 direction)
     {
         var angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-        _lastAngle = angle;
         var radians = angle * Mathf.Deg2Rad;
         var vForce = new Vector2((float)Mathf.Sin(radians), (float)Mathf.Cos(radians)) * _fireShakeForce;
         ProCamera2DShake.Instance.ApplyShakesTimed(new Vector2[] { vForce }, new Vector3[] { Vector3.zero }, new float[] { .05f });
@@ -80,7 +85,7 @@ public class ProjectileSpawner : MonoBehaviour
     private void UpdateEnemiesInRange()
     {
         _enemiesInRange.Clear();
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, _attackRange, _enemyLayerMask);
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, _attackRange, _enemyStats.enemyLayerMask);
         foreach (Collider2D enemy in enemies)
         {
             _enemiesInRange.Add(enemy.gameObject);
@@ -108,14 +113,5 @@ public class ProjectileSpawner : MonoBehaviour
     {
         Gizmos.color = Color.black; // Set the color of the Gizmo
         Gizmos.DrawWireSphere(transform.position, _attackRange); // Draw a wire sphere with the attackRange as the radius
-
-        Gizmos.color = Color.red; // Set the color of the Gizmo
-        var radians = _lastAngle * Mathf.Deg2Rad;
-
-        // Calculate the direction vector from the angle
-        Vector3 direction = new Vector3(Mathf.Cos(radians), Mathf.Sin(radians), 0) * 5; // Multiplied by 2 for better visibility
-
-        // Draw a ray from the object's position in the direction of the angle
-        Gizmos.DrawRay(transform.position, direction);
     }
 }

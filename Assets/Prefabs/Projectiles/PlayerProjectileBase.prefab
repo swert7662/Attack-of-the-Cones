@@ -36,6 +36,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.9339623
       objectReference: {fileID: 0}
+    - target: {fileID: 1560668973868375279, guid: 25c30d134c253a8479a395e1a607cac9, type: 3}
+      propertyPath: m_SortingOrder
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2639366333099265486, guid: 25c30d134c253a8479a395e1a607cac9, type: 3}
       propertyPath: m_Name
       value: PlayerProjectileBase

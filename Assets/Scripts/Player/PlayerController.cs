@@ -3,22 +3,37 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IHealth
 {
-    [SerializeField] private float speed = 5.0f;    
-    [SerializeField] private float health = 100.0f;
+    [SerializeField] private float speed = 5.0f;       
     [SerializeField] private float damageCooldown = .5f;
 
+    [SerializeField] private Health health;
+    [SerializeField] private Player player;
+
+    [SerializeField] private GameEvent playerDeathEvent;
+    [SerializeField] private GameEvent playerHealthEvent;
+    
+
+    private DamagedData _playerDamagedData;
+
     private float lastDamageTime = -1.0f;
+    private ProjectileSpawner _weaponLoadout;
 
     public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
-    public Vector2 Extents { get; set; }
-
-    public event Action<GameObject, Vector2, float> OnDamageTaken;
+    public Vector3 Extents { get; set; }
 
     private void Awake()
     {
-        MaxHealth = health;
-        CurrentHealth = health;
+        if (player == null) { Debug.LogError("Player is null!"); }
+        if (health == null) { Debug.LogError("Health is null!"); }
+
+        player.IsAlive = true;
+        player.SetCollider(GetComponent<Transform>());
+        health.CurrentHealth = health.MaxHealth;
+
+        _weaponLoadout = GetComponentInChildren<ProjectileSpawner>();        
+        _playerDamagedData = new DamagedData(this.gameObject);
+
         CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
         if (collider != null)
         {
@@ -28,7 +43,11 @@ public class PlayerController : MonoBehaviour, IHealth
 
     private void Update()
     {
-        NormalMovement();
+        if (player.IsAlive)
+        {
+            NormalMovement();
+        }
+        player.Position = transform.position;
     }
 
     private void NormalMovement()
@@ -56,18 +75,29 @@ public class PlayerController : MonoBehaviour, IHealth
         }
     }   
 
+    public void ChangeWeapon(Projectile projectile)
+    {
+        if (_weaponLoadout != null)
+        {
+            _weaponLoadout.SetProjectile(projectile);
+        }
+    }
+
     public void Damage(float damageAmount)
     {
-        CurrentHealth -= damageAmount;
+        health.CurrentHealth -= damageAmount;
 
-        OnDamageTaken?.Invoke(gameObject, Extents, damageAmount);
+        playerHealthEvent.Raise(this, _playerDamagedData); // Calls out to healthbar and damage flash
+        //OnDamageTaken?.Invoke(gameObject, Extents, damageAmount);
 
-        if (CurrentHealth <= 0) { Die(); }
+        if (health.CurrentHealth <= 0) { Die(); }
     }
 
     public void Die()
     {
         Debug.Log("Player died!");
+        playerDeathEvent.Raise();
+        player.IsAlive = false;
     }
     #region Old Movement
     private void MouseBasedMovement()

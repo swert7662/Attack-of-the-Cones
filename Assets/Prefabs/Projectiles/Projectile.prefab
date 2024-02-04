@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5069257452553647640}
   - component: {fileID: 3943764580086284750}
   - component: {fileID: 1213179218457457380}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Projectile
   m_TagString: Projectile
   m_Icon: {fileID: 0}
@@ -75,8 +75,8 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1324338633
-  m_SortingLayer: 4
-  m_SortingOrder: 0
+  m_SortingLayer: 5
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0.066037714, g: 0.061777215, b: 0, a: 1}
   m_FlipX: 0
@@ -165,9 +165,7 @@ MonoBehaviour:
   projectileSpeed: 10
   selfDestructTime: 5
   damage: 5
-  _shootSFX: {fileID: 8300000, guid: 16e705180f15c234dbf0e81467a40032, type: 3}
-  _impactSFX: {fileID: 8300000, guid: df700ecce7c27424daa699a64033522c, type: 3}
-  _chainLightning: {fileID: 0}
+  journeyTime: 3
 --- !u!1 &6312395370013832717
 GameObject:
   m_ObjectHideFlags: 0
@@ -239,7 +237,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1324338633
-  m_SortingLayer: 4
+  m_SortingLayer: 5
   m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

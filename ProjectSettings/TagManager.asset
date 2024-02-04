@@ -8,6 +8,7 @@ TagManager:
   - Projectile
   - GameManager
   - Spawn Point
+  - Powerup
   layers:
   - Default
   - TransparentFX
@@ -48,17 +49,20 @@ TagManager:
   - name: Background
     uniqueID: 2782293223
     locked: 0
+  - name: FX
+    uniqueID: 3482851155
+    locked: 0
   - name: Enemy
     uniqueID: 2974589503
     locked: 0
-  - name: Player
-    uniqueID: 864875543
+  - name: Collectibles
+    uniqueID: 3931171555
     locked: 0
   - name: Projectile
     uniqueID: 2970628663
     locked: 0
-  - name: FX
-    uniqueID: 3482851155
+  - name: Player
+    uniqueID: 864875543
     locked: 0
   - name: OuterWall
     uniqueID: 166026955

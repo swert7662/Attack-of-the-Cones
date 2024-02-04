@@ -6,14 +6,17 @@ public class XPBar : MonoBehaviour
 {
     [SerializeField] private Image _leftFill, _centerFill, _rightFill;
     [SerializeField] private TextMeshProUGUI _levelText, _shadowLevelText;
+    [SerializeField] private FloatVariable _playerCurrentXP;
     [SerializeField] private float maxXP = 100; // Set this to your maximum XP
+    [SerializeField] GameEvent _levelUpEvent;
 
     private float LeftWidth, CenterWidth, RightWidth, TotalWidth;
-    private float currentXP = 0;
+    //private float currentXP = 0;
     private float currentLevel = 1;
 
     private void Awake()
     {
+        _playerCurrentXP.Value = 0;
         LeftWidth = _leftFill.rectTransform.rect.width;
         CenterWidth = _centerFill.rectTransform.rect.width;
         RightWidth = _rightFill.rectTransform.rect.width;
@@ -21,21 +24,19 @@ public class XPBar : MonoBehaviour
     }
 
     // Call this method to update the XP and the bar's fill levels
-    public void UpdateXP(float xp)
+    public void UpdateXP()
     {
-        Debug.Log("Updating XP: " + xp);
-        currentXP += xp;
-        //currentXP = Mathf.Clamp(currentXP, 0, maxXP); // Ensuring XP stays within bounds
         UpdateBarFills();
 
-        if (currentXP >= maxXP)
+        if (_playerCurrentXP.Value >= maxXP)
         {
             LevelUp();
+            _levelUpEvent.Raise();
         }
     }
     public void LevelUp()
     {
-        currentXP -= maxXP; // Reset current XP, keeping any overflow
+        _playerCurrentXP.Value -= maxXP; // Reset current XP, keeping any overflow
         maxXP += 50; // Increase max XP by a fixed amount (e.g., 50)
         currentLevel++;
 
@@ -47,7 +48,7 @@ public class XPBar : MonoBehaviour
 
     private void UpdateBarFills()
     {
-        float xpPercentage = currentXP / maxXP;
+        float xpPercentage = _playerCurrentXP.Value / maxXP;
         float filledWidth = xpPercentage * TotalWidth;
 
         if (filledWidth < LeftWidth)

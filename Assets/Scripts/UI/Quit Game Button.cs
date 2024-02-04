@@ -6,5 +6,5 @@ using UnityEngine.UI;
 public class QuitGameButton : MonoBehaviour
 {
     void Start() => GetComponent<Button>().onClick.AddListener(QuitGame);
-    public void QuitGame() => GameManager.Instance.QuitGame();
+    public void QuitGame() => Application.Quit();
 }

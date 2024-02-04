@@ -1,8 +1,10 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemyStats", menuName = "ScriptableObjects/EnemyStats", order = 1)]
+[CreateAssetMenu(fileName = "EnemyStats", menuName = "ScriptableObjects/EnemyStats", order = 3)]
 public class EnemyStats : ScriptableObject
 {
+    public LayerMask enemyLayerMask;
+
     public float baseSpeed;
     public float baseAttackDamage;
     public float baseAttackRange;

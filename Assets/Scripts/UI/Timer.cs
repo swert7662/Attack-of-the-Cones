@@ -12,7 +12,7 @@ public class Timer : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI shadowTimerText;
     [SerializeField] private EnemyStats enemyStats; 
-    [SerializeField] private float updateInterval = 15f; 
+    [SerializeField] private float updateInterval = 15f;
 
     private float lastUpdateTime;
 
@@ -88,11 +88,5 @@ public class Timer : MonoBehaviour
     public void PauseTimer()
     {
         isTimerRunning = false;
-    }
-
-    // Call this from GameManager when game pauses
-    public void ToggleTimer(bool isPaused)
-    {
-        isTimerRunning = !isPaused;
     }
 }

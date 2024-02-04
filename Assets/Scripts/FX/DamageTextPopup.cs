@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -11,55 +8,39 @@ public class DamageTextPopup : MonoBehaviour
     private float popupOffsetDirection = 1;
     private int currentMaxSortingOrder = 0;
 
-    private void OnEnable()
+    public void HandleDamagePopup(Component sender, object data)
     {
-        var damageTaker = GetComponentInParent<IHealth>(); // Assuming IHealth interface is used for all damageable entities
-        if (damageTaker != null)
+        if (data is DamagedData)
         {
-            // Debug log saying how many times this has subscribed
-            damageTaker.OnDamageTaken -= HandleDamagePopup;
-            damageTaker.OnDamageTaken += HandleDamagePopup;
-        }
-    }
+            Vector3 extents = ((DamagedData)data).Extents;
+            float damageTaken = ((DamagedData)data).DamageAmount;
+            GameObject damagedObject = ((DamagedData)data).GameObjectSender;
 
-    private void OnDisable()
-    {
-        var damageTaker = GetComponentInParent<IHealth>(); // Assuming IHealth interface is used for all damageable entities
-        if (damageTaker != null)
-        {
-            // Debug log saying how many times this has subscribed
-            damageTaker.OnDamageTaken -= HandleDamagePopup;
-        }
-    }
+            Vector3 spawnPoint = damagedObject.transform.position;
 
-    private void HandleDamagePopup(GameObject damagedObject, Vector2 extents, float damageTaken)
-    {
-        Vector3 spawnPoint = damagedObject.transform.position;
-
-        
-        if (damagedObject == this.gameObject && damageTaken > 0)
-        {
-            Debug.Log("DamagePopup: " + damagedObject.name + " took " + damageTaken + " damage");
-            float randomOffset = UnityEngine.Random.Range(-0.5f, 0.5f);
-            spawnPoint.y += extents.y; // Adjust for height            
-            spawnPoint.x += extents.x * popupOffsetDirection + randomOffset;
-
-            // Toggle the direction for the next popup
-            popupOffsetDirection *= -1;
-
-            GameObject go = ObjectPoolManager.SpawnObject(_damagePopupPrefab.gameObject, spawnPoint, Quaternion.identity);
-            DamagePopupFX damagePopup = go.GetComponent<DamagePopupFX>();
-            if (damagePopup != null)
+            if (damagedObject == this.gameObject && damageTaken > 0)
             {
-                damagePopup.SetDamageTextValue(damageTaken);
+                float randomOffset = UnityEngine.Random.Range(-0.5f, 0.5f);
+                spawnPoint.y += extents.y; // Adjust for height            
+                spawnPoint.x += extents.x * popupOffsetDirection + randomOffset;
 
-                TextMeshPro tmp = go.GetComponent<TextMeshPro>();
-                if (tmp != null)
+                // Toggle the direction for the next popup
+                popupOffsetDirection *= -1;
+
+                GameObject go = ObjectPoolManager.SpawnObject(_damagePopupPrefab.gameObject, spawnPoint, Quaternion.identity);
+                DamagePopupFX damagePopup = go.GetComponent<DamagePopupFX>();
+                if (damagePopup != null)
                 {
-                    tmp.sortingOrder = ++currentMaxSortingOrder;
+                    damagePopup.SetDamageTextValue(damageTaken);
+
+                    TextMeshPro tmp = go.GetComponent<TextMeshPro>();
+                    if (tmp != null)
+                    {
+                        tmp.sortingOrder = ++currentMaxSortingOrder;
+                    }
                 }
             }
         }
-        
+        else {Debug.LogWarning("Invalid data type for HandleDamagePopup : " + data.ToString());}
     }
 }

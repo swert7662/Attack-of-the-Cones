@@ -16,16 +16,16 @@ public class SFXManager : MonoBehaviour
     {
         Projectile.OnProjectileShoot += HandleProjectileShot;
         Projectile.OnProjectileImpact += HandleProjectileImpact;            
-        ElectricSpawner.OnLightningStrike += HandleLightningStrike;
-        SprinkleCollector.OnSprinklePickup += HandleSprinklePickup;
+        ChainLightningSpawner.OnLightningStrike += HandleLightningStrike;
+        //SprinkleCollector.OnSprinklePickup += HandleSprinklePickup;
     }
 
     private void OnDisable()
     {
         Projectile.OnProjectileImpact -= HandleProjectileImpact;
         Projectile.OnProjectileShoot -= HandleProjectileShot;
-        ElectricSpawner.OnLightningStrike -= HandleLightningStrike;
-        SprinkleCollector.OnSprinklePickup -= HandleSprinklePickup;
+        ChainLightningSpawner.OnLightningStrike -= HandleLightningStrike;
+        //SprinkleCollector.OnSprinklePickup -= HandleSprinklePickup;
     }
     private void HandleProjectileShot()
     {
@@ -41,14 +41,9 @@ public class SFXManager : MonoBehaviour
     {
         PlaySound(_lightningStrikeSFX, true);
     }
-    private void HandleSprinklePickup(int pickupCount)
+    public void HandleSprinklePickup()
     {
-        pickupCount = Mathf.Min(pickupCount, 5); // Cap at 5 plays
-
-        for (int i = 0; i < pickupCount; i++)
-        {
-            PlaySound(_sprinkleSFX, false);
-        }
+        PlaySound(_sprinkleSFX, false);
     }
 
     private void PlaySound(AudioClip clip, bool randomOn)

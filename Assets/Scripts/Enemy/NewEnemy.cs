@@ -4,18 +4,18 @@ using UnityEngine;
 public class NewEnemy : MonoBehaviour, IHealth, IDespawn
 {
     [SerializeField] private EnemyStats _enemyStats;
+    [SerializeField] private Player _player;
 
-    [SerializeField] private float despawnRange; // Example range, adjust as needed
-    [SerializeField] private float despawnTime; // Time in seconds before despawning
-
-    public event Action<GameObject, Vector2, float> OnDamageTaken;
-    //public static event Action<Vector2, Vector2, Vector3, float> OnDamagedEvent;
-    public static event Action<Vector3, short> OnEnemyDeath;
+    [SerializeField] private GameEvent _enemyDeathEvent;
+    private EnemyDeathData _enemyDeathData;
+    
+    [SerializeField] private GameEvent _enemyDamagedEvent;
+    private DamagedData _enemyDamagedData;
 
     public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
     public float AttackDamage { get; set; }
-    public Vector2 Extents { get; set; }
+    public Vector3 Extents { get; set; }
 
     private Animator _animator;    
     private Vector3 _originalScale;
@@ -23,21 +23,20 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
     private Vector3 _currentDirection;
     private float _updateInterval = 1f; // Time between direction updates
     private float _timeUntilNextUpdate = 0f;
-    //private float despawnTimer;
-    //private bool isOutOfRange = false;
 
     private void OnEnable()
     {
         MaxHealth = _enemyStats.maxHealth;
         CurrentHealth = _enemyStats.maxHealth;
         AttackDamage = _enemyStats.attackDamage;
-        OnDamageTaken?.Invoke(gameObject, Extents, 0f); // Call on enable to reset healthbar
     }
 
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();
         _originalScale = _animator.transform.localScale;
+        _enemyDeathData = new EnemyDeathData(Vector3.zero, 0);
+        _enemyDamagedData = new DamagedData(this.gameObject, MaxHealth, Extents);
         CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
         if (collider != null)
         {
@@ -66,14 +65,23 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
         CurrentHealth -= damageAmount;
         _animator.SetTrigger("Hit");
 
-        OnDamageTaken?.Invoke(gameObject, Extents, damageAmount); //Calls out to damage flash, healthbar, and damage popup
+        _enemyDamagedData.Position = gameObject.transform.position;
+        _enemyDamagedData.Extents = Extents;
+        _enemyDamagedData.DamageAmount = damageAmount;
+        _enemyDamagedData.GameObjectSender = gameObject;
+
+        _enemyDamagedEvent.Raise(this, _enemyDamagedData); //Calls out to damage flash, healthbar, and damage popup
 
         if (CurrentHealth <= 0) { Die(); }
     }
 
     public void Die()
     {
-        OnEnemyDeath?.Invoke(gameObject.transform.position, (short)_enemyStats.expPoints);
+        _enemyDeathData.Position = gameObject.transform.position;
+        _enemyDeathData.ExpPoints = (short)_enemyStats.expPoints;
+
+        _enemyDeathEvent.Raise(this.transform, _enemyDeathData);
+        
         Despawn();
     }
 
@@ -87,17 +95,17 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
 
     private void UpdateDirection()
     {
-        if (GameManager.Instance._playerTransform.position != null)
+        if (_player.Position != null)
         {
-            Vector3 targetDirection = GameManager.Instance._playerTransform.position - transform.position;
+            Vector3 targetDirection = _player.Position - transform.position;
             _currentDirection = targetDirection.normalized;
         }
     }
 
     private void FlipTowardsTarget()
     {
-        bool shouldFlip = (transform.position.x > GameManager.Instance._playerTransform.position.x && _animator.transform.localScale.x > 0) ||
-                          (transform.position.x < GameManager.Instance._playerTransform.position.x && _animator.transform.localScale.x < 0);
+        bool shouldFlip = (transform.position.x > _player.Position.x && _animator.transform.localScale.x > 0) ||
+                          (transform.position.x < _player.Position.x && _animator.transform.localScale.x < 0);
 
         if (shouldFlip)
         {
@@ -112,7 +120,6 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
     public void ResetForPool()
     {
         CurrentHealth = _enemyStats.maxHealth;
-        //despawnTimer = 0;
         _animator.transform.localScale = _originalScale;
     }
     public void Despawn()
@@ -121,4 +128,17 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
         ObjectPoolManager.DespawnObject(gameObject);
     }
     #endregion
+}
+
+[System.Serializable]
+public class EnemyDeathData : UnityEngine.Object
+{
+    public Vector3 Position;
+    public short ExpPoints;
+
+    public EnemyDeathData(Vector3 position, short expPoints)
+    {
+        Position = position;
+        ExpPoints = expPoints;
+    }
 }

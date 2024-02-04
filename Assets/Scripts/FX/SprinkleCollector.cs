@@ -5,32 +5,38 @@ using UnityEngine;
 
 public class SprinkleCollector : MonoBehaviour
 {
+    [SerializeField] private Player _player;
+    [SerializeField] private FloatVariable _playerCurrentXP;
+    [SerializeField] private GameEvent _xpPickup;
+
     private ParticleSystem _sprinkles;
-    private Transform _collectorTransform;
+    private CapsuleCollider2D _collectorCollider;
     private int _collectedParticleCount = 0;
 
     private List<ParticleSystem.Particle> _particles = new List<ParticleSystem.Particle>();
 
-    public static event Action<int> OnSprinklePickup;
-
     private void Awake()
     {
-        _sprinkles = GetComponent<ParticleSystem>();
-        _collectorTransform = GameManager.Instance._playerTransform;
-        if (_collectorTransform != null)
-        {
-            _sprinkles.trigger.AddCollider(_collectorTransform);
-        }
+        _sprinkles = GetComponent<ParticleSystem>();        
+
+        if (!_player){ Debug.LogError("Player not found by SprinkleCollector"); }
+
+        _sprinkles.trigger.AddCollider(_player.Collider);
+
+        if (!_playerCurrentXP) { Debug.LogError("PlayerCurrentXP not found by SprinkleCollector"); }        
     }
 
     private void OnParticleTrigger()
     {
+        if (_player.IsAlive == false) { return; }
+
         int triggerParticles = _sprinkles.GetTriggerParticles(ParticleSystemTriggerEventType.Enter, _particles);
 
-        OnSprinklePickup?.Invoke(triggerParticles);
+        _playerCurrentXP.Value += triggerParticles;        
 
         for (int i = 0; i < triggerParticles; i++)
         {
+            _xpPickup.Raise();
             ParticleSystem.Particle p = _particles[i];
             p.remainingLifetime = 0;
             _particles[i] = p;
@@ -39,14 +45,15 @@ public class SprinkleCollector : MonoBehaviour
 
         _sprinkles.SetTriggerParticles(ParticleSystemTriggerEventType.Enter, _particles);
 
-        if (_collectedParticleCount >= _sprinkles.main.maxParticles)
+        short count = _sprinkles.emission.GetBurst(0).maxCount;
+        if (_collectedParticleCount >= (int)count)
         {
-            Debug.Log("Despawning particle system");
-            ObjectPoolManager.DespawnObject(gameObject);
+            DespawnParticleSystem();
         }
     }
     private void DespawnParticleSystem()
     {
+        Debug.Log("Despawning " + this.ToString());
         ObjectPoolManager.DespawnObject(gameObject);
     }
 

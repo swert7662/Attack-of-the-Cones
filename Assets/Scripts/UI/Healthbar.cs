@@ -6,37 +6,11 @@ using UnityEngine.UI;
 public class Healthbar : MonoBehaviour
 {
     [SerializeField] private Image _healthbarSprite;
+    [SerializeField] private Health _health;
 
-    //private float  _targetFillAmount;
-    private void OnEnable()
+    public void UpdateHealthbar ()
     {
-        // Subscribe to the OnDamageTaken event
-        var damageTaker = GetComponentInParent<IHealth>(); // Assuming IHealth interface is used for all damageable entities
-        if (damageTaker != null)
-        {
-            damageTaker.OnDamageTaken += HandleHealthBarUpdate;
-        }
-    }
-
-    private void OnDisable()
-    {
-        // Unsubscribe to avoid memory leaks
-        var damageTaker = GetComponentInParent<IHealth>();
-        if (damageTaker != null)
-        {
-            damageTaker.OnDamageTaken -= HandleHealthBarUpdate;
-        }
-    }
-
-    private void HandleHealthBarUpdate(GameObject damagedObject, Vector2 extents, float damageTaken)
-    {
-        UpdateHealthbar(damagedObject.GetComponent<IHealth>().MaxHealth, damagedObject.GetComponent<IHealth>().CurrentHealth);
-    }
-
-    public void UpdateHealthbar (float maxHealth, float currentHealth)
-    {
-        //_targetFillAmount = currentHealth / maxHealth;
-        _healthbarSprite.fillAmount = currentHealth / maxHealth;
+        _healthbarSprite.fillAmount = _health.CurrentHealth / _health.MaxHealth;
     }
 
     private void Update()
