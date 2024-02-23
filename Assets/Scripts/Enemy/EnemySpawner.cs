@@ -1,21 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Burst;
 
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private List<GameObject> _enemies;
+    [SerializeField] private List<GameObject> _eliteEnemies;
     [SerializeField] private float _spawnRate;
+    [SerializeField] private float _eliteSpawnRate = 30f; // Rate at which to spawn elite enemies
     [SerializeField] private List<Transform> _spawnPoints;
-
-    private Vector3 _nextSpawnPoint;
-    private float _spawnRadius;
-    private float _nextSpawnAngle;
 
     private void Start()
     {
         StartCoroutine(SpawnEnemiesCoroutine());
+        StartCoroutine(SpawnEliteEnemiesCoroutine()); // Start the elite enemy spawning coroutine
     }
 
     private IEnumerator SpawnEnemiesCoroutine()
@@ -23,7 +21,16 @@ public class EnemySpawner : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(_spawnRate);
-            SpawnEnemy();
+            SpawnEnemy(false); // Spawn a regular enemy
+        }
+    }
+
+    private IEnumerator SpawnEliteEnemiesCoroutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(_eliteSpawnRate);
+            SpawnEnemy(true); // Spawn an elite enemy
         }
     }
 
@@ -33,12 +40,14 @@ public class EnemySpawner : MonoBehaviour
         return _spawnPoints[randomIndex].position;
     }
 
-    private void SpawnEnemy()
+    private void SpawnEnemy(bool isElite)
     {
-        int randomIndex = Random.Range(0, _enemies.Count);
-        var enemy = _enemies[randomIndex];
+        List<GameObject> pool = isElite ? _eliteEnemies : _enemies;
+        int randomIndex = Random.Range(0, pool.Count);
+        var enemy = pool[randomIndex];
         ObjectPoolManager.SpawnObject(enemy, SpawnPointSelect(), Quaternion.identity, ObjectPoolManager.PoolType.Enemy);
     }
+
     void OnDrawGizmos()
     {
         if (Application.isPlaying)
@@ -51,17 +60,4 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
-
-    #region Old Code
-    private float CalculateNextSpawnAngle()
-    {
-        return Random.Range(0f, 2f * Mathf.PI);
-    }
-
-    private Vector3 CalculateNextSpawnPoint()
-    {
-        return transform.position + new Vector3(_spawnRadius * Mathf.Cos(_nextSpawnAngle), _spawnRadius * Mathf.Sin(_nextSpawnAngle), 0f);
-    }
-    #endregion
-
 }

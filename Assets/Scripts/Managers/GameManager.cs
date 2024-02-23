@@ -11,14 +11,39 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [SerializeField] private GameManagerData _gameManagerData;
+    [SerializeField] private EnemyStats _enemyStats;
+    [SerializeField] private float _updateStatInterval = 15f;
+
 
     private Dictionary<string, float> _cooldowns = new Dictionary<string, float>();
+
+    private float currentTime;
+    private float lastStatUpdateTime;
 
     private void Awake()
     {
         Instance = this;
+
         if (_gameManagerData == null) { Debug.LogError("GameManagerData not found by GameManager"); }
+        if (_enemyStats == null) { Debug.LogError("EnemyStats not found by GameManager"); }
+
         _gameManagerData.IsPaused = false;
+        _enemyStats.SetStats();
+        lastStatUpdateTime = 0f;        
+    }
+
+    private void Update()
+    {
+        currentTime += Time.deltaTime;
+
+        if (currentTime - lastStatUpdateTime >= _updateStatInterval)
+        {
+            if (_enemyStats != null)
+            {
+                _enemyStats.UpdateStats();
+            }
+            lastStatUpdateTime = currentTime;
+        }
     }
     public void StartGame()
     {

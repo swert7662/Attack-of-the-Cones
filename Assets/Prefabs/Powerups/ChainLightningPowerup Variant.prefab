@@ -14,8 +14,12 @@ PrefabInstance:
       objectReference: {fileID: 587574576, guid: b27c8fa3edbc8f243bea297b4cacd21c, type: 3}
     - target: {fileID: 6918418373200951286, guid: 20a4d274379e48a43b43608d8b8127cc, type: 3}
       propertyPath: _powerUpType
-      value: 1
+      value: 7
       objectReference: {fileID: 0}
+    - target: {fileID: 6918418373200951286, guid: 20a4d274379e48a43b43608d8b8127cc, type: 3}
+      propertyPath: _powerupList
+      value: 
+      objectReference: {fileID: 11400000, guid: 82e63f7f197d998428c10ebe055f172d, type: 2}
     - target: {fileID: 7243575684641096471, guid: 20a4d274379e48a43b43608d8b8127cc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

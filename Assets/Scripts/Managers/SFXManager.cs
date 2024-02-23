@@ -16,7 +16,7 @@ public class SFXManager : MonoBehaviour
     {
         Projectile.OnProjectileShoot += HandleProjectileShot;
         Projectile.OnProjectileImpact += HandleProjectileImpact;            
-        ChainLightningSpawner.OnLightningStrike += HandleLightningStrike;
+        //ChainLightningSpawner.OnLightningStrike += HandleLightningStrike;
         //SprinkleCollector.OnSprinklePickup += HandleSprinklePickup;
     }
 
@@ -24,7 +24,7 @@ public class SFXManager : MonoBehaviour
     {
         Projectile.OnProjectileImpact -= HandleProjectileImpact;
         Projectile.OnProjectileShoot -= HandleProjectileShot;
-        ChainLightningSpawner.OnLightningStrike -= HandleLightningStrike;
+        //ChainLightningSpawner.OnLightningStrike -= HandleLightningStrike;
         //SprinkleCollector.OnSprinklePickup -= HandleSprinklePickup;
     }
     private void HandleProjectileShot()
@@ -37,7 +37,7 @@ public class SFXManager : MonoBehaviour
         PlaySound(_impactSFX, true);
     }
 
-    private void HandleLightningStrike(Vector2 vector)
+    public void HandleLightningStrike()
     {
         PlaySound(_lightningStrikeSFX, true);
     }

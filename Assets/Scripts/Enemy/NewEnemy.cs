@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class NewEnemy : MonoBehaviour, IHealth, IDespawn
 {
-    [SerializeField] private EnemyStats _enemyStats;
+    [SerializeField] protected EnemyStats _enemyStats;
     [SerializeField] private Player _player;
 
     [SerializeField] private GameEvent _enemyDeathEvent;
@@ -15,6 +15,7 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
     public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
     public float AttackDamage { get; set; }
+
     public Vector3 Extents { get; set; }
 
     private Animator _animator;    
@@ -24,7 +25,7 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
     private float _updateInterval = 1f; // Time between direction updates
     private float _timeUntilNextUpdate = 0f;
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         MaxHealth = _enemyStats.maxHealth;
         CurrentHealth = _enemyStats.maxHealth;
@@ -75,10 +76,11 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
         if (CurrentHealth <= 0) { Die(); }
     }
 
-    public void Die()
+    public virtual void Die()
     {
         _enemyDeathData.Position = gameObject.transform.position;
         _enemyDeathData.ExpPoints = (short)_enemyStats.expPoints;
+        Debug.Log("Enemy died worth " + _enemyDeathData.ExpPoints);
 
         _enemyDeathEvent.Raise(this.transform, _enemyDeathData);
         

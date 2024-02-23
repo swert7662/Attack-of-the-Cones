@@ -2,15 +2,18 @@ using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour, IHealth
-{
-    [SerializeField] private float speed = 5.0f;       
+{   
     [SerializeField] private float damageCooldown = .5f;
 
     [SerializeField] private Health health;
     [SerializeField] private Player player;
+    [SerializeField] private EnemyStats enemyStats;
+
+    [SerializeField] private Projectile _defaultProjectile;
 
     [SerializeField] private GameEvent playerDeathEvent;
     [SerializeField] private GameEvent playerHealthEvent;
+
     
 
     private DamagedData _playerDamagedData;
@@ -28,16 +31,18 @@ public class PlayerController : MonoBehaviour, IHealth
         if (health == null) { Debug.LogError("Health is null!"); }
 
         player.IsAlive = true;
-        player.SetCollider(GetComponent<Transform>());
-        health.CurrentHealth = health.MaxHealth;
+        player.SetLastFollower(this.transform);
+        player.SetProjectile(_defaultProjectile);      
+        player.SetStats();
 
-        _weaponLoadout = GetComponentInChildren<ProjectileSpawner>();        
+        health.CurrentHealth = health.MaxHealth;        
+
         _playerDamagedData = new DamagedData(this.gameObject);
-
         CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
         if (collider != null)
         {
             Extents = collider.bounds.extents;
+            player.SetCollider(collider);
         }
     }
 
@@ -57,7 +62,7 @@ public class PlayerController : MonoBehaviour, IHealth
         float verticalInput = Input.GetAxis("Vertical");
 
         // Create a movement vector based on the input and speed
-        Vector3 movement = new Vector3(horizontalInput, verticalInput, 0) * speed * Time.deltaTime;
+        Vector3 movement = new Vector3(horizontalInput, verticalInput, 0) * player.Speed * Time.deltaTime;
 
         // Move the player
         transform.Translate(movement);
@@ -68,20 +73,12 @@ public class PlayerController : MonoBehaviour, IHealth
         //Get the game object we collided with
         GameObject collisionGameObject = collision.gameObject;
 
-        if (collisionGameObject.CompareTag("Enemy") && Time.time - lastDamageTime > damageCooldown)
+        if (collisionGameObject.tag.Equals("Enemy") && Time.time - lastDamageTime > damageCooldown)
         {
-            Damage(collisionGameObject.GetComponent<NewEnemy>().AttackDamage);
+            Damage(enemyStats.attackDamage);
             lastDamageTime = Time.time;
         }
     }   
-
-    public void ChangeWeapon(Projectile projectile)
-    {
-        if (_weaponLoadout != null)
-        {
-            _weaponLoadout.SetProjectile(projectile);
-        }
-    }
 
     public void Damage(float damageAmount)
     {
@@ -107,7 +104,7 @@ public class PlayerController : MonoBehaviour, IHealth
         mousePosition.z = transform.position.z; // Ensure there is no change in the z-axis
 
         // Move the player towards the mouse position
-        transform.position = Vector3.MoveTowards(transform.position, mousePosition, speed * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(transform.position, mousePosition, player.Speed * Time.deltaTime);
     }
     #endregion
 }

@@ -3,12 +3,11 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Pool;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IDespawn
 {
     #region Variables and Properties
-    [SerializeField] private float projectileSpeed = 1f;
-    [SerializeField] private float selfDestructTime = 2f;
-    [SerializeField] private float damage = 10f;    
+    [SerializeField] private float projectileSpeed = 1f; 
+    [SerializeField] private Player _player;
 
     private Transform targetTransform;
     private Transform startingTransform;
@@ -16,8 +15,6 @@ public class Projectile : MonoBehaviour
     private float startTime;
 
     private Rigidbody2D rb;
-
-    private Coroutine _returnToPoolTimerCoroutine;
 
     public static event Action OnProjectileShoot;
     public static event Action<Vector2, Vector2> OnProjectileImpact;
@@ -36,7 +33,6 @@ public class Projectile : MonoBehaviour
         OnProjectileShoot?.Invoke();
         startingTransform = transform;
         startTime = Time.time;
-        _returnToPoolTimerCoroutine = StartCoroutine(ReturnToPoolAfterTimer()); 
     }
 
     private void FixedUpdate() { MoveProjectile(); }
@@ -71,20 +67,6 @@ public class Projectile : MonoBehaviour
         targetTransform = target;
     }
 
-    #region Pooling Methods
-    private IEnumerator ReturnToPoolAfterTimer()
-    {
-        float elapsedTime = 0f;
-        while (elapsedTime < selfDestructTime)
-        {
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-        Despawn();
-    }
-    public void ResetProjectile() { rb.velocity = Vector2.zero; }
-    #endregion
-
     #region Collision Handling
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -103,27 +85,23 @@ public class Projectile : MonoBehaviour
         if (damageable != null)
         {
             OnProjectileExit?.Invoke(hitPoint, hitNormal, damageable.Extents);
-            damageable.Damage(damage);
+            damageable.Damage(_player.Damage);
             OnAdditionalEffectsTrigger?.Invoke(collision.gameObject, hitPoint);
         }
     }
 
-    private void Despawn()
+    public void Despawn()
     {
-        // Add impact effects can be added here later
-        startingTransform = null;
-        startTime = 0f;
+        ResetForPool();
         ObjectPoolManager.DespawnObject(gameObject);
     }
-    #endregion
 
-    #region Gizmos
-    //void OnDrawGizmos()
-    //{
-    //    Gizmos.color = Color.blue;
-    //    Vector3 forwardEnd = transform.position + transform.up * 2;
-    //    Gizmos.DrawLine(transform.position, forwardEnd);
-    //    Gizmos.DrawSphere(forwardEnd, 0.1f);
-    //}
+    public void ResetForPool()
+    {
+        rb.velocity = Vector2.zero;
+        startingTransform = null;
+        startTime = 0f;
+    }
+
     #endregion
 }

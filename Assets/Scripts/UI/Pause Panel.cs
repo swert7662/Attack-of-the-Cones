@@ -11,16 +11,16 @@ public class PausePanel : MonoBehaviour
 
     private void Update()
     {
-        if (player.IsAlive)
+        if ((player.IsAlive && !_gameManagerData.IsPaused) || (_gameManagerData.IsPaused && _pauseScreen.gameObject.activeInHierarchy))
         {
             if (Input.GetKeyDown(KeyCode.Escape)) { pausedEvent.Raise(); }
         }
     }
 
-    public void TogglePause()
+    public void TogglePause(bool PauseWithPauseScreen)
     {
         _gameManagerData.IsPaused = !_gameManagerData.IsPaused;
         Time.timeScale = _gameManagerData.IsPaused ? 0f : 1f;
-        _pauseScreen.gameObject.SetActive(_gameManagerData.IsPaused);
+        if (PauseWithPauseScreen) { _pauseScreen.gameObject.SetActive(_gameManagerData.IsPaused); }
     }
 }

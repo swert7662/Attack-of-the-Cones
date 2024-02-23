@@ -7,10 +7,11 @@ using System;
 public class ChainLightningSpawner: MonoBehaviour
 {
     [SerializeField] private GameObject _lineLightningPrefab; // Reference to LineLightning prefab
+    [SerializeField] private GameEvent _lightningStrikeEvent;
 
-    [SerializeField] private float _damage;
-    [SerializeField] private float _attackRange;
-    [SerializeField] private float _maxTargets;
+    [SerializeField] private PowerupStats _powerupStats;
+
+    [SerializeField] private float _attackRange;    
     [SerializeField] private EnemyStats _enemyStats;
 
     private List<GameObject> _chainedEnemies = new();
@@ -18,7 +19,8 @@ public class ChainLightningSpawner: MonoBehaviour
     private List<LineConnector> _lineConnectors = new();
     private System.Random _rand = new();
 
-    public static event Action<Vector2> OnLightningStrike;
+    private int maxTargets => _powerupStats.ChainLightningTargetCount;
+    private int damage => Mathf.Max(1, Mathf.RoundToInt(2 * _powerupStats.DamageLevel * _powerupStats.LightningDamageMultiplier));
 
     private void OnEnable()
     {
@@ -35,7 +37,7 @@ public class ChainLightningSpawner: MonoBehaviour
 
     private void CreateEnemyChain()
     {
-        for (int i = 0; i < _maxTargets - 1; i++)
+        for (int i = 0; i < maxTargets - 1; i++)
         {
             if (i >= _chainedEnemies.Count) { break;}
 
@@ -89,8 +91,8 @@ public class ChainLightningSpawner: MonoBehaviour
             IHealth damageable = enemy.GetComponent<IHealth>();
             if (damageable != null)
             {
-                OnLightningStrike?.Invoke(enemy.transform.position);
-                damageable.Damage(_damage);
+                _lightningStrikeEvent.Raise(this, enemy.transform.position);
+                damageable.Damage(damage);
                 //ObjectPoolManager.SpawnObject(_lightningImpactPrefab, enemy.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
             }
             else { Debug.LogWarning("Damageable component not found in the parent of " + enemy.name); }

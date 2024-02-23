@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6918418373200951286}
   - component: {fileID: 4871608550769895160}
   - component: {fileID: 1789516013197893455}
+  - component: {fileID: 1339026091624626616}
   m_Layer: 9
   m_Name: BasePowerUp
   m_TagString: Powerup
@@ -100,6 +101,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _powerUpType: 0
+  _player: {fileID: 11400000, guid: 7ea4c9b8f7e910f40b587f504c3c881d, type: 2}
+  _truck: {fileID: 2577799152419955584, guid: b4681f5369fdf9b47a9241ca54a652af, type: 3}
+  _powerupCollectedEvent: {fileID: 11400000, guid: 25ae005e17c53524589c597a7358f18e, type: 2}
+  _powerupSuctionEvent: {fileID: 11400000, guid: ec72f1711e46095438b82eb6e4fdf0b4, type: 2}
+  _powerupList: {fileID: 0}
+  followTarget: {fileID: 0}
+  speed: 20
+  stoppingDistance: 2
 --- !u!58 &4871608550769895160
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -156,3 +165,31 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1339026091624626616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7487571776050031316}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f69c2bf1dbfdf45b8b550e018a477f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: ec72f1711e46095438b82eb6e4fdf0b4, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6918418373200951286}
+        m_TargetAssemblyTypeName: Collectible, Assembly-CSharp
+        m_MethodName: SetFollowTruck
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2

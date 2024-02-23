@@ -7,7 +7,7 @@ public class XPBar : MonoBehaviour
     [SerializeField] private Image _leftFill, _centerFill, _rightFill;
     [SerializeField] private TextMeshProUGUI _levelText, _shadowLevelText;
     [SerializeField] private FloatVariable _playerCurrentXP;
-    [SerializeField] private float maxXP = 100; // Set this to your maximum XP
+    [SerializeField] private float maxXP;
     [SerializeField] GameEvent _levelUpEvent;
 
     private float LeftWidth, CenterWidth, RightWidth, TotalWidth;
@@ -31,13 +31,13 @@ public class XPBar : MonoBehaviour
         if (_playerCurrentXP.Value >= maxXP)
         {
             LevelUp();
-            _levelUpEvent.Raise();
+            _levelUpEvent.Raise(this, "Player");
         }
     }
     public void LevelUp()
     {
         _playerCurrentXP.Value -= maxXP; // Reset current XP, keeping any overflow
-        maxXP += 50; // Increase max XP by a fixed amount (e.g., 50)
+        maxXP += 25; // Increase max XP by a fixed amount (e.g., 50)
         currentLevel++;
 
         _levelText.text = "Lvl " + currentLevel.ToString();

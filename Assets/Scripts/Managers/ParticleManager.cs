@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class ParticleManager : MonoBehaviour
 {
+    [SerializeField] private Player _player;
+    
     [SerializeField] private ParticleSystem _deathSprinkles;
     [SerializeField] private ParticleSystem _impactParticles;
     [SerializeField] private ParticleSystem _exitParticles;
@@ -12,34 +14,19 @@ public class ParticleManager : MonoBehaviour
 
     [SerializeField] private ParticleSystem _lightningStrike;
 
-    private ParticleSystem _cachedDeathSprinkles;
-    //private short _particleCount;
+    //private ParticleSystem _cachedDeathSprinkles;
 
     private void OnEnable()
     {
-        //NewEnemy.OnEnemyDeath += SpawnDeathSprinkles;
-
         Projectile.OnProjectileImpact += SpawnImpactParticles;
         Projectile.OnProjectileExit += SpawnExitParticles;
-
-        ChainLightningSpawner.OnLightningStrike += SpawnLightningParticles;
     }
 
     private void OnDisable()
     {
-        //NewEnemy.OnEnemyDeath -= SpawnDeathSprinkles;
-
         Projectile.OnProjectileImpact -= SpawnImpactParticles;
         Projectile.OnProjectileExit -= SpawnExitParticles;
-
-        ChainLightningSpawner.OnLightningStrike -= SpawnLightningParticles;
     }       
-
-    private void Awake()
-    {
-        // Assuming the ParticleSystem is the main component of the prefab
-        _cachedDeathSprinkles = _deathSprinkles.GetComponent<ParticleSystem>();
-    }
 
     private void SpawnImpactParticles(Vector2 spawnPoint, Vector2 direction)
     {
@@ -51,10 +38,16 @@ public class ParticleManager : MonoBehaviour
         SpawnImpactExitParticles(_exitParticles.gameObject, spawnPoint, direction, extents);
     }
 
-    private void SpawnLightningParticles(Vector2 spawnPoint)
+    public void SpawnLightningParticles(Component sender, object data)
     {
-        SpawnParticlesAtPoint(_lightningStrike.gameObject, spawnPoint);
+        if (data is Vector3 vector3)
+        {
+            Vector2 vector2 = new Vector2(vector3.x, vector3.y); // Correctly convert Vector3 to Vector2
+            SpawnParticlesAtPoint(_lightningStrike.gameObject, vector2);
+        }
+        else { Debug.LogWarning("SpawnLightningParticles Failed : Data is not of type Vector3"); }
     }
+
 
     // This spawn handles both Impact and Exit particles
     private void SpawnImpactExitParticles(GameObject particlePrefab, Vector2 spawnPoint, Vector2 direction, Vector3? optionalOffset = null)
@@ -72,7 +65,7 @@ public class ParticleManager : MonoBehaviour
         ObjectPoolManager.SpawnObject(particlePrefab.gameObject, spawnPoint, rotation, ObjectPoolManager.PoolType.Particle);
     }
 
-    public void SpawnParticlesAtPoint(GameObject particlePrefab, Vector2 spawnPoint) // Spawn particles at a point
+    private void SpawnParticlesAtPoint(GameObject particlePrefab, Vector2 spawnPoint) // Spawn particles at a point
     {
         ObjectPoolManager.SpawnObject(particlePrefab, spawnPoint, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
     }
@@ -83,16 +76,19 @@ public class ParticleManager : MonoBehaviour
         {
             EnemyDeathData deathData = (EnemyDeathData)data;
             Vector3 deathPositon = deathData.Position;
-            short expPoints = deathData.ExpPoints;
+            // Debug statement showing the amount of xp dropped in deathData and the player's bonus xp
+            Debug.Log($"Death Sprinkles: {deathData.ExpPoints} + {_player.BonusXP}");
+            short expPoints = (short)(deathData.ExpPoints + _player.BonusXP);
         
             GameObject deathSprinkleInstance = ObjectPoolManager.SpawnObject(_deathSprinkles.gameObject, deathPositon, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
 
             if (deathSprinkleInstance != null)
             {
-                ParticleSystem.EmissionModule emissionModule = _cachedDeathSprinkles.emission;
+                ParticleSystem pSystem = deathSprinkleInstance.GetComponent<ParticleSystem>();
+                ParticleSystem.EmissionModule emissionModule = pSystem.emission;
                 emissionModule.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0.0f, expPoints) });
 
-                _cachedDeathSprinkles.Play();
+                pSystem.Play();
             }
         }
         else { Debug.LogWarning("SpawnDeathSprinkles Failed : Data is not of type EnemyDeathData");}

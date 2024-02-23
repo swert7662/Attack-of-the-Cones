@@ -15,13 +15,11 @@ MonoBehaviour:
   enemyLayerMask:
     serializedVersion: 2
     m_Bits: 128
-  baseSpeed: 3
   baseAttackDamage: 10
-  baseAttackRange: 1
-  baseMaxHealth: 20
+  baseMaxHealth: 5
   baseExpPoints: 5
-  speed: 3
-  attackDamage: 10
-  attackRange: 1
-  maxHealth: 20
+  baseSpeed: 4
+  attackDamage: 20
+  maxHealth: 25
   expPoints: 5
+  speed: 2.2049997

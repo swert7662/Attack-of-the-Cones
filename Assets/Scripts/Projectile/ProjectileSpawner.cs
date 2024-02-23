@@ -10,24 +10,25 @@ public class ProjectileSpawner : MonoBehaviour
 {
     #region Variables and Properties
     [SerializeField] private float _attackRange; 
-    [SerializeField] private float _attackSpeed;
     [SerializeField] private float _fireShakeForce = .2f;
-    [SerializeField] private Projectile _projectilePrefab;
 
-    [SerializeField] private EnemyStats _enemyStats;
-
-    private List<GameObject> _enemiesInRange = new();
-    private CircleCollider2D _attackRangeCollider;
-    private System.Random _rand = new();
-    private Transform _target;
+    [SerializeField] private Player _player;
+    [SerializeField] private EnemyStats _enemyStats; 
     
+    private CircleCollider2D _attackRangeCollider;
+    private List<GameObject> _enemiesInRange = new();
+    private Transform _target;
+
+    private System.Random _rand = new();
     private float _timeSinceLastAttack;
+    private Projectile currentProjectile;
     #endregion
 
     private void Awake()
     {
         if (_enemyStats == null) { Debug.LogError("EnemyStats is null!"); }
-
+        if (_player == null) { Debug.LogError("Player is null!"); }
+        //currentProjectile = _player.Projectile;
         _attackRangeCollider = GetComponent<CircleCollider2D>();
         if (_attackRangeCollider != null) { _attackRangeCollider.radius = _attackRange; }
         _timeSinceLastAttack = 0f;
@@ -38,7 +39,7 @@ public class ProjectileSpawner : MonoBehaviour
         UpdateEnemiesInRange();
         _timeSinceLastAttack += Time.deltaTime;
 
-        if (_timeSinceLastAttack >= (1f / _attackSpeed))
+        if (_timeSinceLastAttack >= (1f / _player.FireRate))
         {
             _target = ChooseTarget();
             if (_target != null)
@@ -49,20 +50,15 @@ public class ProjectileSpawner : MonoBehaviour
         }
     }
 
-    public void SetProjectile(Projectile projectile)
-    {
-        _projectilePrefab = projectile;
-    }
-
-    void ProjectileSpawn()
+    private void ProjectileSpawn()
     {
         Vector3 direction = _target.position - transform.position;
 
-        GameObject bullet = ObjectPoolManager.SpawnObject(_projectilePrefab.gameObject, direction, transform.position, ObjectPoolManager.PoolType.Projectile); // Shoot projectile at target
+        GameObject bullet = ObjectPoolManager.SpawnObject(_player.Projectile.gameObject, direction, transform.position, ObjectPoolManager.PoolType.Projectile); // Shoot projectile at target
         Projectile projectile = bullet.GetComponent<Projectile>();
         projectile.SetTarget(_target);
 
-        RecoilShake(direction);
+        //RecoilShake(direction);
     }
 
     private void RecoilShake(Vector3 direction)

@@ -5,23 +5,22 @@ public class EnemyStats : ScriptableObject
 {
     public LayerMask enemyLayerMask;
 
+    public int baseAttackDamage;
+    public int baseMaxHealth;
+    public int baseExpPoints;
     public float baseSpeed;
-    public float baseAttackDamage;
-    public float baseAttackRange;
-    public float baseMaxHealth;
-    public float baseExpPoints;
+    //public float baseAttackRange;
 
+    public int attackDamage;    
+    public int maxHealth;
+    public int expPoints;
     public float speed;
-    public float attackDamage;
-    public float attackRange;
-    public float maxHealth;
-    public float expPoints;
+    //public float attackRange;
 
     public void SetStats()
     {
         speed = baseSpeed;
         attackDamage = baseAttackDamage;
-        attackRange = baseAttackRange;
         maxHealth = baseMaxHealth;
         expPoints = baseExpPoints;
     }
@@ -32,9 +31,7 @@ public class EnemyStats : ScriptableObject
         float scale = 1.05f;
 
         speed *= scale;
-        attackDamage *= scale;
-        attackRange *= scale;
-        maxHealth *= scale;
-        expPoints *= scale;
+        attackDamage += 5;
+        maxHealth += 10;
     }
 }

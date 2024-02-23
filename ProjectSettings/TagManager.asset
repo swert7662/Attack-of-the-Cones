@@ -9,6 +9,7 @@ TagManager:
   - GameManager
   - Spawn Point
   - Powerup
+  - Truck
   layers:
   - Default
   - TransparentFX
