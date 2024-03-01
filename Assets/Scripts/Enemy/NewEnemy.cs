@@ -61,7 +61,7 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
 
     #region Health Functions
 
-    public void Damage(float damageAmount)
+    public void Damage(float damageAmount, DamageType damageType)
     {
         CurrentHealth -= damageAmount;
         _animator.SetTrigger("Hit");
@@ -69,6 +69,7 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
         _enemyDamagedData.Position = gameObject.transform.position;
         _enemyDamagedData.Extents = Extents;
         _enemyDamagedData.DamageAmount = damageAmount;
+        _enemyDamagedData.DamageType = damageType;
         _enemyDamagedData.GameObjectSender = gameObject;
 
         _enemyDamagedEvent.Raise(this, _enemyDamagedData); //Calls out to damage flash, healthbar, and damage popup
@@ -78,12 +79,12 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
 
     public virtual void Die()
     {
-        _enemyDeathData.Position = gameObject.transform.position;
-        _enemyDeathData.ExpPoints = (short)_enemyStats.expPoints;
-        Debug.Log("Enemy died worth " + _enemyDeathData.ExpPoints);
+        //_enemyDeathData.Position = gameObject.transform.position;
+        //_enemyDeathData.ExpPoints = (short)_enemyStats.expPoints;
+        EnemyDeathData enemyDeathData = new EnemyDeathData(gameObject.transform.position, (short)_enemyStats.expPoints);
 
-        _enemyDeathEvent.Raise(this.transform, _enemyDeathData);
-        
+        _enemyDeathEvent.Raise(this.transform, enemyDeathData);
+      
         Despawn();
     }
 

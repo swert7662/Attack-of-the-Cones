@@ -1,19 +1,43 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.GraphicsBuffer;
 
 public class WeaponPowerupManager : MonoBehaviour
 {
+    
     [SerializeField] private Player _player;
     [SerializeField] private PowerupStats _powerupStats;
     [SerializeField] private ParticleSystemForceField _suctionField;
 
-    [SerializeField] private GameObject _chainLightning;
-    [SerializeField] private Projectile _fireball;
+    [SerializeField] private Transform _lightningStormSourcePoint;
+    [SerializeField] private GameEvent _lightningDamageEvent;
+    [SerializeField] private GameEvent _lightningArcEvent;
+
+    [SerializeField] private Explosion ExplosionPrefab;
+    [SerializeField] private BurnArea BurnAreaPrefab;
+
+    [SerializeField] private PowerupList baseFirePowerupList;
+    [SerializeField] private PowerupList activeFirePowerupList;
+    [SerializeField] private PowerupList baseLightningPowerupList;
+    [SerializeField] private PowerupList activeLightningPowerupList;
+
+    public LayerMask enemyLayer;
+
+    public GameObject Player;
+
+    private float lastTeslaCoilActivationTime = float.MinValue;
+    private float lastLightningStormActivationTime = float.MinValue;
+
 
     private void Awake()
     {
+        //Find the playerController as the gameobject for player always has one
+        //Player = GameObject.Find("PlayerController");
+        if (Player == null) { Debug.LogError("Couldnt find a PlayerController!"); }
         if (_player == null) { Debug.LogError("Player is null!"); }
         if (_powerupStats == null) { Debug.LogError("PowerupStats is null!"); }
         if (_suctionField == null) { Debug.LogError("SuctionField is null!"); }
@@ -21,113 +45,174 @@ public class WeaponPowerupManager : MonoBehaviour
 
     private void Start()
     {
-        _powerupStats.DamageLevel = 1;
-        _powerupStats.FireballLevel = 0;
-        _powerupStats.ChainLightningLevel = 0;
+        _powerupStats.ResetBaseValues();
+        activeFirePowerupList.Powerups = new List<PowerUpEffect>(baseFirePowerupList.Powerups);
+        activeLightningPowerupList.Powerups = new List<PowerUpEffect>(baseLightningPowerupList.Powerups);
 
         _suctionField.endRange = _player.BaseSuctionRange;
+        //InvokeRepeating(nameof(ActivateTimeBasedAbilities), 2.0f, 2.0f);
+    }
+
+    private void Update()
+    {
+        ActivateTimeBasedAbilities();
     }
 
     private void OnEnable()
     {
         Projectile.OnAdditionalEffectsTrigger += HandleAdditionalEffectsTrigger;
-        Collectible.OnPowerupPickup += HandlePowerupPickup;
     }
 
     private void OnDisable()
     {
         Projectile.OnAdditionalEffectsTrigger -= HandleAdditionalEffectsTrigger;
-        Collectible.OnPowerupPickup -= HandlePowerupPickup;
-    }
-
-    public void HandlePowerupPickup(Collectible.PowerUpType powerUp)
-    {
-        switch (powerUp)
-        {
-            case Collectible.PowerUpType.Damage:
-                _powerupStats.DamageLevel++;
-                break;
-            case Collectible.PowerUpType.FireRate:
-                _player.FireRate *= 1.2f;
-                break;
-            case Collectible.PowerUpType.Health:
-                _player.Health += 50;
-                break;
-            case Collectible.PowerUpType.Speed:
-                _player.Speed *= 1.2f;
-                break;
-            case Collectible.PowerUpType.Suction:
-                _suctionField.endRange *= 1.3f;
-                break;   
-            case Collectible.PowerUpType.ExpUp:
-                _player.BonusXP += 2;
-                break;
-            case Collectible.PowerUpType.ChainLightning:
-                HandleChainLightningPickup();
-                break;
-            case Collectible.PowerUpType.Fireball:
-                HandleFireballPickup();
-                break;
-            default:
-                Debug.LogError("Powerup type not handled");
-                break;
-        }
-        CalculateDamage();
-    }
-    public void HandlePowerupSelection(Component sender, object powerUp)
-    {
-        if (powerUp is not Collectible.PowerUpType)
-        {
-            Debug.LogError("Powerup type not handled");
-        }
-
-        HandlePowerupPickup((Collectible.PowerUpType)powerUp);
-    }
-
-    public void CalculateDamage()
-    {
-        // Ensure the base multiplier is 1, and it increases by 1.5 for each fireball level
-        float fireMultiplier = 1 + (_powerupStats.FireballLevel * 1.5f);
-        float calculatedDamage = _powerupStats.DamageLevel * fireMultiplier;
-
-        // Use Mathf.Ceil to round up to the nearest integer
-        int newDamage = (int)Mathf.Ceil(calculatedDamage);
-
-        _player.Damage = newDamage;
-        _suctionField.endRange = _player.SuctionRange;
-    }
-
-    private void HandleChainLightningPickup()
-    {
-        if(_powerupStats.ChainLightningLevel <= 5)
-        {
-            _powerupStats.ChainLightningLevel++;
-        }
-    }
-    private void HandleFireballPickup()
-    {
-        if (_powerupStats.FireballLevel == 0) 
-        { 
-            _player.SetProjectile(_fireball); 
-        }
-
-        _powerupStats.FireballLevel++;
     }
 
     private void HandleAdditionalEffectsTrigger(GameObject target, Vector2 position)
     {
-        if (_powerupStats.ChainLightningTargetCount > 0)
+        if (_powerupStats.LightningBullets)
         {
-            ChainLightning(target, position);
+            LightningBulletHit(target, position);
+        }
+        if (_powerupStats.FireBullets)
+        {
+            FireBulletHit(target);
         }
     }
 
-    private void ChainLightning(GameObject target, Vector2 position)
+    public void HandleOnDeathEvents(Component sender, object data)
     {
-        if (GameManager.Instance.IsCooldownElapsed("ElectricSpawner", 2f)) // 1f is the cooldown duration in seconds
+        if (data is not EnemyDeathData) { Debug.LogError("HandleOnDeathEvents failed: Data is not of type EnemyDeathData"); return; }
+        EnemyDeathData enemyDeathData = (EnemyDeathData)data;
+
+        if (_powerupStats.EnemyExplode)
         {
-            GameObject lightningGO = ObjectPoolManager.SpawnObject(_chainLightning, position, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
-            lightningGO.GetComponent<ChainLightningSpawner>().StartChainAttack(target);
+            Explosion explosion = Instantiate(ExplosionPrefab, enemyDeathData.Position, Quaternion.identity);
+            explosion.Initialization(_powerupStats.DamageLevel * 10, 
+                                     1 * _powerupStats.FireRange, 
+                                     enemyLayer);
+        }
+
+        if (_powerupStats.FloorFire)
+        {
+            BurnArea burnArea = Instantiate(BurnAreaPrefab, enemyDeathData.Position, Quaternion.identity);
+            burnArea.Initialization(_powerupStats.DamageLevel * 2,
+                                    _powerupStats.FireRange,
+                                    _powerupStats.BurnDuration,
+                                    _powerupStats.BurnTickRate,
+                                     enemyLayer);
         }
     }
+    public void HandlePowerupActivated()
+    {
+        CalculateDamage();
+    }
+
+    private void CalculateDamage()
+    {
+        float calculatedDamage = _powerupStats.DamageLevel;
+
+        // Use Mathf.Ceil to round up to the nearest integer
+        int newDamage = (int)Mathf.Ceil(calculatedDamage);
+
+        _player.Damage = newDamage;        
+        _suctionField.endRange = _player.SuctionRange;
+    }
+
+    // --------------------- Time Based Abilities ---------------------
+    #region Time Based Abilities
+    private void ActivateTimeBasedAbilities()
+    {
+        if (_powerupStats.TeslaCoil && _player.IsAlive && Time.time >= lastTeslaCoilActivationTime + _powerupStats.TeslaCoilCooldown)
+        {
+            lastTeslaCoilActivationTime = Time.time;
+            Debug.Log("Tesla coil activated");
+            GameObject target = UtilityMethods.FindNextTargetWith<NewEnemy>(_player.Position, _powerupStats.ArcRange, enemyLayer);
+            if (target != null)
+            {
+                LightningStruck lightningStruck = target.AddComponent<LightningStruck>();
+                lightningStruck.Initialize(_powerupStats.DamageLevel * 2,
+                                           _powerupStats.ChainAmount,
+                                           _powerupStats.ArcRange,
+                                           _powerupStats.StunDuration,
+                                           _lightningDamageEvent,
+                                           _lightningArcEvent,
+                                           enemyLayer);
+
+                if (_lightningArcEvent != null)
+                {
+                    LightningDamageData lightningDamageData = new LightningDamageData(_player.Position, target.transform.position, true);
+                    _lightningArcEvent.Raise(this, lightningDamageData);
+                }
+            }
+        }
+
+        if(_powerupStats.LightningStorm && _player.IsAlive && Time.time >= lastLightningStormActivationTime + _powerupStats.LightningStormCooldown)
+        {
+            lastLightningStormActivationTime = Time.time;
+            Debug.Log("Lightning storm activated");
+            GameObject target = UtilityMethods.FindNextTargetWith<NewEnemy>(_player.Position, 15f, enemyLayer);
+            if (target != null)
+            {
+                LightningStruck lightningStruck = target.AddComponent<LightningStruck>();
+                lightningStruck.Initialize(_powerupStats.DamageLevel * 3,
+                                           _powerupStats.ChainAmount,
+                                           _powerupStats.ArcRange,
+                                           _powerupStats.StunDuration,
+                                           _lightningDamageEvent,
+                                           _lightningArcEvent,
+                                           enemyLayer);
+
+                if (_lightningArcEvent != null)
+                {
+                    LightningDamageData lightningDamageData = new LightningDamageData(_lightningStormSourcePoint.position, target.transform.position, false);
+                    _lightningArcEvent.Raise(this, lightningDamageData);
+                }
+            }
+        }
+    }
+    #endregion
+    // --------------------- On Hit Effects ---------------------
+    #region On Hit Effects
+    private void LightningBulletHit(GameObject target, Vector2 position)
+    {
+        if (UnityEngine.Random.value <= _powerupStats.LightningBulletChance)
+        {
+            LightningStruck lightningStruck = target.AddComponent<LightningStruck>();
+            lightningStruck.Initialize(_powerupStats.DamageLevel,
+                                       _powerupStats.ChainAmount,
+                                       _powerupStats.ArcRange,
+                                       _powerupStats.StunDuration,
+                                       _lightningDamageEvent,
+                                       _lightningArcEvent,
+                                       enemyLayer);
+        }
+    }
+
+    private void FireBulletHit(GameObject target)
+    {
+        Burning burningEffect = target.GetComponent<Burning>();
+        if (burningEffect == null)
+        {
+            int burnDamage = (int)Mathf.Ceil(_powerupStats.DamageLevel * 0.5f * _powerupStats.FireDamageMultiplier);
+            burningEffect = target.AddComponent<Burning>();
+            burningEffect.Initialization(burnDamage,
+                                         _powerupStats.BurnDuration,
+                                         _powerupStats.BurnTickRate);
+        }
+        else
+        {
+            burningEffect.ResetTimer();
+        }
+    }
+    #endregion
+    
+    
+    // --------------------- Gizmos ---------------------
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(_player.Position, 20f);
+    }
 }
+

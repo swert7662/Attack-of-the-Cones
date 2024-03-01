@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using System;
+using Unity.VisualScripting;
 
 public class ChainLightningSpawner: MonoBehaviour
 {
@@ -14,14 +15,17 @@ public class ChainLightningSpawner: MonoBehaviour
     [SerializeField] private float _attackRange;    
     [SerializeField] private EnemyStats _enemyStats;
 
-    private List<GameObject> _chainedEnemies = new();
-    private List<GameObject> _enemiesInRange = new();
+    private List<Transform> _chainedTargets = new();
+    private List<Transform> _targetsInRange = new();
     private List<LineConnector> _lineConnectors = new();
     private System.Random _rand = new();
 
-    private int maxTargets => _powerupStats.ChainLightningTargetCount;
-    private int damage => Mathf.Max(1, Mathf.RoundToInt(2 * _powerupStats.DamageLevel * _powerupStats.LightningDamageMultiplier));
+    private Transform StartPoint;
 
+    private int MaxTargets => _powerupStats.ChainAmount;
+    private int Damage => Mathf.Max(1, Mathf.RoundToInt(2 * _powerupStats.DamageLevel * _powerupStats.LightningDamageMultiplier));
+
+    // --------------------------- Initialization ---------------------------
     private void OnEnable()
     {
         ResetSpawner();
@@ -35,18 +39,126 @@ public class ChainLightningSpawner: MonoBehaviour
         ObjectPoolManager.DespawnObject(this.gameObject);
     }
 
+    public void InitializeChainAttackFromPosition(Vector3 startPosition)
+    {
+        UpdateEnemiesInRange(startPosition); // Find initial targets based on startPosition
+        if (_targetsInRange.Count > 0)
+        {
+            Transform firstTarget = ChooseTargetFromPosition(startPosition);
+            if (firstTarget != null)
+            {
+                AddTarget(firstTarget);
+                ApplyEffectsToTargets();
+            }
+        }
+    }
+
+    public void StartChainAttack(Transform target)
+    {
+        AddTarget(target);
+        InitializeChainAttack();
+    }
+
+    // Assuming this method is called to activate Tesla Coil
+    public void ActivateTeslaCoil()
+    {
+        StartPoint = transform;
+        StartChainAttack(StartPoint);
+    }
+
+    public void ActivateLightningStorm()
+    {
+        Debug.Log("Lightning storm activated");
+        Vector3 stormStartPosition = new Vector3(UnityEngine.Random.Range(-10f, 10f), Camera.main.orthographicSize + 5f, 0); // Adjust as needed
+        InitializeChainAttackFromPosition(stormStartPosition);
+    }
+    // --------------------------- Create Chain ---------------------------
     private void CreateEnemyChain()
     {
-        for (int i = 0; i < maxTargets - 1; i++)
+        for (int i = 0; i < MaxTargets - 1; i++)
         {
-            if (i >= _chainedEnemies.Count) { break;}
+            if (i >= _chainedTargets.Count) { break;}
 
-            UpdateEnemiesInRange(_chainedEnemies[i].transform);
-            GameObject _targetEnemyGO = ChooseTarget();
+            UpdateEnemiesInRange(_chainedTargets[i].transform.position);
+            Transform _targetEnemy = ChooseTarget();
 
-            if (_targetEnemyGO != null) { AddTarget(_targetEnemyGO); }
+            if (_targetEnemy != null) { AddTarget(_targetEnemy.transform); }
             else { break; }
         }
+    }
+
+    private void UpdateEnemiesInRange(Vector3 currentTarget)
+    {
+        _targetsInRange.Clear();
+        var hits = Physics2D.OverlapCircleAll(currentTarget, _attackRange, _enemyStats.enemyLayerMask);
+
+        foreach (var hit in hits)
+        {
+            if (!_chainedTargets.Contains(hit.gameObject.transform))
+            {
+                _targetsInRange.Add(hit.gameObject.transform);
+                //_enemiesInRange.Add(hit.transform.parent.gameObject);
+            }
+        }
+    }
+
+    private Transform ChooseTarget()
+    {
+        var availableTargets = _targetsInRange.Except(_chainedTargets).ToList();
+        if (!availableTargets.Any()) { return null; }
+
+        Transform chosenTarget = availableTargets.OrderBy(n => _rand.Next()).FirstOrDefault();
+        return chosenTarget;
+    }
+
+    private Transform ChooseTargetFromPosition(Vector3 startPosition)
+    {
+        // Logic similar to ChooseTarget but considering startPosition
+        // For simplicity, just return the closest enemy for now
+        return _targetsInRange.OrderBy(enemy => (enemy.transform.position - startPosition).sqrMagnitude).FirstOrDefault();
+    }
+
+    public void AddTarget(Transform target)
+    {
+        if (target != null && !_chainedTargets.Contains(target) && target.gameObject.activeInHierarchy) 
+        {
+            _chainedTargets.Add(target);
+        }
+        else { Debug.LogWarning("Invalid or duplicate target attempted to be added: " + (target != null ? target.name : "null")); }
+    }
+
+
+    // --------------------------- Apply Effects & Damage ---------------------------
+    private void ApplyEffectsToTargets()
+    {
+        foreach (var target in _chainedTargets)
+        {
+            if (target == null || target.CompareTag("Player"))
+                continue;
+
+            IHealth damageable = target.GetComponent<IHealth>();
+            if (damageable != null)
+            {
+                _lightningStrikeEvent.Raise(this, target.transform.position);
+                damageable.Damage(Damage, DamageType.Lightning);
+                //ObjectPoolManager.SpawnObject(_lightningImpactPrefab, enemy.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
+            }
+            else { Debug.LogWarning("Damageable component not found in the parent of " + target.name); }
+        }
+    }
+
+    // --------------------------- Visual Elements ---------------------------
+
+    private void CreateLineConnector(Vector3 startPoint, Vector3 endPoint)
+    {
+        GameObject lineConnectorObject = ObjectPoolManager.SpawnObject(_lineLightningPrefab, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
+        LineConnector lineConnector = lineConnectorObject.GetComponent<LineConnector>();
+        if (lineConnector != null)
+        {
+            lineConnector.Initialize(startPoint, endPoint, .2f);
+            _lineConnectors.Add(lineConnector);
+        }
+        else { Debug.LogWarning("LineConnector component not found on " + lineConnectorObject.name); }
     }
 
     private void UpdateLineConnectors()
@@ -61,91 +173,29 @@ public class ChainLightningSpawner: MonoBehaviour
         _lineConnectors.Clear();
 
         // The same code above but with a foreach loop
-        foreach (var enemy in _chainedEnemies)
+        foreach (var target in _chainedTargets)
         {
-            if (enemy == null)
+            if (target == null)
                 continue;
 
-            int index = _chainedEnemies.IndexOf(enemy);
-            if (index < _chainedEnemies.Count - 1)
+            int index = _chainedTargets.IndexOf(target);
+            if (index < _chainedTargets.Count - 1)
             {
-                GameObject lineConnectorObject = ObjectPoolManager.SpawnObject(_lineLightningPrefab, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
-                LineConnector lineConnector = lineConnectorObject.GetComponent<LineConnector>();
-                if (lineConnector != null)
-                {
-                    lineConnector.Initialize(_chainedEnemies[index].transform.position, _chainedEnemies[index + 1].transform.position, .6f);
-                    _lineConnectors.Add(lineConnector);
-                }
-                else { Debug.LogWarning("LineConnector component not found on " + lineConnectorObject.name); }
+                CreateLineConnector(_chainedTargets[index].transform.position, _chainedTargets[index + 1].transform.position);
             }
         }
     }
 
-    private void ApplyEffectsToTargets()
-    {
-        foreach (var enemy in _chainedEnemies)
-        {
-            if (enemy == null)
-                continue;
-
-            IHealth damageable = enemy.GetComponent<IHealth>();
-            if (damageable != null)
-            {
-                _lightningStrikeEvent.Raise(this, enemy.transform.position);
-                damageable.Damage(damage);
-                //ObjectPoolManager.SpawnObject(_lightningImpactPrefab, enemy.transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
-            }
-            else { Debug.LogWarning("Damageable component not found in the parent of " + enemy.name); }
-        }
-    }
-
-    public void StartChainAttack(GameObject target)
-    {
-        AddTarget(target);
-        InitializeChainAttack();
-    }
-
-    // Allows other scripts to add a target to the chained enemies list
-    public void AddTarget(GameObject target)
-    {
-        if (target != null && target.CompareTag("Enemy") && !_chainedEnemies.Contains(target) && target.activeInHierarchy)
-        {
-            _chainedEnemies.Add(target);
-        }
-        else { Debug.LogWarning("Invalid or duplicate target attempted to be added: " + (target != null ? target.name : "null")); }
-    }
-
-    private GameObject ChooseTarget()
-    {
-        var availableTargets = _enemiesInRange.Except(_chainedEnemies).ToList();
-        if (!availableTargets.Any()) { return null; }
-
-        GameObject chosenTarget = availableTargets.OrderBy(n => _rand.Next()).FirstOrDefault();
-        return chosenTarget;
-    }
-
-    private void UpdateEnemiesInRange(Transform currentTarget)
-    {
-        _enemiesInRange.Clear();
-        var hits = Physics2D.OverlapCircleAll(currentTarget.position, _attackRange, _enemyStats.enemyLayerMask);
-
-        foreach (var hit in hits)
-        {
-            if (!_chainedEnemies.Contains(hit.gameObject))
-            {
-                _enemiesInRange.Add(hit.gameObject);
-                //_enemiesInRange.Add(hit.transform.parent.gameObject);
-            }
-        }
-    }
-
+    // --------------------------- Reset ---------------------------
     public void ResetSpawner()
     {
         // Clear all lists
-        _chainedEnemies.Clear();
-        _enemiesInRange.Clear();
+        _chainedTargets.Clear();
+        _targetsInRange.Clear();
     }
 
+
+    // --------------------------- Debugging ---------------------------
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

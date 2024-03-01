@@ -39,7 +39,12 @@ public class Player : ScriptableObject
     {
         Projectile = projectile;
     }
+    public Transform Transform { get; private set; }
 
+    public void SetTransform (Transform transform)
+    {
+        Transform = transform;
+    }
 
     public Component Collider { get; private set; }
 

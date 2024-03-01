@@ -3,7 +3,7 @@ using UnityEngine;
 
 public interface IHealth
 {
-    void Damage(float damageAmount);
+    void Damage(float damageAmount, DamageType damageType);
     void Die();
     float MaxHealth { get; set; }
     float CurrentHealth { get; set; }

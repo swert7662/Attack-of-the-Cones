@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class ParticleManager : MonoBehaviour
 {
     [SerializeField] private Player _player;
+    [SerializeField] private PowerupStats _powerupStats;
     
     [SerializeField] private ParticleSystem _deathSprinkles;
     [SerializeField] private ParticleSystem _impactParticles;
@@ -13,8 +15,8 @@ public class ParticleManager : MonoBehaviour
     [SerializeField] private float _particalOffset = 0.5f;
 
     [SerializeField] private ParticleSystem _lightningStrike;
-
-    //private ParticleSystem _cachedDeathSprinkles;
+    [SerializeField] private GameObject _lineLightningPrefab;
+    [SerializeField] private GameObject _explosionVFXPrefab;
 
     private void OnEnable()
     {
@@ -26,7 +28,29 @@ public class ParticleManager : MonoBehaviour
     {
         Projectile.OnProjectileImpact -= SpawnImpactParticles;
         Projectile.OnProjectileExit -= SpawnExitParticles;
-    }       
+    }     
+    // ------------------ Event Handlers ------------------
+    public void SpawnDeathVFX(Component sender, object data)
+    { 
+        if (data is EnemyDeathData deathData)
+        {
+            Vector3 deathPositon = deathData.Position;
+            short expPoints = (short)(deathData.ExpPoints + _player.BonusXP);
+
+            SpawnDeathSprinkles(deathPositon, expPoints);
+            if (_powerupStats.EnemyExplode)
+            {
+                SpawnExplosionEffect(deathPositon, _powerupStats.FireRange);
+            }            
+        }
+        else { Debug.LogWarning("SpawnDeathVFX Failed : Data is not of type EnemyDeathData"); }
+    }
+
+    // ------------------ Particle Spawning ------------------
+    private void SpawnParticlesAtPoint(GameObject particlePrefab, Vector2 spawnPoint) // Spawn particles at a point
+    {
+        ObjectPoolManager.SpawnObject(particlePrefab, spawnPoint, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
+    }
 
     private void SpawnImpactParticles(Vector2 spawnPoint, Vector2 direction)
     {
@@ -48,6 +72,20 @@ public class ParticleManager : MonoBehaviour
         else { Debug.LogWarning("SpawnLightningParticles Failed : Data is not of type Vector3"); }
     }
 
+    public void SpawnExplosionEffect(Vector3 deathPosition, float fireRange)
+    {
+        GameObject explosionInstance = Instantiate(_explosionVFXPrefab, deathPosition, Quaternion.identity);
+        ParticleSystem particleSystem = explosionInstance.GetComponent<ParticleSystem>();
+
+        if (particleSystem != null)
+        {
+            var mainModule = particleSystem.main;
+            mainModule.startSize = mainModule.startSize.constant * fireRange;
+
+            Destroy(explosionInstance, particleSystem.main.duration + 0.5f);
+        }
+        else { Debug.LogError("SpawnExplosionEffect: No ParticleSystem found on the explosion VFX prefab."); }
+    }
 
     // This spawn handles both Impact and Exit particles
     private void SpawnImpactExitParticles(GameObject particlePrefab, Vector2 spawnPoint, Vector2 direction, Vector3? optionalOffset = null)
@@ -65,32 +103,45 @@ public class ParticleManager : MonoBehaviour
         ObjectPoolManager.SpawnObject(particlePrefab.gameObject, spawnPoint, rotation, ObjectPoolManager.PoolType.Particle);
     }
 
-    private void SpawnParticlesAtPoint(GameObject particlePrefab, Vector2 spawnPoint) // Spawn particles at a point
+    // ------------------ Lightning Line Connector Spawner ------------------
+    public void SpawnLineLightning(Component sender, object data)
     {
-        ObjectPoolManager.SpawnObject(particlePrefab, spawnPoint, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
-    }
-
-    public void SpawnDeathSprinkles(Component sender, object data) // Handles how much xp is dropped
-    {
-        if (data is EnemyDeathData)
+        Debug.Log("SpawnLineLightning called");
+        if (data is LightningDamageData lightningData)
         {
-            EnemyDeathData deathData = (EnemyDeathData)data;
-            Vector3 deathPositon = deathData.Position;
-            // Debug statement showing the amount of xp dropped in deathData and the player's bonus xp
-            Debug.Log($"Death Sprinkles: {deathData.ExpPoints} + {_player.BonusXP}");
-            short expPoints = (short)(deathData.ExpPoints + _player.BonusXP);
-        
-            GameObject deathSprinkleInstance = ObjectPoolManager.SpawnObject(_deathSprinkles.gameObject, deathPositon, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
-
-            if (deathSprinkleInstance != null)
+            GameObject lineConnectorObject = ObjectPoolManager.SpawnObject(_lineLightningPrefab, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
+            LineConnector lightningVFX = lineConnectorObject.GetComponent<LineConnector>();
+            if (lightningVFX != null)
             {
-                ParticleSystem pSystem = deathSprinkleInstance.GetComponent<ParticleSystem>();
-                ParticleSystem.EmissionModule emissionModule = pSystem.emission;
-                emissionModule.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0.0f, expPoints) });
-
-                pSystem.Play();
+                if (lightningData.UsePlayerPosition)
+                {
+                    lightningVFX.SetPlayerOrigin(true);
+                    //lightningVFX.SetTarget(lightningData.TargetPosition);
+                    lightningVFX.SetPoints(_player.Position, lightningData.TargetPosition);
+                }
+                else
+                {
+                    //Debug log stating the origin and target
+                    Debug.Log($"Lightning Origin: {lightningData.OriginPosition} Target: {lightningData.TargetPosition}");
+                    //lightningVFX.SetOrigin(lightningData.OriginPosition);
+                    //lightningVFX.SetTarget(lightningData.TargetPosition);
+                    lightningVFX.SetPoints(lightningData.OriginPosition, lightningData.TargetPosition);
+                }
             }
         }
-        else { Debug.LogWarning("SpawnDeathSprinkles Failed : Data is not of type EnemyDeathData");}
+    }
+    // ------------------ Death Sprinkles ------------------
+    public void SpawnDeathSprinkles(Vector3 deathPosition, short expPoints) // Handles how much xp is dropped
+    {
+        GameObject deathSprinkleInstance = ObjectPoolManager.SpawnObject(_deathSprinkles.gameObject, deathPosition, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
+
+        if (deathSprinkleInstance != null)
+        {
+            ParticleSystem pSystem = deathSprinkleInstance.GetComponent<ParticleSystem>();
+            ParticleSystem.EmissionModule emissionModule = pSystem.emission;
+            emissionModule.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0.0f, expPoints) });
+
+            pSystem.Play();
+        }
     }
 }

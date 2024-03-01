@@ -85,7 +85,7 @@ public class Projectile : MonoBehaviour, IDespawn
         if (damageable != null)
         {
             OnProjectileExit?.Invoke(hitPoint, hitNormal, damageable.Extents);
-            damageable.Damage(_player.Damage);
+            damageable.Damage(_player.Damage, DamageType.Normal);
             OnAdditionalEffectsTrigger?.Invoke(collision.gameObject, hitPoint);
         }
     }

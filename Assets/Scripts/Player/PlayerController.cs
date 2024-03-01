@@ -32,7 +32,8 @@ public class PlayerController : MonoBehaviour, IHealth
 
         player.IsAlive = true;
         player.SetLastFollower(this.transform);
-        player.SetProjectile(_defaultProjectile);      
+        player.SetProjectile(_defaultProjectile);     
+        player.SetTransform(this.transform);
         player.SetStats();
 
         health.CurrentHealth = health.MaxHealth;        
@@ -75,12 +76,12 @@ public class PlayerController : MonoBehaviour, IHealth
 
         if (collisionGameObject.tag.Equals("Enemy") && Time.time - lastDamageTime > damageCooldown)
         {
-            Damage(enemyStats.attackDamage);
+            Damage(enemyStats.attackDamage, DamageType.Normal);
             lastDamageTime = Time.time;
         }
     }   
 
-    public void Damage(float damageAmount)
+    public void Damage(float damageAmount, DamageType damageType)
     {
         health.CurrentHealth -= damageAmount;
 

@@ -325,7 +325,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a186939987051fb44b0558f3e3d0ae81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _damagePopupPrefab: {fileID: 4981407464267259759, guid: c2dc3117b46ffb84ba6b090095fe5d87, type: 3}
+  _normalDamagePopupPrefab: {fileID: 4981407464267259759, guid: c2dc3117b46ffb84ba6b090095fe5d87, type: 3}
+  _fireDamagePopupPrefab: {fileID: 3845039986570834990, guid: 939225785f867294a960f196ada4d9b1, type: 3}
+  _lightningDamagePopupPrefab: {fileID: 8119811559237358915, guid: aae5880f950645c46aa47a8a34139216, type: 3}
 --- !u!114 &7564352229998410434
 MonoBehaviour:
   m_ObjectHideFlags: 0

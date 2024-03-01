@@ -12,6 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f04aaf7020852d43bae8060f3674b8c, type: 3}
   m_Name: Powerup Stats
   m_EditorClassIdentifier: 
-  DamageLevel: 1
-  FireballLevel: 1
-  ChainLightningLevel: 0
+  DamageLevel: 4
+  FireLevel: 0
+  FloorFire: 1
+  EnemyExplode: 1
+  FireBullets: 1
+  FireRange: 5
+  BurnDuration: 5
+  BurnTickRate: 0.3
+  FireDamageMultiplier: 1
+  LightningLevel: 3
+  LightningBullets: 1
+  TeslaCoil: 1
+  LightningStorm: 1
+  TeslaCoilCooldown: 1
+  LightningStormCooldown: 3
+  LightningBulletChance: 0.2
+  ChainAmount: 2
+  ArcRange: 5
+  StunDuration: 0.2
+  LightningDamageMultiplier: 1

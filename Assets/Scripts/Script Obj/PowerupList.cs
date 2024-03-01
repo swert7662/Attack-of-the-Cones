@@ -22,8 +22,6 @@ public class PowerupList : ScriptableObject
 
     public List<PowerUpEffect> SelectRandomPowerups(int count)
     {
-        //List<Powerup> selectedPowerups = new List<Powerup>();
-        //List<Powerup> availablePowerups = new List<Powerup>(this.Powerups);
         List<PowerUpEffect> selectedPowerups = new List<PowerUpEffect>();
         List<PowerUpEffect> availablePowerups = new List<PowerUpEffect>(this.Powerups);
 
@@ -36,6 +34,22 @@ public class PowerupList : ScriptableObject
 
         return selectedPowerups;
     }
+    public void AddPowerup(PowerUpEffect powerUpEffect)
+    {
+        if (!Powerups.Contains(powerUpEffect))
+        {
+            Powerups.Add(powerUpEffect);
+        }
+    }
+
+    public void RemovePowerup(PowerUpEffect powerUpEffect)
+    {
+        if (Powerups.Contains(powerUpEffect))
+        {
+            Powerups.Remove(powerUpEffect);
+        }
+    }
+
     public enum PowerUpCategory
     {
         None,

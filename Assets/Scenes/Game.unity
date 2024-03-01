@@ -565,6 +565,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4664490072885754433, guid: 73564f3ac3a462149a22f73f95a9d751, type: 3}
   m_PrefabInstance: {fileID: 881553820}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &157748351
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2973415186979326066, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
+      propertyPath: m_Name
+      value: FireballPowerup Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 3039043760385483185, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -13.352
+      objectReference: {fileID: 0}
+    - target: {fileID: 3039043760385483185, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 8.383
+      objectReference: {fileID: 0}
+    - target: {fileID: 3039043760385483185, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3039043760385483185, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3039043760385483185, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3039043760385483185, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3039043760385483185, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3039043760385483185, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3039043760385483185, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3039043760385483185, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}
 --- !u!1 &173028193 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1615599555883126933, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
@@ -599,8 +656,36 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 173028195}
         m_TargetAssemblyTypeName: WeaponPowerupManager, Assembly-CSharp
-        m_MethodName: CalculateDamage
+        m_MethodName: HandlePowerupActivated
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &173028198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 173028193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f69c2bf1dbfdf45b8b550e018a477f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 37341511157501d4f91d06082ae8c9c7, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 173028195}
+        m_TargetAssemblyTypeName: WeaponPowerupManager, Assembly-CSharp
+        m_MethodName: HandleOnDeathEvents
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -900,8 +985,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   choicePrefab: {fileID: 452173117495359310, guid: d845c209feb396b4c996f0b2843af516, type: 3}
   playerPowerupList: {fileID: 11400000, guid: 9a3247ad4b49786408381685b33ab114, type: 2}
-  firePowerupList: {fileID: 0}
-  lightningPowerupList: {fileID: 11400000, guid: 82e63f7f197d998428c10ebe055f172d, type: 2}
+  firePowerupList: {fileID: 11400000, guid: 63614a8c77218ba4b8f96939938a6465, type: 2}
+  lightningPowerupList: {fileID: 11400000, guid: ef98a8009d265e24f933c8b10b170110, type: 2}
   padding: 50
   numberOfChoicesToShow: 3
 --- !u!1 &353472507
@@ -2528,63 +2613,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 692120738}
   m_CullTransparentMesh: 1
---- !u!1001 &723671725
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6193124634561557494, guid: a3784576b72f1874ba185905e9adab58, type: 3}
-      propertyPath: m_Name
-      value: ChainLightningPowerup Variant
-      objectReference: {fileID: 0}
-    - target: {fileID: 6241159381279332917, guid: a3784576b72f1874ba185905e9adab58, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -12.730904
-      objectReference: {fileID: 0}
-    - target: {fileID: 6241159381279332917, guid: a3784576b72f1874ba185905e9adab58, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 8.670946
-      objectReference: {fileID: 0}
-    - target: {fileID: 6241159381279332917, guid: a3784576b72f1874ba185905e9adab58, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6241159381279332917, guid: a3784576b72f1874ba185905e9adab58, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6241159381279332917, guid: a3784576b72f1874ba185905e9adab58, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6241159381279332917, guid: a3784576b72f1874ba185905e9adab58, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6241159381279332917, guid: a3784576b72f1874ba185905e9adab58, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6241159381279332917, guid: a3784576b72f1874ba185905e9adab58, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6241159381279332917, guid: a3784576b72f1874ba185905e9adab58, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6241159381279332917, guid: a3784576b72f1874ba185905e9adab58, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: a3784576b72f1874ba185905e9adab58, type: 3}
 --- !u!4 &815570041 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 498236535225970949, guid: 487e19adeef3e584da527b8b280d2fc0, type: 3}
@@ -2911,6 +2939,34 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &1208250941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208250934}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f69c2bf1dbfdf45b8b550e018a477f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: ff7d785bd1cc06c488d676fc1b01363d, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1208250937}
+        m_TargetAssemblyTypeName: ParticleManager, Assembly-CSharp
+        m_MethodName: SpawnLineLightning
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1266030898 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5143773164298097529, guid: 2761dd814fa771340b423829fa3d74f7, type: 3}
@@ -2998,6 +3054,37 @@ ParticleSystemForceField:
   m_CorrespondingSourceObject: {fileID: 3262891442690325121, guid: 2761dd814fa771340b423829fa3d74f7, type: 3}
   m_PrefabInstance: {fileID: 89113641938967000}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1381593967
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1381593968}
+  m_Layer: 0
+  m_Name: StrikeSourcePoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1381593968
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1381593967}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 28.4, y: 23.6, z: -0.45805734}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1453046537 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4771194878518560497, guid: 2761dd814fa771340b423829fa3d74f7, type: 3}
@@ -4415,6 +4502,26 @@ PrefabInstance:
       propertyPath: _player
       value: 
       objectReference: {fileID: 11400000, guid: 7ea4c9b8f7e910f40b587f504c3c881d, type: 2}
+    - target: {fileID: 3235911507618113485, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: _powerupStats
+      value: 
+      objectReference: {fileID: 11400000, guid: 002fdbd7c0252f64cbd7719cae19ce40, type: 2}
+    - target: {fileID: 3235911507618113485, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: _explosionVFXPrefab
+      value: 
+      objectReference: {fileID: 286880616139274835, guid: e571457bd8cc47c4c8ea0249575bcd86, type: 3}
+    - target: {fileID: 3235911507618113485, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: _lineLightningPrefab
+      value: 
+      objectReference: {fileID: 4083429415441626580, guid: 649bfad9c3e25c14aa732350ebf1e616, type: 3}
+    - target: {fileID: 3484869628979234085, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: response.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SpawnDeathVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: Player
+      value: 
+      objectReference: {fileID: 1266030898}
     - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
       propertyPath: _player
       value: 
@@ -4431,6 +4538,54 @@ PrefabInstance:
       propertyPath: _suctionField
       value: 
       objectReference: {fileID: 1370613365}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: BurnAreaPrefab
+      value: 
+      objectReference: {fileID: 5141579898402701050, guid: 6a6862f38d48fa24896bfb55ed18cb8e, type: 3}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: ExplosionPrefab
+      value: 
+      objectReference: {fileID: 7812114899002639951, guid: 8bc584f89823c11488d1322142ceb40b, type: 3}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: enemyLayer.m_Bits
+      value: 128
+      objectReference: {fileID: 0}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: _lightningArcEvent
+      value: 
+      objectReference: {fileID: 11400000, guid: ff7d785bd1cc06c488d676fc1b01363d, type: 2}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: baseFirePowerupList
+      value: 
+      objectReference: {fileID: 11400000, guid: 64490f44c25871c4da9e3f1a23349ec0, type: 2}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: _lineLightningPrefab
+      value: 
+      objectReference: {fileID: 4083429415441626580, guid: 649bfad9c3e25c14aa732350ebf1e616, type: 3}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: _lightningDamageEvent
+      value: 
+      objectReference: {fileID: 11400000, guid: b9cad0100026a3e408364143b5fa56f7, type: 2}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: _lightningStruckEvent
+      value: 
+      objectReference: {fileID: 11400000, guid: ff7d785bd1cc06c488d676fc1b01363d, type: 2}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: activeFirePowerupList
+      value: 
+      objectReference: {fileID: 11400000, guid: 63614a8c77218ba4b8f96939938a6465, type: 2}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: baseLightningPowerupList
+      value: 
+      objectReference: {fileID: 11400000, guid: 82e63f7f197d998428c10ebe055f172d, type: 2}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: _lightningStormSourcePoint
+      value: 
+      objectReference: {fileID: 1381593968}
+    - target: {fileID: 8516486407944171759, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      propertyPath: activeLightningPowerupList
+      value: 
+      objectReference: {fileID: 11400000, guid: ef98a8009d265e24f933c8b10b170110, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4438,12 +4593,18 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6580184208658182048, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1208250938}
+    - targetCorrespondingSourceObject: {fileID: 6580184208658182048, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1208250941}
     - targetCorrespondingSourceObject: {fileID: 7479072077618544999, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1336285415}
     - targetCorrespondingSourceObject: {fileID: 1615599555883126933, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
       insertIndex: -1
       addedObject: {fileID: 173028196}
+    - targetCorrespondingSourceObject: {fileID: 1615599555883126933, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 173028198}
   m_SourcePrefab: {fileID: 100100000, guid: 8589e063c8ee5e5408ec17124fe35cec, type: 3}
 --- !u!114 &1767802817 stripped
 MonoBehaviour:
@@ -4775,6 +4936,10 @@ PrefabInstance:
     - target: {fileID: 5143773164298097529, guid: 2761dd814fa771340b423829fa3d74f7, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6321952983628190449, guid: 2761dd814fa771340b423829fa3d74f7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8292110332582660724, guid: 2761dd814fa771340b423829fa3d74f7, type: 3}
       propertyPath: enemyStats
@@ -5568,6 +5733,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: IceScreamTruck
       objectReference: {fileID: 0}
+    - target: {fileID: 2870726323707845536, guid: b4681f5369fdf9b47a9241ca54a652af, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5889,8 +6058,9 @@ SceneRoots:
   - {fileID: 645630948}
   - {fileID: 498105731}
   - {fileID: 4469195330969106938}
-  - {fileID: 723671725}
   - {fileID: 650322491}
   - {fileID: 945063940}
   - {fileID: 518146506}
   - {fileID: 1592418526}
+  - {fileID: 157748351}
+  - {fileID: 1381593968}

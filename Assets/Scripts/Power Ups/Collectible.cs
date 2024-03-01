@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    [SerializeField] private PowerUpType _powerUpType;
     [SerializeField] private Player _player;
     [SerializeField] private Transform _truck;
     [SerializeField] private GameEvent _powerupCollectedEvent;
@@ -15,8 +14,6 @@ public class Collectible : MonoBehaviour
     public Transform followTarget;  
     public float speed = 5f;
     public float stoppingDistance = 5f;
-
-    public static event Action<PowerUpType> OnPowerupPickup;
 
     private void Update()
     {
@@ -42,8 +39,6 @@ public class Collectible : MonoBehaviour
         }
         else if (collider.gameObject.CompareTag("Truck"))
         {
-            _powerupCollectedEvent.Raise(this, _powerupList.Category.ToString());
-            _powerupSuctionEvent.Raise();
             PickUp();
         }
     }
@@ -59,8 +54,8 @@ public class Collectible : MonoBehaviour
     //// Method to handle the item being picked up and despawned immediately after
     private void PickUp()
     {
-        //AddWeaponPowerup();
-
+        _powerupCollectedEvent.Raise(this, _powerupList.Category.ToString());
+        _powerupSuctionEvent.Raise();
         Despawn();
     }
 
@@ -68,24 +63,5 @@ public class Collectible : MonoBehaviour
     {
         Destroy(this.gameObject);
         //ObjectPoolManager.DespawnObject(this.gameObject);
-    }
-
-    private void AddWeaponPowerup()
-    {
-        Debug.Log("Adding weapon powerup");
-        OnPowerupPickup?.Invoke(_powerUpType);
-    }
-
-    public enum PowerUpType
-    {
-        None,
-        Damage,
-        FireRate,
-        Health,
-        Speed,
-        Suction,
-        ExpUp,
-        ChainLightning,
-        Fireball,
     }
 }

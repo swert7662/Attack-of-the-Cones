@@ -10,6 +10,7 @@ TagManager:
   - Spawn Point
   - Powerup
   - Truck
+  - LightningStruck
   layers:
   - Default
   - TransparentFX
