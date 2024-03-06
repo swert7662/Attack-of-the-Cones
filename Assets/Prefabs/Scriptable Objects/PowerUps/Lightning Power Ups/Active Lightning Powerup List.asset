@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Active Lightning Powerup List
   m_EditorClassIdentifier: 
   Category: 3
-  Powerups: []
+  Powerups:
+  - {fileID: 11400000, guid: 1cb67507520fb2344bb581473fa5e3f9, type: 2}

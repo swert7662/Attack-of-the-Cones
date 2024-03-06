@@ -70,8 +70,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1320377793
-  m_SortingLayer: 3
+  m_SortingLayerID: 864875543
+  m_SortingLayer: 6
   m_SortingOrder: 5
   m_Sprite: {fileID: 587574576, guid: b27c8fa3edbc8f243bea297b4cacd21c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -148,6 +148,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7333614904916807264, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.017
+      objectReference: {fileID: 0}
+    - target: {fileID: 7695519128351803920, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+      propertyPath: _sortableSprites.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7695519128351803920, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+      propertyPath: _sortableSprites.Array.data[3].relativeOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7695519128351803920, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+      propertyPath: _sortableSprites.Array.data[3].spriteRenderer
+      value: 
+      objectReference: {fileID: 5782166620949581248}
     m_RemovedComponents:
     - {fileID: 3778687551063714065, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
     m_RemovedGameObjects: []

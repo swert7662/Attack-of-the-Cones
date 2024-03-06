@@ -571,6 +571,7 @@ GameObject:
   - component: {fileID: 8292110332582660724}
   - component: {fileID: 8822643414805694326}
   - component: {fileID: 8250650114760606173}
+  - component: {fileID: 5621686655667067452}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -726,10 +727,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1023b20d06152ce4f85b5b46289d7517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
   damageCooldown: 0.5
   health: {fileID: 11400000, guid: f3d7fde1db4a0aa4a953c6f92dcacc4f, type: 2}
   player: {fileID: 11400000, guid: 7ea4c9b8f7e910f40b587f504c3c881d, type: 2}
+  enemyStats: {fileID: 0}
+  _defaultProjectile: {fileID: 0}
   playerDeathEvent: {fileID: 11400000, guid: d00ddef1466247c4faa8eb1cd23ada20, type: 2}
   playerHealthEvent: {fileID: 11400000, guid: 6c942dfefae96d24284bbde6602d4499, type: 2}
 --- !u!114 &8822643414805694326
@@ -774,6 +776,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5621686655667067452
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5143773164298097529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aaf48126ab036f74da8d4e7597d92e97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5318123171236766457
 GameObject:
   m_ObjectHideFlags: 0
@@ -1079,9 +1093,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _attackRange: 10
-  _attackSpeed: 5
   _fireShakeForce: 0.3
-  _projectilePrefab: {fileID: 2557257945587370443, guid: ee75162f293b47d4fa4d4062e8a29a81, type: 3}
   _player: {fileID: 11400000, guid: 7ea4c9b8f7e910f40b587f504c3c881d, type: 2}
   _enemyStats: {fileID: 11400000, guid: 76d57b37f413df947ad624e5ddf94aa4, type: 2}
 --- !u!58 &5245864392604754838

@@ -22,7 +22,7 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
     private Vector3 _originalScale;
 
     private Vector3 _currentDirection;
-    private float _updateInterval = 1f; // Time between direction updates
+    private float _updateInterval = .5f; // Time between direction updates
     private float _timeUntilNextUpdate = 0f;
 
     protected virtual void OnEnable()

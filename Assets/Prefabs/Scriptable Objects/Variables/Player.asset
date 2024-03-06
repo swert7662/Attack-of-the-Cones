@@ -12,15 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c0551d0c0bdd6444977d8f3b5182a0c, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
-  Position: {x: -27.36833, y: 34.694473, z: 0}
+  Position: {x: 52.37051, y: 32.00355, z: 0}
   IsAlive: 0
   BaseDamage: 1
   BaseFireRate: 4
-  BaseHealth: 100
+  BaseHealth: 1e+21
   BaseSpeed: 6
   BaseSuctionRange: 5
-  Damage: 8
-  FireRate: 5.76
-  Health: 100
+  BaseBonusXP: 0
+  Damage: 2
+  FireRate: 4
+  Health: 1e+21
   Speed: 6
   SuctionRange: 5
+  BonusXP: 4

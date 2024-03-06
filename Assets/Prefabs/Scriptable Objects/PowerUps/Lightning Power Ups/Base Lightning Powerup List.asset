@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Category: 3
   Powerups:
-  - {fileID: 11400000, guid: b984885aa67999a458f1e2f464ca8a5b, type: 2}
-  - {fileID: 11400000, guid: 8a856969312069a4cbe65b1d7b282542, type: 2}
-  - {fileID: 11400000, guid: 56097256adb8bcf418a54ea37c856cc1, type: 2}
+  - {fileID: 11400000, guid: 8b8db9024d36658409cc7aa3b3e28dee, type: 2}
+  - {fileID: 11400000, guid: 20e7b43cb327f124a811bea0b7eaef86, type: 2}
+  - {fileID: 11400000, guid: 5774e8cfec843a64e91d4d22ce536cf2, type: 2}

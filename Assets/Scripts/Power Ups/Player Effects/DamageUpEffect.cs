@@ -4,7 +4,7 @@ using UnityEngine;
 public class DamageUpEffect : PowerUpEffect
 {
     public int amount;
-    public PowerupStats powerupStats;
+    //public PowerupStats powerupStats;
     public override void Apply()
     {
         powerupStats.DamageLevel += amount;

@@ -14,6 +14,7 @@ public class WeaponPowerupManager : MonoBehaviour
     [SerializeField] private ParticleSystemForceField _suctionField;
 
     [SerializeField] private Transform _lightningStormSourcePoint;
+    [SerializeField] private List<Transform> _lightningStormSourcePoints;
     [SerializeField] private GameEvent _lightningDamageEvent;
     [SerializeField] private GameEvent _lightningArcEvent;
 
@@ -88,15 +89,17 @@ public class WeaponPowerupManager : MonoBehaviour
         if (_powerupStats.EnemyExplode)
         {
             Explosion explosion = Instantiate(ExplosionPrefab, enemyDeathData.Position, Quaternion.identity);
-            explosion.Initialization(_powerupStats.DamageLevel * 10, 
-                                     1 * _powerupStats.FireRange, 
+            int damage = (int)Mathf.Ceil(_powerupStats.DamageLevel + (3 * _powerupStats.FireDamageMultiplier));
+            explosion.Initialization(damage, 
+                                     _powerupStats.FireRange, 
                                      enemyLayer);
         }
 
         if (_powerupStats.FloorFire)
         {
             BurnArea burnArea = Instantiate(BurnAreaPrefab, enemyDeathData.Position, Quaternion.identity);
-            burnArea.Initialization(_powerupStats.DamageLevel * 2,
+            int damage = (int)Mathf.Ceil(_powerupStats.DamageLevel + (2 * _powerupStats.FireDamageMultiplier));
+            burnArea.Initialization(damage,
                                     _powerupStats.FireRange,
                                     _powerupStats.BurnDuration,
                                     _powerupStats.BurnTickRate,
@@ -131,7 +134,8 @@ public class WeaponPowerupManager : MonoBehaviour
             if (target != null)
             {
                 LightningStruck lightningStruck = target.AddComponent<LightningStruck>();
-                lightningStruck.Initialize(_powerupStats.DamageLevel * 2,
+                int damage = (int)Mathf.Ceil(_powerupStats.DamageLevel + (2 * _powerupStats.LightningDamageMultiplier));
+                lightningStruck.Initialize(damage ,
                                            _powerupStats.ChainAmount,
                                            _powerupStats.ArcRange,
                                            _powerupStats.StunDuration,
@@ -155,7 +159,8 @@ public class WeaponPowerupManager : MonoBehaviour
             if (target != null)
             {
                 LightningStruck lightningStruck = target.AddComponent<LightningStruck>();
-                lightningStruck.Initialize(_powerupStats.DamageLevel * 3,
+                int damage = (int)Mathf.Ceil(_powerupStats.DamageLevel + (4 * _powerupStats.LightningDamageMultiplier));
+                lightningStruck.Initialize(damage,
                                            _powerupStats.ChainAmount,
                                            _powerupStats.ArcRange,
                                            _powerupStats.StunDuration,
@@ -165,7 +170,12 @@ public class WeaponPowerupManager : MonoBehaviour
 
                 if (_lightningArcEvent != null)
                 {
-                    LightningDamageData lightningDamageData = new LightningDamageData(_lightningStormSourcePoint.position, target.transform.position, false);
+                    // Choose a random index based on the length of your source points array
+                    int randomIndex = UnityEngine.Random.Range(0, _lightningStormSourcePoints.Count);
+                    Transform randomSourcePoint = _lightningStormSourcePoints[randomIndex];
+
+                    // Now use this random source point in your LightningDamageData
+                    LightningDamageData lightningDamageData = new LightningDamageData(randomSourcePoint.position, target.transform.position, false);
                     _lightningArcEvent.Raise(this, lightningDamageData);
                 }
             }
@@ -179,7 +189,8 @@ public class WeaponPowerupManager : MonoBehaviour
         if (UnityEngine.Random.value <= _powerupStats.LightningBulletChance)
         {
             LightningStruck lightningStruck = target.AddComponent<LightningStruck>();
-            lightningStruck.Initialize(_powerupStats.DamageLevel,
+            int damage = (int)Mathf.Ceil(_powerupStats.DamageLevel + _powerupStats.LightningDamageMultiplier);
+            lightningStruck.Initialize(damage,
                                        _powerupStats.ChainAmount,
                                        _powerupStats.ArcRange,
                                        _powerupStats.StunDuration,
@@ -212,7 +223,7 @@ public class WeaponPowerupManager : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(_player.Position, 20f);
+        Gizmos.DrawWireSphere(_player.Position, 15f);
     }
 }
 

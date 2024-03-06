@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f04aaf7020852d43bae8060f3674b8c, type: 3}
+  m_Name: Powerup Stats_BASE
+  m_EditorClassIdentifier: 
+  _baseStats: {fileID: 0}
+  DamageLevel: 1
+  FireLevel: 0
+  FloorFire: 0
+  EnemyExplode: 0
+  FireBullets: 0
+  FireRange: 1
+  BurnDuration: 1
+  BurnTickRate: 0.5
+  FireDamageMultiplier: 1
+  LightningLevel: 0
+  LightningBullets: 0
+  TeslaCoil: 0
+  LightningStorm: 0
+  TeslaCoilCooldown: 3
+  LightningStormCooldown: 5
+  LightningBulletChance: 0.2
+  ChainAmount: 0
+  ArcRange: 5
+  StunDuration: 0.2
+  LightningDamageMultiplier: 1
