@@ -6,6 +6,7 @@ public class EnemyWaveManager : MonoBehaviour
 {
     [SerializeField] private List<EnemyWave> _enemyWaves;
     [SerializeField] private List<Transform> _spawnPoints;
+    [SerializeField] private GameEvent _newWaveStart;
 
     private int currentWaveIndex = 0;
     private EnemyWave currentWave => _enemyWaves[currentWaveIndex];
@@ -29,14 +30,16 @@ public class EnemyWaveManager : MonoBehaviour
         waveStartTime = Time.time;
         enemiesSpawned = 0; // Reset the count for the new wave
 
-        coroutineRegularEnemies = StartCoroutine(SpawnEnemiesCoroutine(currentWave.spawnRate, false));
+        coroutineRegularEnemies = StartCoroutine(SpawnEnemiesCoroutine(currentWave.spawnRate));
         if (currentWave._eliteEnemyList.Count > 0)
         {
-            coroutineEliteEnemies = StartCoroutine(SpawnEnemiesCoroutine(currentWave.spawnRate, true)); // Ensure you're using the correct spawn rate here
+            // Calculate the time interval between elite spawns
+            float spawnInterval = currentWave.waveDuration / (currentWave._eliteEnemyList.Count + 1);
+            coroutineEliteEnemies = StartCoroutine(SpawnEliteEnemiesCoroutine(spawnInterval, currentWave._eliteEnemyList.Count));
         }
     }
 
-    private IEnumerator SpawnEnemiesCoroutine(float spawnRate, bool isElite)
+    private IEnumerator SpawnEnemiesCoroutine(float spawnRate)
     {
         while (true)
         {
@@ -46,6 +49,11 @@ public class EnemyWaveManager : MonoBehaviour
                 // Try to transition to the next wave
                 if (currentWaveIndex + 1 < _enemyWaves.Count)
                 {
+                    //If the next wave has enemy stats raise the start wave event with it, otherwise raise the event with the current wave
+                    if (_enemyWaves[currentWaveIndex + 1].enemyWaveStats != null)
+                    {
+                        _newWaveStart.Raise(this, _enemyWaves[currentWaveIndex + 1].enemyWaveStats);
+                    }
                     StartWave(currentWaveIndex + 1);
                 }
                 else
@@ -58,13 +66,23 @@ public class EnemyWaveManager : MonoBehaviour
             if (enemiesSpawned < currentWave.enemyMaxCount)
             {
                 yield return new WaitForSeconds(1f / spawnRate);
-                SpawnEnemy(isElite);
+                SpawnEnemy(false);
             }
             else
             {
                 // Wait for a bit before checking if we can spawn more enemies
                 yield return new WaitForSeconds(1f);
             }
+        }
+    }
+
+    private IEnumerator SpawnEliteEnemiesCoroutine(float spawnInterval, int eliteCount)
+    {
+        for (int i = 0; i < eliteCount; i++)
+        {
+            // Wait for the spawn interval before spawning the next elite enemy
+            yield return new WaitForSeconds(spawnInterval);
+            SpawnEnemy(true); // Spawn an elite enemy
         }
     }
 

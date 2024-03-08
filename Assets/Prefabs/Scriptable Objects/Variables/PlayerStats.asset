@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c96bed941e2a2e41aa2ba6cea3c1a99, type: 3}
+  m_Name: PlayerStats
+  m_EditorClassIdentifier: 
+  _baseStats: {fileID: 11400000, guid: 86eeacefa1976e349814aafdef51fb98, type: 2}
+  Position: {x: 12.575022, y: 13.229268, z: 0}
+  IsAlive: 1
+  Damage: 3
+  FireRate: 3.6
+  Health: 100
+  Speed: 4
+  SuctionRange: 6.5
+  BonusXP: 102

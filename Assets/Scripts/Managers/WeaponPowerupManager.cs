@@ -9,11 +9,10 @@ using static UnityEngine.GraphicsBuffer;
 public class WeaponPowerupManager : MonoBehaviour
 {
     
-    [SerializeField] private Player _player;
+    [SerializeField] private PlayerStats _player;
     [SerializeField] private PowerupStats _powerupStats;
     [SerializeField] private ParticleSystemForceField _suctionField;
 
-    [SerializeField] private Transform _lightningStormSourcePoint;
     [SerializeField] private List<Transform> _lightningStormSourcePoints;
     [SerializeField] private GameEvent _lightningDamageEvent;
     [SerializeField] private GameEvent _lightningArcEvent;
@@ -21,6 +20,8 @@ public class WeaponPowerupManager : MonoBehaviour
     [SerializeField] private Explosion ExplosionPrefab;
     [SerializeField] private BurnArea BurnAreaPrefab;
 
+    [SerializeField] private PowerupList basePlayerPowerupList;
+    [SerializeField] private PowerupList activePlayerPowerupList;
     [SerializeField] private PowerupList baseFirePowerupList;
     [SerializeField] private PowerupList activeFirePowerupList;
     [SerializeField] private PowerupList baseLightningPowerupList;
@@ -47,10 +48,11 @@ public class WeaponPowerupManager : MonoBehaviour
     private void Start()
     {
         _powerupStats.ResetBaseValues();
+        activePlayerPowerupList.Powerups = new List<PowerUpEffect>(basePlayerPowerupList.Powerups);
         activeFirePowerupList.Powerups = new List<PowerUpEffect>(baseFirePowerupList.Powerups);
         activeLightningPowerupList.Powerups = new List<PowerUpEffect>(baseLightningPowerupList.Powerups);
 
-        _suctionField.endRange = _player.BaseSuctionRange;
+        _suctionField.endRange = _player.SuctionRange;
         //InvokeRepeating(nameof(ActivateTimeBasedAbilities), 2.0f, 2.0f);
     }
 

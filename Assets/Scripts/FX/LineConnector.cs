@@ -5,7 +5,6 @@ public class LineConnector : MonoBehaviour
 {
     [SerializeField] private Vector3 _startPoint;
     [SerializeField] private Vector3 _endPoint;
-    [SerializeField] private Player player;
 
     private Vector3 startPoint;
     private Vector3 endPoint;
@@ -49,11 +48,6 @@ public class LineConnector : MonoBehaviour
 
     private void Update()
     {
-        //if (playerOrigin)
-        //{
-        //    _startPoint = player.Position;
-        //}
-
         UpdateLineMidpointNEW(_startPoint, _endPoint);
     }
 

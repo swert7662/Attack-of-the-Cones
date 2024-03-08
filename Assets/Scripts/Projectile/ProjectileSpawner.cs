@@ -12,7 +12,7 @@ public class ProjectileSpawner : MonoBehaviour
     [SerializeField] private float _attackRange; 
     [SerializeField] private float _fireShakeForce = .2f;
 
-    [SerializeField] private Player _player;
+    [SerializeField] private PlayerStats _player;
     [SerializeField] private EnemyStats _enemyStats; 
     
     private CircleCollider2D _attackRangeCollider;

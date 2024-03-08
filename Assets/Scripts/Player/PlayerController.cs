@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour, IHealth
     [SerializeField] private float damageCooldown = .5f;
 
     [SerializeField] private Health health;
-    [SerializeField] private Player player;
+    [SerializeField] private PlayerStats player;
     [SerializeField] private EnemyStats enemyStats;
 
     [SerializeField] private Projectile _defaultProjectile;
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour, IHealth
         player.SetLastFollower(this.transform);
         player.SetProjectile(_defaultProjectile);     
         player.SetTransform(this.transform);
-        player.SetStats();
+        player.ResetStats();
 
         health.CurrentHealth = health.MaxHealth;        
 

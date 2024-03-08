@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour, IDespawn
 {
     #region Variables and Properties
     [SerializeField] private float projectileSpeed = 1f; 
-    [SerializeField] private Player _player;
+    [SerializeField] private PlayerStats _player;
 
     private Transform targetTransform;
     private Transform startingTransform;

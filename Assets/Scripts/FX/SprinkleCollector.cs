@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SprinkleCollector : MonoBehaviour
 {
-    [SerializeField] private Player _player;
+    [SerializeField] private PlayerStats _player;
     [SerializeField] private FloatVariable _playerCurrentXP;
     [SerializeField] private GameEvent _xpPickup;
 

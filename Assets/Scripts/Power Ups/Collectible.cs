@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    [SerializeField] private Player _player;
+    [SerializeField] private PlayerStats _player;
     [SerializeField] private Transform _truck;
     [SerializeField] private GameEvent _powerupCollectedEvent;
     [SerializeField] private GameEvent _powerupSuctionEvent;

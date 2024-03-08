@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d512d42248e1ea44685c79f0bad86566, type: 3}
+  m_Name: Wave 16
+  m_EditorClassIdentifier: 
+  enemyMaxCount: 15
+  spawnRate: 4.5
+  waveDuration: 60
+  enemyWaveStats: {fileID: 0}
+  _enemyList:
+  - {fileID: 5731370454589856407, guid: c9ffe4bccb9340947887aad33da3e1ad, type: 3}
+  - {fileID: 3234286034179912139, guid: 73564f3ac3a462149a22f73f95a9d751, type: 3}
+  - {fileID: 7688753420689209999, guid: 487e19adeef3e584da527b8b280d2fc0, type: 3}
+  _eliteEnemyList:
+  - {fileID: 5805580768258338432, guid: 7e018d8683ad5654faf7f26cfbbb4006, type: 3}
+  - {fileID: 5805580768258338432, guid: 7e018d8683ad5654faf7f26cfbbb4006, type: 3}
+  - {fileID: 5805580768258338432, guid: 7e018d8683ad5654faf7f26cfbbb4006, type: 3}
+  - {fileID: 5805580768258338432, guid: 7e018d8683ad5654faf7f26cfbbb4006, type: 3}
+  - {fileID: 5805580768258338432, guid: 7e018d8683ad5654faf7f26cfbbb4006, type: 3}

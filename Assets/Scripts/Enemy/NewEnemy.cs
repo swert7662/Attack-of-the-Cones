@@ -4,7 +4,7 @@ using UnityEngine;
 public class NewEnemy : MonoBehaviour, IHealth, IDespawn
 {
     [SerializeField] protected EnemyStats _enemyStats;
-    [SerializeField] private Player _player;
+    [SerializeField] private PlayerStats _player;
 
     [SerializeField] private GameEvent _enemyDeathEvent;
     private EnemyDeathData _enemyDeathData;

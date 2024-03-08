@@ -1,11 +1,10 @@
 using UnityEngine;
 
-// This is now your base class for all power-up effects.
 [CreateAssetMenu(fileName = "New Power Up", menuName = "Power Ups/NewPowerUp", order = 1)]
 public class PowerUpEffect : ScriptableObject
 {
     public Sprite Image;
-    public PowerupStats powerupStats; // Reference to PowerupStats
+    public Stats PoweredupStats; // Reference to PowerupStats
     public StatModifier[] modifiers; // Array of modifiers to apply
 
     // New fields for list management
@@ -20,13 +19,13 @@ public class PowerUpEffect : ScriptableObject
         AddEffectsToList();
     }
 
-    protected void ApplyStatModifiers()
+    protected virtual void ApplyStatModifiers()
     {
-        if (powerupStats != null)
+        if (PoweredupStats != null)
         {
             foreach (StatModifier modifier in modifiers)
             {
-                powerupStats.ApplyModifier(modifier);
+                PoweredupStats.ApplyModifier(modifier);
             }
         }
     }

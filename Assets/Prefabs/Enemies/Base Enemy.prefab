@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40549d6bb44a6834ba0c259c57a0de9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyStats: {fileID: 11400000, guid: 76d57b37f413df947ad624e5ddf94aa4, type: 2}
+  _enemyStats: {fileID: 11400000, guid: 94eb2d92c4f11cd4486bf0894265c24a, type: 2}
   _player: {fileID: 11400000, guid: 7ea4c9b8f7e910f40b587f504c3c881d, type: 2}
   _enemyDeathEvent: {fileID: 11400000, guid: 37341511157501d4f91d06082ae8c9c7, type: 2}
   _enemyDamagedEvent: {fileID: 11400000, guid: d5404a2cfb34b7349918f434c2d5e328, type: 2}

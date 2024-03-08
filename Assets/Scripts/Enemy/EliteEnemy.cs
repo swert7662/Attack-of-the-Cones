@@ -46,11 +46,11 @@ public class EliteEnemy : NewEnemy
 
     public override void Die()
     {
-        base.Die();
-
         if (_selectedPowerupPrefab != null)
         {
             Instantiate(_selectedPowerupPrefab, transform.position, Quaternion.identity);
         }
+
+        base.Die();        
     }
 }

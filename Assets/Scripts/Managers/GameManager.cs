@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameManagerData _gameManagerData;
     [SerializeField] private EnemyStats _enemyStats;
+    [SerializeField] private EnemyStats _enemyBaseStats;
     [SerializeField] private float _updateStatInterval = 15f;
 
 
@@ -28,12 +29,14 @@ public class GameManager : MonoBehaviour
         if (_enemyStats == null) { Debug.LogError("EnemyStats not found by GameManager"); }
 
         _gameManagerData.IsPaused = false;
-        _enemyStats.SetStats();
+        //_enemyStats.ResetStats();
+        _enemyStats.UpdateStats(_enemyBaseStats);
         lastStatUpdateTime = 0f;        
     }
 
     private void Update()
     {
+        /*
         currentTime += Time.deltaTime;
 
         if (currentTime - lastStatUpdateTime >= _updateStatInterval)
@@ -44,7 +47,17 @@ public class GameManager : MonoBehaviour
             }
             lastStatUpdateTime = currentTime;
         }
+        */
     }
+
+    public void UpdateEnemyStats(Component sender, object data)
+    {
+        if (data is EnemyStats)
+        {
+            _enemyStats.UpdateStats((EnemyStats)data);
+        }
+    }
+
     public void StartGame()
     {
         Debug.Log("Start Game Called");

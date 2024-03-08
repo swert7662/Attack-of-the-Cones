@@ -1,7 +1,7 @@
 using System.Reflection;
 using UnityEngine;
 [CreateAssetMenu(fileName = "Powerup Stats", menuName = "ScriptableObjects/PowerupStats", order = 6)]
-public class PowerupStats : ScriptableObject
+public class PowerupStats : Stats
 {
     [SerializeField] private PowerupStats _baseStats;
 
@@ -69,46 +69,5 @@ public class PowerupStats : ScriptableObject
         ArcRange = _baseStats.ArcRange;
         StunDuration = _baseStats.StunDuration;
         LightningDamageMultiplier = _baseStats.LightningDamageMultiplier;
-    }
-
-    public void ApplyModifier(StatModifier modifier)
-    {
-        FieldInfo field = typeof(PowerupStats).GetField(modifier.statName, BindingFlags.Public | BindingFlags.Instance);
-        if (field != null)
-        {
-            if (field.FieldType == typeof(float))
-            {
-                float baseValue = (float)field.GetValue(_baseStats); // Get the base value
-                float currentValue = (float)field.GetValue(this); // Get the current value
-
-                if (modifier.isAdditive)
-                {
-                    field.SetValue(this, currentValue + modifier.value); // Additive
-                }
-                else
-                {
-                    float modifiedValue = baseValue * modifier.value;
-                    field.SetValue(this, currentValue + modifiedValue); // Multiplicative
-                }
-            }
-            else if (field.FieldType == typeof(int)) // Handling int fields
-            {
-                int currentValue = (int)field.GetValue(this);
-
-                if (modifier.isAdditive)
-                {
-                    field.SetValue(this, currentValue + (int)modifier.value);
-                }
-                else
-                {
-                    Debug.LogWarning("Multiplicative int modifiers are not supported");
-                }
-            }
-            else if (field.FieldType == typeof(bool)) // Handling bool fields
-            {
-                // Directly set the bool value based on the modifier's value
-                field.SetValue(this, modifier.value > 0);
-            }
-        }
     }
 }

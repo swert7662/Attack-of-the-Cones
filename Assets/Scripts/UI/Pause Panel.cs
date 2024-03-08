@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PausePanel : MonoBehaviour
 {
-    [SerializeField] private Player player;
+    [SerializeField] private PlayerStats player;
     [SerializeField] private GameManagerData _gameManagerData;
     [SerializeField] private GameObject _pauseScreen;
     [SerializeField] private GameEvent pausedEvent;

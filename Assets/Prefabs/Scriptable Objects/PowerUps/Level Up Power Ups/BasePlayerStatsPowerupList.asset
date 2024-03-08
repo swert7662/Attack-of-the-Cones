@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a95d31cb55395524e9b72cb39d351b6f, type: 3}
+  m_Name: BasePlayerStatsPowerupList
+  m_EditorClassIdentifier: 
+  Category: 1
+  Powerups:
+  - {fileID: 11400000, guid: 559c48aed424937439c89ba06e526f4b, type: 2}
+  - {fileID: 11400000, guid: d35d79529bc0a0a428956151ceb0292c, type: 2}
+  - {fileID: 11400000, guid: f1c2e57e72a053f44aa9c66d40cccfb9, type: 2}
+  - {fileID: 11400000, guid: ce82461e5645182438da6c4687b490b8, type: 2}
+  - {fileID: 11400000, guid: c5fe75a035e663a4e8cf7b1593e15fa7, type: 2}
+  - {fileID: 11400000, guid: b4c80700280e85d4bbf786b08ffc97c7, type: 2}

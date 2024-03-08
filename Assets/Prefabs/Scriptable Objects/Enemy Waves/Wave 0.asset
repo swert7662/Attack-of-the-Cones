@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d512d42248e1ea44685c79f0bad86566, type: 3}
   m_Name: Wave 0
   m_EditorClassIdentifier: 
-  enemyMaxCount: 20
-  spawnRate: 1
+  enemyMaxCount: 10
+  spawnRate: 0.5
   waveDuration: 30
-  enemyWaveStats: {fileID: 11400000, guid: 76d57b37f413df947ad624e5ddf94aa4, type: 2}
+  enemyWaveStats: {fileID: 11400000, guid: 202a7f05fe136624e8c411fb3fbd7fdb, type: 2}
   _enemyList:
   - {fileID: 7688753420689209999, guid: 487e19adeef3e584da527b8b280d2fc0, type: 3}
   _eliteEnemyList: []

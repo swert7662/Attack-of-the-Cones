@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class ParticleManager : MonoBehaviour
 {
-    [SerializeField] private Player _player;
+    [SerializeField] private PlayerStats _player;
     [SerializeField] private PowerupStats _powerupStats;
     
     [SerializeField] private ParticleSystem _deathSprinkles;
