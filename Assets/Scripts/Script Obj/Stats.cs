@@ -45,7 +45,9 @@ public class Stats : ScriptableObject
             }
             else if (field.FieldType == typeof(bool))
             {
-                field.SetValue(this, modifier.value > 0);
+                Debug.Log($"Setting bool {modifier.statName} to {modifier.value != 0}");
+                bool newValue = modifier.value != 0;
+                field.SetValue(this, newValue);
             }
         }
         else

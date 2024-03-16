@@ -98,7 +98,7 @@ public class EnemyWaveManager : MonoBehaviour
         int randomIndex = Random.Range(0, enemyPool.Count);
         GameObject enemy = enemyPool[randomIndex];
         Vector3 spawnPosition = SpawnPointSelect();
-        ObjectPoolManager.SpawnObject(enemy, spawnPosition, Quaternion.identity, ObjectPoolManager.PoolType.Enemy);
+        ObjectPoolManager.SpawnObject<NewEnemy>(enemy, spawnPosition, Quaternion.identity, ObjectPoolManager.PoolType.Enemy);
         enemiesSpawned++;
     }
 

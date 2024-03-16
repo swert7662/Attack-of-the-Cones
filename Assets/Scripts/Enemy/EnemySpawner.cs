@@ -45,7 +45,7 @@ public class EnemySpawner : MonoBehaviour
         List<GameObject> pool = isElite ? _eliteEnemies : _enemies;
         int randomIndex = Random.Range(0, pool.Count);
         var enemy = pool[randomIndex];
-        ObjectPoolManager.SpawnObject(enemy, SpawnPointSelect(), Quaternion.identity, ObjectPoolManager.PoolType.Enemy);
+        ObjectPoolManager.SpawnObject<NewEnemy>(enemy, SpawnPointSelect(), Quaternion.identity, ObjectPoolManager.PoolType.Enemy);
     }
 
     void OnDrawGizmos()

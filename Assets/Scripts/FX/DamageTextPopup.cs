@@ -31,26 +31,25 @@ public class DamageTextPopup : MonoBehaviour
                 popupOffsetDirection *= -1;
 
                 // Determine which prefab to use based on the damage type
-                GameObject prefabToSpawn = _normalDamagePopupPrefab; // Default to normal
+                GameObject damageTextPrefab = _normalDamagePopupPrefab; // Default to normal
                 switch (damageType)
                 {
                     case DamageType.Fire:
-                        prefabToSpawn = _fireDamagePopupPrefab;
+                        damageTextPrefab = _fireDamagePopupPrefab;
                         break;
                     case DamageType.Lightning:
-                        prefabToSpawn = _lightningDamagePopupPrefab;
+                        damageTextPrefab = _lightningDamagePopupPrefab;
                         break;
                         // Add other cases as needed
                 }
 
                 // Spawn the selected prefab
-                GameObject go = ObjectPoolManager.SpawnObject(prefabToSpawn, spawnPoint, Quaternion.identity);
-                DamagePopupFX damagePopup = go.GetComponent<DamagePopupFX>();
+                DamagePopupFX damagePopup = ObjectPoolManager.SpawnObject<DamagePopupFX>(damageTextPrefab, spawnPoint, Quaternion.identity);
                 if (damagePopup != null)
                 {
                     damagePopup.SetDamageTextValue(damageTaken);
 
-                    TextMeshPro tmp = go.GetComponent<TextMeshPro>();
+                    TextMeshPro tmp = damagePopup.gameObject.GetComponent<TextMeshPro>();
                     if (tmp != null)
                     {
                         tmp.sortingOrder = ++currentMaxSortingOrder;

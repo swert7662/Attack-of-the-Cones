@@ -54,7 +54,7 @@ TagManager:
   - name: FX
     uniqueID: 3482851155
     locked: 0
-  - name: Enemy
+  - name: Dynamic Sorting Layer
     uniqueID: 2974589503
     locked: 0
   - name: Collectibles
@@ -68,4 +68,7 @@ TagManager:
     locked: 0
   - name: OuterWall
     uniqueID: 166026955
+    locked: 0
+  - name: Damage Text
+    uniqueID: 1350009041
     locked: 0

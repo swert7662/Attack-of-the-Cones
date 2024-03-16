@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AudioManager : MonoBehaviour
 {
@@ -8,10 +9,8 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioClip[] _playlist;
     [SerializeField] private AudioSource _musicSource;
-    [SerializeField] private AudioSource _effectSource;
     [SerializeField] private AudioSource _extendedEffect;
-    [SerializeField] private AudioSource _noPitchEffectSource;
-    //[SerializeField] private AudioSource _ambientSource;
+    [SerializeField] private GameObject audioSourcePrefab;
 
     private void Awake()
     {
@@ -28,13 +27,15 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySound(AudioClip clip, float volume = 1, float pitch = 1)
     {
-        _effectSource.pitch = pitch;
-        _effectSource.PlayOneShot(clip, volume);
+        AudioSource effectSource = ObjectPoolManager.SpawnObject<AudioSource>(audioSourcePrefab, ObjectPoolManager.PoolType.AudioSource);
+        effectSource.pitch = pitch;
+        effectSource.PlayOneShot(clip, volume);
+        ObjectPoolManager.DespawnComponent(this, effectSource, clip.length);
     }
 
     public void PlaySoundNoPitch(AudioClip clip, float volume = 1)
     {
-        _noPitchEffectSource.PlayOneShot(clip, volume);
+        PlaySound(clip, volume, 1);
     }
 
     public void PlayClipPortion(AudioClip clip, float startAt, float duration, float pitch = 1)
@@ -59,7 +60,7 @@ public class AudioManager : MonoBehaviour
 
     public void ToggleEffects()
     {
-        _effectSource.mute = !_effectSource.mute;
+        //_effectSource.mute = !_effectSource.mute;
     }
 
     public void ToggleMusic()

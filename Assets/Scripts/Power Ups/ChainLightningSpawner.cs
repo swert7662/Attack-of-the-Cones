@@ -151,14 +151,13 @@ public class ChainLightningSpawner: MonoBehaviour
 
     private void CreateLineConnector(Vector3 startPoint, Vector3 endPoint)
     {
-        GameObject lineConnectorObject = ObjectPoolManager.SpawnObject(_lineLightningPrefab, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
-        LineConnector lineConnector = lineConnectorObject.GetComponent<LineConnector>();
+        LineConnector lineConnector = ObjectPoolManager.SpawnObject<LineConnector>(_lineLightningPrefab, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
         if (lineConnector != null)
         {
             lineConnector.Initialize(startPoint, endPoint, .2f);
             _lineConnectors.Add(lineConnector);
         }
-        else { Debug.LogWarning("LineConnector component not found on " + lineConnectorObject.name); }
+        else { Debug.LogWarning("LineConnector component not found"); }
     }
 
     private void UpdateLineConnectors()

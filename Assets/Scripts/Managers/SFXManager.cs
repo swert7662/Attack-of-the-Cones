@@ -16,16 +16,12 @@ public class SFXManager : MonoBehaviour
     {
         Projectile.OnProjectileShoot += HandleProjectileShot;
         Projectile.OnProjectileImpact += HandleProjectileImpact;            
-        //ChainLightningSpawner.OnLightningStrike += HandleLightningStrike;
-        //SprinkleCollector.OnSprinklePickup += HandleSprinklePickup;
     }
 
     private void OnDisable()
     {
         Projectile.OnProjectileImpact -= HandleProjectileImpact;
         Projectile.OnProjectileShoot -= HandleProjectileShot;
-        //ChainLightningSpawner.OnLightningStrike -= HandleLightningStrike;
-        //SprinkleCollector.OnSprinklePickup -= HandleSprinklePickup;
     }
     private void HandleProjectileShot()
     {

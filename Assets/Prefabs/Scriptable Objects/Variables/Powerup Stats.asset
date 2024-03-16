@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Powerup Stats
   m_EditorClassIdentifier: 
   _baseStats: {fileID: 11400000, guid: abf585ecb6ce6864db5c769527ba5405, type: 2}
-  DamageLevel: 1
+  DamageLevel: 2
   FireLevel: 0
   FloorFire: 0
   EnemyExplode: 0
@@ -24,9 +24,9 @@ MonoBehaviour:
   FireDamageMultiplier: 1
   LightningLevel: 0
   LightningBullets: 0
-  TeslaCoil: 0
+  TeslaCoil: 1
   LightningStorm: 0
-  TeslaCoilCooldown: 3
+  TeslaCoilCooldown: 1
   LightningStormCooldown: 5
   LightningBulletChance: 0.2
   ChainAmount: 0

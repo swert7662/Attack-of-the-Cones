@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour, IHealth
     private DamagedData _playerDamagedData;
 
     private float lastDamageTime = -1.0f;
+    private Vector3 Offset = new Vector3(0, 1, 0);
     private ProjectileSpawner _weaponLoadout;
 
     public float MaxHealth { get; set; }
@@ -34,6 +35,8 @@ public class PlayerController : MonoBehaviour, IHealth
         player.SetLastFollower(this.transform);
         player.SetProjectile(_defaultProjectile);     
         player.SetTransform(this.transform);
+        
+
         player.ResetStats();
 
         health.CurrentHealth = health.MaxHealth;        
@@ -53,7 +56,7 @@ public class PlayerController : MonoBehaviour, IHealth
         {
             NormalMovement();
         }
-        player.Position = transform.position;
+        player.Position = transform.position + Offset;
     }
 
     private void NormalMovement()

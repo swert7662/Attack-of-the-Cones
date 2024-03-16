@@ -13,14 +13,15 @@ public class ObjectPoolManager : MonoBehaviour
     private static GameObject _enemiesEmpty;
     private static GameObject _projectilesEmpty;
     private static GameObject _particleEmpty;
+    private static GameObject _audioSourceEmpty;
 
     public enum PoolType
     {
         Enemy,
         Projectile,
         Particle,
-        None
-        
+        None,
+        AudioSource        
     }
 
     public static PoolType PoolingType;
@@ -42,6 +43,9 @@ public class ObjectPoolManager : MonoBehaviour
 
         _particleEmpty = new GameObject("Particles");
         _particleEmpty.transform.SetParent(_objectPoolEmptyContainer.transform);
+
+        _audioSourceEmpty = new GameObject("AudioSources"); // Add this line
+        _audioSourceEmpty.transform.SetParent(Camera.main.transform); // Add this line
     }
 
     private static GameObject SetParentObject(PoolType poolType)
@@ -54,6 +58,8 @@ public class ObjectPoolManager : MonoBehaviour
                 return _projectilesEmpty;
             case PoolType.Particle:
                 return _particleEmpty;
+            case PoolType.AudioSource: // Add this case
+                return _audioSourceEmpty;
             default:
                 return null;
         }
@@ -61,40 +67,70 @@ public class ObjectPoolManager : MonoBehaviour
 
     #region Default SpawnObject Method 
     //uses GameObject, Vector3, and Quaternion
-    public static GameObject SpawnObject(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation, PoolType poolType = PoolType.None)
+    public static T SpawnObject<T>(GameObject objectToSpawn, Vector3 spawnPosition, Quaternion spawnRotation, PoolType poolType = PoolType.None) where T : Component
     {
-        PooledObjectInfo pool = ObjectPools.Find(p => p.LookupString == objectToSpawn.name); //This line finds the pool for the object being spawned
+        PooledObjectInfo pool = ObjectPools.Find(p => p.LookupString == objectToSpawn.name);
 
-        if (pool == null) //This line creates a new pool if one doesn't exist for the object being spawned
+        if (pool == null)
         {
             pool = new PooledObjectInfo() { LookupString = objectToSpawn.name };
             ObjectPools.Add(pool);
         }
 
-        GameObject spawnableObject = pool.InactiveObjects.FirstOrDefault(); //This line finds the first inactive object in the pool
+        GameObject spawnableObject = pool.InactiveObjects.FirstOrDefault();
 
-        if (spawnableObject == null) //This line creates a new object if there are no inactive objects in the pool
+        T component;
+
+        if (spawnableObject == null)
         {
             GameObject parentObject = SetParentObject(poolType);
             spawnableObject = Instantiate(objectToSpawn, spawnPosition, spawnRotation);
             spawnableObject.name = objectToSpawn.name;
-
             if (parentObject != null)
             {
                 spawnableObject.transform.SetParent(parentObject.transform);
             }
+            component = spawnableObject.GetComponent<T>();
+            if (component == null)
+            {
+                component = spawnableObject.AddComponent<T>();
+            }
         }
-        else //This line reuses an inactive object if there is one in the pool
+        else
         {
-            spawnableObject.transform.position = new Vector3(spawnPosition.x, spawnPosition.y, 0);
+            spawnableObject.transform.position = spawnPosition;
             spawnableObject.transform.rotation = spawnRotation;
             pool.InactiveObjects.Remove(spawnableObject);
-            spawnableObject.SetActive(true);            
+            spawnableObject.SetActive(true);
+            component = spawnableObject.GetComponent<T>();
         }
 
-        return spawnableObject;
+        return component;
     }
+
     #endregion
+    public static T SpawnObject<T>(GameObject objectToSpawn, Vector3 spawnPosition, PoolType poolType = PoolType.None) where T : Component
+    {
+        Quaternion defaultRotation = Quaternion.identity;
+
+        return SpawnObject<T>(objectToSpawn, spawnPosition, defaultRotation, poolType);
+    }
+
+    public static T SpawnObject<T>(GameObject objectToSpawn, PoolType poolType = PoolType.None) where T : Component
+    {
+        // Determine a default position - either Vector3.zero or another logic
+        Vector3 defaultPosition = Vector3.zero;
+        Quaternion defaultRotation = Quaternion.identity;
+
+        // Optionally, adjust defaultPosition based on parent object logic here
+        GameObject parentObject = SetParentObject(poolType);
+        if (parentObject != null)
+        {
+            defaultPosition = parentObject.transform.position;
+        }
+
+        return SpawnObject<T>(objectToSpawn, defaultPosition, defaultRotation, poolType);
+    }
 
     #region SpawnObject Method Overload with Direction & Position
     //uses GameObject, Vector2, and Vector2 for projectile spawning
@@ -189,16 +225,26 @@ public class ObjectPoolManager : MonoBehaviour
     // Overload for DespawnObject Method with timer
     public static void DespawnObject(GameObject objectToDespawn, float timer)
     {
-        //Debug.Log("Despawning " + objectToDespawn.name + " in " + timer + " seconds");
-        IEnumerator DespawnTimer()
-        {
-            yield return new WaitForSeconds(timer);
-            //Debug.Log("Despawning " + objectToDespawn.name);
-            DespawnObject(objectToDespawn);
-        }
-
-        objectToDespawn.GetComponent<MonoBehaviour>().StartCoroutine(DespawnTimer());
+        objectToDespawn.GetComponent<MonoBehaviour>().StartCoroutine(DespawnTimer(objectToDespawn, timer));
     }
+
+    private static IEnumerator DespawnTimer(GameObject objectToDespawn, float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        DespawnObject(objectToDespawn);
+    }
+    public static void DespawnComponent<T>(MonoBehaviour monoBehaviour, T componentToDespawn, float timer = 0) where T : Component
+    {
+        if (timer > 0)
+        {
+            monoBehaviour.StartCoroutine(DespawnTimer(componentToDespawn.gameObject, timer));
+        }
+        else
+        {
+            DespawnObject(componentToDespawn.gameObject);
+        }
+    }
+
 }
 
 public class PooledObjectInfo //This is a helper class to store the inactive objects in a list

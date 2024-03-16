@@ -1,30 +1,19 @@
-using System;
 using UnityEngine;
+using UnityEngine.Rendering; // Make sure to include this for the SortingGroup
 
-public class DynamicYSort : MonoBehaviour
+public class DynamicSort : MonoBehaviour
 {
-    private int _baseSortingOrder;
-    private float _ySortingOffset;
-    [SerializeField] private SortableSprite[] _sortableSprites;
-    [SerializeField] private Transform _sortOffsetMarker;
+    [SerializeField] private SortingGroup sortingGroup;
+    [SerializeField] private int sortFactor;
 
-    private void Start()
+    void Update()
     {
-        _ySortingOffset = _sortOffsetMarker.position.y;
-    }
-
-    private void Update()
-    {
-        _baseSortingOrder = transform.GetSortingOrder(_ySortingOffset);
-        foreach (SortableSprite sortableSprite in _sortableSprites)
+        if (sortingGroup != null)
         {
-            sortableSprite.spriteRenderer.sortingOrder = _baseSortingOrder + sortableSprite.relativeOrder;
+            // Use the absolute value of the Y position and multiply by a factor if needed to scale the sorting order appropriately
+            // We use Mathf.FloorToInt to ensure we get an integer value for the sorting order
+            // Multiply by -1 because in Unity, a higher sorting order means the object will be rendered on top.
+            sortingGroup.sortingOrder = Mathf.FloorToInt(transform.position.y * -(sortFactor)); // Adjust the factor (-100) as necessary for your game
         }
-    }
-    [Serializable]
-    public struct SortableSprite
-    {
-        public SpriteRenderer spriteRenderer;
-        public int relativeOrder;
     }
 }

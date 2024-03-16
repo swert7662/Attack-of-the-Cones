@@ -54,8 +54,8 @@ public class ProjectileSpawner : MonoBehaviour
     {
         Vector3 direction = _target.position - transform.position;
 
-        GameObject bullet = ObjectPoolManager.SpawnObject(_player.Projectile.gameObject, direction, transform.position, ObjectPoolManager.PoolType.Projectile); // Shoot projectile at target
-        Projectile projectile = bullet.GetComponent<Projectile>();
+        Projectile projectile = ObjectPoolManager.SpawnObject<Projectile>(_player.Projectile.gameObject, transform.position, ObjectPoolManager.PoolType.Projectile); // Shoot projectile at target
+        projectile.transform.up = direction;
         projectile.SetTarget(_target);
 
         //RecoilShake(direction);

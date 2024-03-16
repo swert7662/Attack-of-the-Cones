@@ -12,6 +12,8 @@ public class PowerUpEffect : ScriptableObject
     public PowerupList addToList; // List to which new effects should be added
     public PowerUpEffect[] effectsToAdd; // Effects to add to the addToList
 
+    public string Description;
+
     public virtual void Apply()
     {
         ApplyStatModifiers();

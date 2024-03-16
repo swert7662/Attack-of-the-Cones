@@ -9,7 +9,7 @@ public class ParticleManager : MonoBehaviour
     [SerializeField] private PlayerStats _player;
     [SerializeField] private PowerupStats _powerupStats;
     
-    [SerializeField] private ParticleSystem _deathSprinkles;
+    [SerializeField] private GameObject _deathSprinkles;
     [SerializeField] private ParticleSystem _impactParticles;
     [SerializeField] private ParticleSystem _exitParticles;
     [SerializeField] private float _particalOffset = 0.5f;
@@ -49,7 +49,7 @@ public class ParticleManager : MonoBehaviour
     // ------------------ Particle Spawning ------------------
     private void SpawnParticlesAtPoint(GameObject particlePrefab, Vector2 spawnPoint) // Spawn particles at a point
     {
-        ObjectPoolManager.SpawnObject(particlePrefab, spawnPoint, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
+        ObjectPoolManager.SpawnObject<ParticleSystem>(particlePrefab, spawnPoint, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
     }
 
     private void SpawnImpactParticles(Vector2 spawnPoint, Vector2 direction)
@@ -100,7 +100,7 @@ public class ParticleManager : MonoBehaviour
             spawnPoint += new Vector2(direction.x * (extents.x + _particalOffset), direction.y * (extents.y + _particalOffset));
         }
 
-        ObjectPoolManager.SpawnObject(particlePrefab.gameObject, spawnPoint, rotation, ObjectPoolManager.PoolType.Particle);
+        ObjectPoolManager.SpawnObject<ParticleSystem>(particlePrefab, spawnPoint, rotation, ObjectPoolManager.PoolType.Particle);
     }
 
     // ------------------ Lightning Line Connector Spawner ------------------
@@ -109,8 +109,7 @@ public class ParticleManager : MonoBehaviour
         Debug.Log("SpawnLineLightning called");
         if (data is LightningDamageData lightningData)
         {
-            GameObject lineConnectorObject = ObjectPoolManager.SpawnObject(_lineLightningPrefab, Vector3.zero, Quaternion.identity, ObjectPoolManager.PoolType.Projectile);
-            LineConnector lightningVFX = lineConnectorObject.GetComponent<LineConnector>();
+            LineConnector lightningVFX = ObjectPoolManager.SpawnObject<LineConnector>(_lineLightningPrefab, ObjectPoolManager.PoolType.Projectile);
             if (lightningVFX != null)
             {
                 if (lightningData.UsePlayerPosition)
@@ -133,15 +132,14 @@ public class ParticleManager : MonoBehaviour
     // ------------------ Death Sprinkles ------------------
     public void SpawnDeathSprinkles(Vector3 deathPosition, short expPoints) // Handles how much xp is dropped
     {
-        GameObject deathSprinkleInstance = ObjectPoolManager.SpawnObject(_deathSprinkles.gameObject, deathPosition, Quaternion.identity, ObjectPoolManager.PoolType.Particle);
+        ParticleSystem sprinkleSystem = ObjectPoolManager.SpawnObject<ParticleSystem>(_deathSprinkles, deathPosition, ObjectPoolManager.PoolType.Particle);
 
-        if (deathSprinkleInstance != null)
+        if (sprinkleSystem != null)
         {
-            ParticleSystem pSystem = deathSprinkleInstance.GetComponent<ParticleSystem>();
-            ParticleSystem.EmissionModule emissionModule = pSystem.emission;
+            ParticleSystem.EmissionModule emissionModule = sprinkleSystem.emission;
             emissionModule.SetBursts(new ParticleSystem.Burst[] { new ParticleSystem.Burst(0.0f, expPoints) });
 
-            pSystem.Play();
+            sprinkleSystem.Play();
         }
     }
 }

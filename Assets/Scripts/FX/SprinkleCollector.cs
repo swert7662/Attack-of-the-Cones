@@ -10,7 +10,6 @@ public class SprinkleCollector : MonoBehaviour
     [SerializeField] private GameEvent _xpPickup;
 
     private ParticleSystem _sprinkles;
-    private CapsuleCollider2D _collectorCollider;
     private int _collectedParticleCount = 0;
 
     private List<ParticleSystem.Particle> _particles = new List<ParticleSystem.Particle>();

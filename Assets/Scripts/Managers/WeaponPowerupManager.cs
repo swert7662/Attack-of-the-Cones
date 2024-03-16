@@ -16,6 +16,7 @@ public class WeaponPowerupManager : MonoBehaviour
     [SerializeField] private List<Transform> _lightningStormSourcePoints;
     [SerializeField] private GameEvent _lightningDamageEvent;
     [SerializeField] private GameEvent _lightningArcEvent;
+    [SerializeField] private GameEvent _teslaActiveEvent;
 
     [SerializeField] private Explosion ExplosionPrefab;
     [SerializeField] private BurnArea BurnAreaPrefab;
@@ -31,10 +32,11 @@ public class WeaponPowerupManager : MonoBehaviour
 
     public GameObject Player;
 
+    private bool teslaCoilReadySignaled = false;
     private float lastTeslaCoilActivationTime = float.MinValue;
     private float lastLightningStormActivationTime = float.MinValue;
 
-
+    #region Awake, Start, Update, OnEnable, OnDisable
     private void Awake()
     {
         //Find the playerController as the gameobject for player always has one
@@ -70,7 +72,9 @@ public class WeaponPowerupManager : MonoBehaviour
     {
         Projectile.OnAdditionalEffectsTrigger -= HandleAdditionalEffectsTrigger;
     }
-
+    #endregion
+    
+    #region Handle Events
     private void HandleAdditionalEffectsTrigger(GameObject target, Vector2 position)
     {
         if (_powerupStats.LightningBullets)
@@ -123,21 +127,30 @@ public class WeaponPowerupManager : MonoBehaviour
         _player.Damage = newDamage;        
         _suctionField.endRange = _player.SuctionRange;
     }
+    #endregion
 
     // --------------------- Time Based Abilities ---------------------
     #region Time Based Abilities
     private void ActivateTimeBasedAbilities()
     {
-        if (_powerupStats.TeslaCoil && _player.IsAlive && Time.time >= lastTeslaCoilActivationTime + _powerupStats.TeslaCoilCooldown)
+        bool isTeslaCoilReady = _powerupStats.TeslaCoil && _player.IsAlive && Time.time >= lastTeslaCoilActivationTime + _powerupStats.TeslaCoilCooldown;
+
+        if (isTeslaCoilReady)
         {
-            lastTeslaCoilActivationTime = Time.time;
-            Debug.Log("Tesla coil activated");
+            if (!teslaCoilReadySignaled)
+            {
+                // The readiness signal is only sent once when the condition becomes true
+                Debug.Log("Tesla coil ready!");
+                _teslaActiveEvent.Raise(); // Assuming this now doesn't need a boolean
+                teslaCoilReadySignaled = true; // Prevent this block from running again until conditions reset
+            }
+
             GameObject target = UtilityMethods.FindNextTargetWith<NewEnemy>(_player.Position, _powerupStats.ArcRange, enemyLayer);
             if (target != null)
             {
                 LightningStruck lightningStruck = target.AddComponent<LightningStruck>();
                 int damage = (int)Mathf.Ceil(_powerupStats.DamageLevel + (2 * _powerupStats.LightningDamageMultiplier));
-                lightningStruck.Initialize(damage ,
+                lightningStruck.Initialize(damage,
                                            _powerupStats.ChainAmount,
                                            _powerupStats.ArcRange,
                                            _powerupStats.StunDuration,
@@ -150,10 +163,14 @@ public class WeaponPowerupManager : MonoBehaviour
                     LightningDamageData lightningDamageData = new LightningDamageData(_player.Position, target.transform.position, true);
                     _lightningArcEvent.Raise(this, lightningDamageData);
                 }
+                Debug.Log("Tesla coil activated!");
+                lastTeslaCoilActivationTime = Time.time;
+                _teslaActiveEvent.Raise(); // Toggle off the effect or acknowledge use
+                teslaCoilReadySignaled = false; // Reset the signal for next availability
             }
         }
 
-        if(_powerupStats.LightningStorm && _player.IsAlive && Time.time >= lastLightningStormActivationTime + _powerupStats.LightningStormCooldown)
+        if (_powerupStats.LightningStorm && _player.IsAlive && Time.time >= lastLightningStormActivationTime + _powerupStats.LightningStormCooldown)
         {
             lastLightningStormActivationTime = Time.time;
             Debug.Log("Lightning storm activated");
