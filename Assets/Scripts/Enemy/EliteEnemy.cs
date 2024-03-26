@@ -17,7 +17,41 @@ public class EliteEnemy : NewEnemy
         AttackDamage *= statMultiplier;
 
         _selectedPowerupPrefab = SelectRandomPowerup();
+        UpdateSprite();
+    }
 
+    public void SetPowerupDrop(PowerupList.PowerUpCategory dropType)
+    {
+        foreach (GameObject powerupObject in _powerupDropList)
+        {
+            // Attempt to get the Collectible component on the powerupObject
+            if (powerupObject.TryGetComponent<Collectible>(out Collectible powerupCollectible))
+            {
+                if (powerupCollectible.GetPowerupCategory() == dropType)
+                {
+                    _selectedPowerupPrefab = powerupObject;
+                    UpdateSprite();
+                    break;
+                }
+            }
+        }
+    }
+
+
+    private GameObject SelectRandomPowerup()
+    {
+        if (_powerupDropList == null || _powerupDropList.Count == 0)
+        {
+            Debug.LogError("Powerup drop list is empty or not assigned.");
+            return null;
+        }
+
+        int randomIndex = Random.Range(0, _powerupDropList.Count);
+        return _powerupDropList[randomIndex];
+    }
+
+    private void UpdateSprite()
+    {
         if (_selectedPowerupPrefab != null)
         {
             SpriteRenderer powerupSpriteRenderer = _selectedPowerupPrefab.GetComponent<SpriteRenderer>();
@@ -32,16 +66,9 @@ public class EliteEnemy : NewEnemy
         }
     }
 
-    private GameObject SelectRandomPowerup()
+    protected override void OnTriggerEnter2D(Collider2D collision)
     {
-        if (_powerupDropList == null || _powerupDropList.Count == 0)
-        {
-            Debug.LogError("Powerup drop list is empty or not assigned.");
-            return null;
-        }
-
-        int randomIndex = Random.Range(0, _powerupDropList.Count);
-        return _powerupDropList[randomIndex];
+        Debug.Log("Elite enemy cannot be promoted further.");
     }
 
     public override void Die()

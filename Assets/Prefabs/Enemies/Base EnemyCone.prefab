@@ -185,6 +185,7 @@ GameObject:
   - component: {fileID: 7695519128351803920}
   - component: {fileID: 5382972090758018785}
   - component: {fileID: 7564352229998410434}
+  - component: {fileID: -7649044631958191060}
   m_Layer: 7
   m_Name: Base EnemyCone
   m_TagString: Enemy
@@ -285,8 +286,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyStats: {fileID: 11400000, guid: 94eb2d92c4f11cd4486bf0894265c24a, type: 2}
   _player: {fileID: 11400000, guid: 7ea4c9b8f7e910f40b587f504c3c881d, type: 2}
-  _enemyDeathEvent: {fileID: 11400000, guid: 37341511157501d4f91d06082ae8c9c7, type: 2}
-  _enemyDamagedEvent: {fileID: 11400000, guid: d5404a2cfb34b7349918f434c2d5e328, type: 2}
+  DeathEvent: {fileID: 11400000, guid: 37341511157501d4f91d06082ae8c9c7, type: 2}
+  PointsAddEvent: {fileID: 11400000, guid: 2664d95a72a1b0b4fbb4a623402d9cc7, type: 2}
+  DamagedEvent: {fileID: 11400000, guid: d5404a2cfb34b7349918f434c2d5e328, type: 2}
+  EliteEnemy: {fileID: 5805580768258338432, guid: 7e018d8683ad5654faf7f26cfbbb4006, type: 3}
+  pointValue: 5
 --- !u!114 &569921893733328020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -373,6 +377,34 @@ MonoBehaviour:
       - m_Target: {fileID: 1341794411777484455}
         m_TargetAssemblyTypeName: DamageTextPopup, Assembly-CSharp
         m_MethodName: HandleDamagePopup
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &-7649044631958191060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4256120587061930393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f69c2bf1dbfdf45b8b550e018a477f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 0e7ede499f4c6b04eaf30aa134cb1e32, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3778687551063714065}
+        m_TargetAssemblyTypeName: NewEnemy, Assembly-CSharp
+        m_MethodName: SetState
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

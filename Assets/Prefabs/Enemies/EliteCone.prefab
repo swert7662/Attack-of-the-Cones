@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!1001 &7746569508666279705
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -92,6 +92,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -7649044631958191060, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
+      propertyPath: response.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4256120587061930393, guid: 524d05e9adfdaaf449272c492cf0f24c, type: 3}
       propertyPath: m_Name
       value: EliteCone
@@ -236,8 +240,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyStats: {fileID: 11400000, guid: 94eb2d92c4f11cd4486bf0894265c24a, type: 2}
   _player: {fileID: 11400000, guid: 7ea4c9b8f7e910f40b587f504c3c881d, type: 2}
-  _enemyDeathEvent: {fileID: 11400000, guid: 37341511157501d4f91d06082ae8c9c7, type: 2}
-  _enemyDamagedEvent: {fileID: 11400000, guid: d5404a2cfb34b7349918f434c2d5e328, type: 2}
+  DeathEvent: {fileID: 11400000, guid: 37341511157501d4f91d06082ae8c9c7, type: 2}
+  PointsAddEvent: {fileID: 11400000, guid: 2664d95a72a1b0b4fbb4a623402d9cc7, type: 2}
+  DamagedEvent: {fileID: 11400000, guid: d5404a2cfb34b7349918f434c2d5e328, type: 2}
+  EliteEnemy: {fileID: 0}
+  pointValue: 10
   _powerupDropList:
   - {fileID: 6193124634561557494, guid: a3784576b72f1874ba185905e9adab58, type: 3}
   - {fileID: 2973415186979326066, guid: 35b9d4e69d690d446a1cd9a8f909cd61, type: 3}

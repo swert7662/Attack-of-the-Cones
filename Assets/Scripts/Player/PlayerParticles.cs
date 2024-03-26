@@ -34,11 +34,14 @@ public class PlayerParticles : MonoBehaviour
         }
         else
         {
+            _electricVFX.SetActive(false);
+            /*
             if (_deactivationCoroutine != null)
             {
                 StopCoroutine(_deactivationCoroutine);
             }
             _deactivationCoroutine = StartCoroutine(DeactivateAfterDelay(electricEffectDuration));
+            */
         }
     }
 

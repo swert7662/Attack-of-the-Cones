@@ -1,16 +1,20 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
-public class NewEnemy : MonoBehaviour, IHealth, IDespawn
+public class NewEnemy : MonoBehaviour, IHealth
 {
+    #region Variables, Properties, and Awake
     [SerializeField] protected EnemyStats _enemyStats;
     [SerializeField] private PlayerStats _player;
 
-    [SerializeField] private GameEvent _enemyDeathEvent;
-    private EnemyDeathData _enemyDeathData;
-    
-    [SerializeField] private GameEvent _enemyDamagedEvent;
-    private DamagedData _enemyDamagedData;
+    [SerializeField] private GameEvent DeathEvent;
+    [SerializeField] private GameEvent PointsAddEvent;
+    [SerializeField] private GameEvent DamagedEvent;
+
+    [SerializeField] private GameObject EliteEnemy;
+
+    [SerializeField] private int pointValue;
 
     public float MaxHealth { get; set; }
     public float CurrentHealth { get; set; }
@@ -24,32 +28,55 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
     private Vector3 _currentDirection;
     private float _updateInterval = .5f; // Time between direction updates
     private float _timeUntilNextUpdate = 0f;
+    private float PromoteTimer = 3f;
+    private Collectible SelectedCollectible;
 
-    protected virtual void OnEnable()
+    private EnemyState CurrentState = EnemyState.FollowPlayer;
+    public enum EnemyState
     {
-        MaxHealth = _enemyStats.maxHealth;
-        CurrentHealth = _enemyStats.maxHealth;
-        AttackDamage = _enemyStats.attackDamage;
+        FollowPlayer,
+        Promoting
     }
 
     private void Awake()
     {
         _animator = GetComponentInChildren<Animator>();
-        _originalScale = _animator.transform.localScale;
-        _enemyDeathData = new EnemyDeathData(Vector3.zero, 0);
-        _enemyDamagedData = new DamagedData(this.gameObject, MaxHealth, Extents);
+        _originalScale = _animator.transform.localScale;  
+        
         CapsuleCollider2D collider = GetComponent<CapsuleCollider2D>();
         if (collider != null)
         {
             Extents = collider.bounds.extents;
         }
     }
+    #endregion
 
     private void Update()
     {
-        //FlipTowardsTarget();
+        switch (CurrentState)
+        {
+            case EnemyState.FollowPlayer:
+                FollowPlayerBehavior();
+                break;
+            case EnemyState.Promoting:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+    }
 
-        // Update the direction at fixed intervals
+    #region State Behaviors
+
+    public void SetState(Component sender, object data)
+    {
+        if (data is not EnemyState state) { Debug.LogError("SetState failed: Data is not of type EnemyState"); return; }
+        EnemyState updatedState = (EnemyState)data;
+        Debug.Log($"Enemy state updated to {updatedState}");
+        CurrentState = updatedState;
+    }
+
+    private void FollowPlayerBehavior()
+    {
         if (Time.time >= _timeUntilNextUpdate)
         {
             UpdateDirection();
@@ -59,6 +86,8 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
         MoveInCurrentDirection();
     }
 
+    #endregion
+
     #region Health Functions
 
     public void Damage(float damageAmount, DamageType damageType)
@@ -66,29 +95,71 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
         CurrentHealth -= damageAmount;
         _animator.SetTrigger("Hit");
 
-        _enemyDamagedData.Position = gameObject.transform.position;
-        _enemyDamagedData.Extents = Extents;
-        _enemyDamagedData.DamageAmount = damageAmount;
-        _enemyDamagedData.DamageType = damageType;
-        _enemyDamagedData.GameObjectSender = gameObject;
+        DamagedData damageData = 
+            new DamagedData(this.gameObject,
+                            MaxHealth,
+                            Extents,
+                            gameObject.transform.position,
+                            damageAmount,
+                            CurrentHealth,
+                            damageType);
 
-        _enemyDamagedEvent.Raise(this, _enemyDamagedData); //Calls out to damage flash, healthbar, and damage popup
+        DamagedEvent.Raise(this, damageData);
 
         if (CurrentHealth <= 0) { Die(); }
     }
 
     public virtual void Die()
     {
-        //_enemyDeathData.Position = gameObject.transform.position;
-        //_enemyDeathData.ExpPoints = (short)_enemyStats.expPoints;
-        EnemyDeathData enemyDeathData = new EnemyDeathData(gameObject.transform.position, (short)_enemyStats.expPoints);
+        EnemyDeathData DeathData = 
+            new EnemyDeathData(gameObject.transform.position, 
+                              (short)_enemyStats.expPoints);
 
-        _enemyDeathEvent.Raise(this.transform, enemyDeathData);
+        DeathEvent.Raise(this.transform, DeathData);
+        PointsAddEvent.Raise(this, pointValue);
       
         Despawn();
     }
 
     #endregion
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Powerup"))
+        {
+            if (collision.gameObject.TryGetComponent<Collectible>(out Collectible collectible))
+            {
+                CurrentState = EnemyState.Promoting;
+                SelectedCollectible = collectible;
+                StartCoroutine(PromotionCoroutine());
+            }
+        }
+    }
+
+    protected virtual void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Powerup"))
+        {
+            CurrentState = EnemyState.FollowPlayer;
+        }
+    }
+    private IEnumerator PromotionCoroutine()
+    {
+        yield return new WaitForSeconds(PromoteTimer);
+
+        if (CurrentState == EnemyState.Promoting && SelectedCollectible != null)
+        {
+            Promote(SelectedCollectible.GetPowerupCategory());
+            Destroy(SelectedCollectible.gameObject);
+        }
+    }
+
+    private void Promote(PowerupList.PowerUpCategory dropType)
+    {
+        EliteEnemy newElite = ObjectPoolManager.SpawnObject<EliteEnemy>(EliteEnemy, transform.position, Quaternion.identity, ObjectPoolManager.PoolType.Enemy);
+        newElite.SetPowerupDrop(dropType);
+        Despawn();
+    }
 
     #region Movement Functions
     private void MoveInCurrentDirection()
@@ -104,27 +175,24 @@ public class NewEnemy : MonoBehaviour, IHealth, IDespawn
             _currentDirection = targetDirection.normalized;
         }
     }
-
-    private void FlipTowardsTarget()
-    {
-        bool shouldFlip = (transform.position.x > _player.Position.x && _animator.transform.localScale.x > 0) ||
-                          (transform.position.x < _player.Position.x && _animator.transform.localScale.x < 0);
-
-        if (shouldFlip)
-        {
-            Vector3 scale = _animator.transform.localScale;
-            scale.x *= -1;
-            _animator.transform.localScale = scale;
-        }
-    }
     #endregion
 
     #region Reset and Despawn
     public void ResetForPool()
     {
         CurrentHealth = _enemyStats.maxHealth;
+        CurrentState = EnemyState.FollowPlayer;
         _animator.transform.localScale = _originalScale;
     }
+
+    // These are properties that are reset when pulled from the object pool
+    protected virtual void OnEnable()
+    {
+        MaxHealth = _enemyStats.maxHealth;
+        CurrentHealth = _enemyStats.maxHealth;
+        AttackDamage = _enemyStats.attackDamage;
+    }
+
     public void Despawn()
     {
         ResetForPool();

@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: PlayerStats
   m_EditorClassIdentifier: 
   _baseStats: {fileID: 11400000, guid: 86eeacefa1976e349814aafdef51fb98, type: 2}
-  Position: {x: 3.4203844, y: -0.89539474, z: 0}
+  Position: {x: 2.1634467, y: -14.389067, z: 0}
   IsAlive: 1
   Damage: 1
   FireRate: 3
   Health: 100
-  Speed: 5
+  Speed: 6
   SuctionRange: 5
   BonusXP: 0

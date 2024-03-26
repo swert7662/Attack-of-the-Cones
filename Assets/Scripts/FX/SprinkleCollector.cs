@@ -35,7 +35,7 @@ public class SprinkleCollector : MonoBehaviour
 
         for (int i = 0; i < triggerParticles; i++)
         {
-            _xpPickup.Raise();
+            _xpPickup.Raise(this, 1);
             ParticleSystem.Particle p = _particles[i];
             p.remainingLifetime = 0;
             _particles[i] = p;

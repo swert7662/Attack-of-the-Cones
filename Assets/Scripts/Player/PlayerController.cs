@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour, IHealth
 {   
@@ -14,7 +15,9 @@ public class PlayerController : MonoBehaviour, IHealth
     [SerializeField] private GameEvent playerDeathEvent;
     [SerializeField] private GameEvent playerHealthEvent;
 
-    
+    private Vector2 movementInput;
+    private MainControls mainControls;
+
 
     private DamagedData _playerDamagedData;
 
@@ -48,6 +51,11 @@ public class PlayerController : MonoBehaviour, IHealth
             Extents = collider.bounds.extents;
             player.SetCollider(collider);
         }
+
+        mainControls = new MainControls();
+
+        mainControls.PlayerControls.Move.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
+        mainControls.PlayerControls.Move.canceled += ctx => movementInput = Vector2.zero;
     }
 
     private void Update()
@@ -61,12 +69,8 @@ public class PlayerController : MonoBehaviour, IHealth
 
     private void NormalMovement()
     {
-        // Get input from WASD keys
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
         // Create a movement vector based on the input and speed
-        Vector3 movement = new Vector3(horizontalInput, verticalInput, 0) * player.Speed * Time.deltaTime;
+        Vector3 movement = new Vector3(movementInput.x, movementInput.y, 0) * player.Speed * Time.deltaTime;
 
         // Move the player
         transform.Translate(movement);
@@ -100,15 +104,15 @@ public class PlayerController : MonoBehaviour, IHealth
         playerDeathEvent.Raise();
         player.IsAlive = false;
     }
-    #region Old Movement
-    private void MouseBasedMovement()
-    {
-        // Convert the mouse position to world coordinates
-        Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePosition.z = transform.position.z; // Ensure there is no change in the z-axis
 
-        // Move the player towards the mouse position
-        transform.position = Vector3.MoveTowards(transform.position, mousePosition, player.Speed * Time.deltaTime);
+    private void OnEnable()
+    {
+        mainControls.Enable();
     }
-    #endregion
+
+    private void OnDisable()
+    {
+        mainControls.Disable();
+    }
+
 }

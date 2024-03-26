@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 
-public class WeaponPowerupManager : MonoBehaviour
+public class AbilityManager : MonoBehaviour
 {
     
     [SerializeField] private PlayerStats _player;
@@ -139,35 +139,13 @@ public class WeaponPowerupManager : MonoBehaviour
         {
             if (!teslaCoilReadySignaled)
             {
-                // The readiness signal is only sent once when the condition becomes true
                 Debug.Log("Tesla coil ready!");
-                _teslaActiveEvent.Raise(); // Assuming this now doesn't need a boolean
-                teslaCoilReadySignaled = true; // Prevent this block from running again until conditions reset
+                _teslaActiveEvent.Raise(); // Signal readiness
+                teslaCoilReadySignaled = true;
             }
 
-            GameObject target = UtilityMethods.FindNextTargetWith<NewEnemy>(_player.Position, _powerupStats.ArcRange, enemyLayer);
-            if (target != null)
-            {
-                LightningStruck lightningStruck = target.AddComponent<LightningStruck>();
-                int damage = (int)Mathf.Ceil(_powerupStats.DamageLevel + (2 * _powerupStats.LightningDamageMultiplier));
-                lightningStruck.Initialize(damage,
-                                           _powerupStats.ChainAmount,
-                                           _powerupStats.ArcRange,
-                                           _powerupStats.StunDuration,
-                                           _lightningDamageEvent,
-                                           _lightningArcEvent,
-                                           enemyLayer);
-
-                if (_lightningArcEvent != null)
-                {
-                    LightningDamageData lightningDamageData = new LightningDamageData(_player.Position, target.transform.position, true);
-                    _lightningArcEvent.Raise(this, lightningDamageData);
-                }
-                Debug.Log("Tesla coil activated!");
-                lastTeslaCoilActivationTime = Time.time;
-                _teslaActiveEvent.Raise(); // Toggle off the effect or acknowledge use
-                teslaCoilReadySignaled = false; // Reset the signal for next availability
-            }
+            // Start the coroutine to handle target acquisition and effects after a delay
+            StartCoroutine(ActivateTeslaCoilAfterDelay());
         }
 
         if (_powerupStats.LightningStorm && _player.IsAlive && Time.time >= lastLightningStormActivationTime + _powerupStats.LightningStormCooldown)
@@ -200,6 +178,36 @@ public class WeaponPowerupManager : MonoBehaviour
             }
         }
     }
+
+    private IEnumerator ActivateTeslaCoilAfterDelay()
+    {
+        yield return new WaitForSeconds(0.1f);
+
+        GameObject target = UtilityMethods.FindNextTargetWith<NewEnemy>(_player.Position, _powerupStats.ArcRange, enemyLayer);
+        if (target != null)
+        {
+            LightningStruck lightningStruck = target.AddComponent<LightningStruck>();
+            int damage = (int)Mathf.Ceil(_powerupStats.DamageLevel + (2 * _powerupStats.LightningDamageMultiplier));
+            lightningStruck.Initialize(damage,
+                                       _powerupStats.ChainAmount,
+                                       _powerupStats.ArcRange,
+                                       _powerupStats.StunDuration,
+                                       _lightningDamageEvent,
+                                       _lightningArcEvent,
+                                       enemyLayer);
+
+            if (_lightningArcEvent != null)
+            {
+                LightningDamageData lightningDamageData = new LightningDamageData(_player.Position, target.transform.position, true);
+                _lightningArcEvent.Raise(this, lightningDamageData);
+            }
+            Debug.Log("Tesla coil activated!");
+            lastTeslaCoilActivationTime = Time.time;
+            _teslaActiveEvent.Raise(); // Acknowledge use
+            teslaCoilReadySignaled = false; // Reset the signal for next availability
+        }
+    }
+
     #endregion
     // --------------------- On Hit Effects ---------------------
     #region On Hit Effects
@@ -237,12 +245,5 @@ public class WeaponPowerupManager : MonoBehaviour
     }
     #endregion
     
-    
-    // --------------------- Gizmos ---------------------
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(_player.Position, 15f);
-    }
 }
 
