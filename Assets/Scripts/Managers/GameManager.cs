@@ -13,13 +13,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameManagerData _gameManagerData;
     [SerializeField] private EnemyStats _enemyStats;
     [SerializeField] private EnemyStats _enemyBaseStats;
-    [SerializeField] private float _updateStatInterval = 15f;
 
 
     private Dictionary<string, float> _cooldowns = new Dictionary<string, float>();
-
-    private float currentTime;
-    private float lastStatUpdateTime;
 
     private void Awake()
     {
@@ -29,27 +25,8 @@ public class GameManager : MonoBehaviour
         if (_enemyStats == null) { Debug.LogError("EnemyStats not found by GameManager"); }
 
         _gameManagerData.IsPaused = false;
-        //_enemyStats.ResetStats();
-        _enemyStats.UpdateStats(_enemyBaseStats);
-        lastStatUpdateTime = 0f;        
+        _enemyStats.UpdateStats(_enemyBaseStats);    
     }
-
-    private void Update()
-    {
-        /*
-        currentTime += Time.deltaTime;
-
-        if (currentTime - lastStatUpdateTime >= _updateStatInterval)
-        {
-            if (_enemyStats != null)
-            {
-                _enemyStats.UpdateStats();
-            }
-            lastStatUpdateTime = currentTime;
-        }
-        */
-    }
-
     public void UpdateEnemyStats(Component sender, object data)
     {
         if (data is EnemyStats)
@@ -74,20 +51,5 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Retry Called");
         SceneManager.LoadScene("Game");
-    }
-
-    //Cool downs should be replaced with SO and updated in WeaponPowerUpManager
-    public bool IsCooldownElapsed(string abilityName, float cooldownDuration)
-    {
-        // This if checks if the abilityName is not in the dictionary or if the cooldown has elapsed
-        // then it will add the abilityName to the dictionary and return true
-        if (!_cooldowns.ContainsKey(abilityName) || Time.time >= _cooldowns[abilityName])
-        {
-            //Debug.Log($"{abilityName} is ready to go!");
-            _cooldowns[abilityName] = Time.time + cooldownDuration;
-            return true;
-        }
-        //Debug.Log($"{abilityName} is on cooldown");
-        return false;
     }
 }

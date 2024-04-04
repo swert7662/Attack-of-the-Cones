@@ -1,56 +1,101 @@
+using System;
+using System.Collections;
 using UnityEngine;
+using static UnityEngine.ParticleSystem;
 
 public class Burning : MonoBehaviour
 {
+    [SerializeField] private PowerupStats _powerupStats;
+
     private int Damage;
-    private float MaxLifetime; // Duration of the effect
-    private float TickRate; // Damage tick rate (twice per second)
-    private float TickTimer; // Timer to track when to apply the next tick of damage
-    private float Timer; // Timer to track the remaining duration of the effect   
+    private float TickTimer;
+    private float Timer; 
 
-    public void Initialization(int damage, float duration, float tickRate)
+    private ParticleSystem BurningEffect;
+    private ParticleSystem.EmissionModule EmissionModule;
+
+    private bool despawning = false;
+
+    private IHealth EnemyHealth;
+
+    private void Awake()
     {
-        Damage = damage;
-        MaxLifetime = duration;
-        TickRate = tickRate;
+        BurningEffect = GetComponent<ParticleSystem>();        
+        EmissionModule = BurningEffect.emission;
+        EnemyHealth = GetComponentInParent<IHealth>();
+    }
 
-        Timer = MaxLifetime;        
+    private void OnEnable()
+    {
+        BurningEffect.Play();
+        UpdateEffect();
+        ResetTimer();
+        ResetTickTimer();
+    }
+
+    private void UpdateEffect()
+    {
+        Damage = (int)Mathf.Ceil(_powerupStats.DamageLevel * 0.5f * _powerupStats.FireDamageMultiplier);
     }
 
     private void Update()
     {
+        if (despawning) { return; }
+
         Timer -= Time.deltaTime;
         TickTimer -= Time.deltaTime;
 
-        if (Timer <= 0)
+        if (Timer <= TickTimer)
         {
-            Destroy(this);
+            EmissionModule.enabled = false;
+            StartCoroutine(DespawnAfterDelay(5f));
         }
 
         else if (TickTimer <= 0)
         {
-            TickTimer = TickRate; 
+            ResetTickTimer();
             ApplyDamage(); 
         }
     }
 
+    private IEnumerator DespawnAfterDelay(float delay)
+    {
+        despawning = true;
+        yield return new WaitForSeconds(delay); 
+        Despawn();
+    }
+
     private void ApplyDamage()
     {
-        IHealth enemyHealth = GetComponent<IHealth>();
-        if (enemyHealth != null)
+        if (EnemyHealth != null)
         {
-            enemyHealth.Damage(Damage, DamageType.Fire);
+            EnemyHealth.Damage(Damage, DamageType.Fire);
         }
     }
 
+    private void Despawn()
+    {
+        ResetTimer();
+        Destroy(gameObject);
+        //ObjectPoolManager.DespawnObject(gameObject);
+    }
 
     public void ResetTimer()
     {
-        Timer = MaxLifetime;
+        Timer = _powerupStats.BurnDuration;
+        despawning = false;
+        EmissionModule.enabled = true;
+        StopAllCoroutines();
     }
+
+    private void ResetTickTimer()
+    {
+        TickTimer = _powerupStats.BurnTickRate;
+    }
+
     private void OnDisable()
     {
-        Destroy(this);
+        Despawn();
     }
 
 }

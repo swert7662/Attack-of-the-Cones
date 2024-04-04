@@ -150,7 +150,7 @@ public class NewEnemy : MonoBehaviour, IHealth
         if (CurrentState == EnemyState.Promoting && SelectedCollectible != null)
         {
             Promote(SelectedCollectible.GetPowerupCategory());
-            Destroy(SelectedCollectible.gameObject);
+            SelectedCollectible.Despawn(true);
         }
     }
 

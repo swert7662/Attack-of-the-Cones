@@ -56,7 +56,6 @@ public class ProjectileSpawner : MonoBehaviour
 
         Projectile projectile = ObjectPoolManager.SpawnObject<Projectile>(_player.Projectile.gameObject, transform.position, ObjectPoolManager.PoolType.Projectile); // Shoot projectile at target
         projectile.transform.up = direction;
-        projectile.SetTarget(_target);
 
         //RecoilShake(direction);
     }

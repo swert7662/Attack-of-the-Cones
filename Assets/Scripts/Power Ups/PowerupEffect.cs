@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Power Up", menuName = "Power Ups/NewPowerUp", order = 1)]

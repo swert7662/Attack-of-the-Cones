@@ -6,13 +6,10 @@ using UnityEngine;
 
 public class Collectible : MonoBehaviour
 {
-    [SerializeField] private PlayerStats _player;
-    [SerializeField] private Transform _truck;
     [SerializeField] private GameEvent _powerupCollectedEvent;
-    [SerializeField] private GameEvent _powerupSuctionEvent;
     [SerializeField] private PowerupList _powerupList;
 
-    private CollectibleFollowers CollectibleFollowers;
+    private CollectibleFollowers collectibleFollowers;
 
     public Transform followTarget;  
     public float speed = 5f;
@@ -31,10 +28,8 @@ public class Collectible : MonoBehaviour
         switch (currentState)
         {
             case CollectibleState.Idle:
-                Debug.Log("Collectible is idle");
                 break;
             case CollectibleState.FollowPlayer:
-                Debug.Log("Collectible is following player");
                 FollowPlayer();
                 break;
         }
@@ -44,10 +39,10 @@ public class Collectible : MonoBehaviour
     {
         if (collider.gameObject.CompareTag("Player") && followTarget == null)
         {
-            CollectibleFollowers = collider.GetComponent<CollectibleFollowers>();
-            if (CollectibleFollowers != null)
+            collectibleFollowers = collider.GetComponent<CollectibleFollowers>();
+            if (collectibleFollowers != null)
             {
-                followTarget = CollectibleFollowers.AddFollower(this);
+                followTarget = collectibleFollowers.AddFollower(this);
             }
             currentState = CollectibleState.FollowPlayer;
         }
@@ -60,10 +55,10 @@ public class Collectible : MonoBehaviour
     {
         if (followTarget == null || !followTarget.gameObject.activeInHierarchy)
         {
-            if (CollectibleFollowers != null)
+            if (collectibleFollowers != null)
             {
-                int index = CollectibleFollowers.GetFollowerIndex(this.transform);
-                CollectibleFollowers.DropFollowersAtIndex(Mathf.Max(0, index - 1));
+                int index = collectibleFollowers.GetFollowerIndex(this.transform);
+                collectibleFollowers.DropFollowersAtIndex(Mathf.Max(0, index - 1));
             }
 
             // Reset this collectible's state to Idle
@@ -79,42 +74,45 @@ public class Collectible : MonoBehaviour
         }
     }
 
-
-
-    public void SetFollowTruck()
-    {
-        if (followTarget != null)
-        {
-            followTarget = _truck;
-        }
-    }
-
     //// Method to handle the item being picked up and despawned immediately after
     private void PickUp()
     {
         _powerupCollectedEvent.Raise(this, _powerupList.Category.ToString());
-        // Assuming this transform is the follower to be removed
-        int index = CollectibleFollowers.GetFollowerIndex(this.transform);
-        // Directly remove this follower without adjusting the index
-        CollectibleFollowers.RemoveFollowerAtIndex(index);
-        Despawn();
+        Despawn(false);
     }
 
-
-    public PowerupList.PowerUpCategory GetPowerupCategory()
+    public void Despawn(bool breakChain)
     {
-        return _powerupList.Category;
-    }
-
-    private void Despawn()
-    {
-        Destroy(this.gameObject);
-        //ObjectPoolManager.DespawnObject(this.gameObject);
+        if (collectibleFollowers != null &&  currentState == CollectibleState.FollowPlayer)
+        {
+            if (breakChain == true)
+            {
+                collectibleFollowers.DropFollowersAtIndex(collectibleFollowers.GetFollowerIndex(this.transform));
+            }
+            else
+            {
+                collectibleFollowers.RemoveFollowerAtIndex(collectibleFollowers.GetFollowerIndex(this.transform));
+            }
+        }
+        //Destroy(this.gameObject);
+        StartCoroutine(DestroyNextFrame());
     }
 
     public void ResetToIdle()
     {
         currentState = CollectibleState.Idle;
         followTarget = null;
+    }
+
+    public PowerupList.PowerUpCategory GetPowerupCategory()
+    {
+        return _powerupList.Category;
+    }
+
+    IEnumerator DestroyNextFrame()
+    {
+        // Optionally perform any pre-destruction cleanup here
+        yield return new WaitForEndOfFrame();
+        Destroy(this.gameObject);
     }
 }

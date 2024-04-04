@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PowerupSelectScreen : MonoBehaviour
 {
@@ -81,17 +82,17 @@ public class PowerupSelectScreen : MonoBehaviour
 
         //List<Powerup> selectedPowerups = powerupList.SelectRandomPowerups(availablePowerupCount);
         List<PowerUpEffect> selectedPowerups = selectedPowerupList.SelectRandomPowerups(availablePowerupCount);
-
-        float totalWidthNeededForChoicesOnly = availablePowerupCount * choiceWidth;
-        float totalPaddingNeeded = (availablePowerupCount - 1) * padding;
-        float totalWidthNeeded = totalWidthNeededForChoicesOnly + totalPaddingNeeded;
-        float startPosition = -totalWidthNeeded / 2 + choiceWidth / 2;
+        float startPosition = FindStartPosition(availablePowerupCount);
 
         for (int i = 0; i < selectedPowerups.Count; i++)
         {
             GameObject choiceInstance = Instantiate(choicePrefab, transform);
             RectTransform choiceRT = choiceInstance.GetComponent<RectTransform>();
-
+            if (i == 0)
+            {
+                GameObject choiceGO = choiceInstance.transform.GetChild(2).gameObject;
+                EventSystem.current.SetSelectedGameObject(choiceGO);
+            }
             // Calculate the position for each choice
             float positionX = startPosition + i * (choiceWidth + padding);
             choiceRT.anchoredPosition = new Vector2(positionX, 0);
@@ -111,5 +112,13 @@ public class PowerupSelectScreen : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-    }    
+    }
+    private float FindStartPosition(int availablePowerupCount)
+    {
+        float totalWidthNeededForChoicesOnly = availablePowerupCount * choiceWidth;
+        float totalPaddingNeeded = (availablePowerupCount - 1) * padding;
+        float totalWidthNeeded = totalWidthNeededForChoicesOnly + totalPaddingNeeded;
+        float startPosition = -totalWidthNeeded / 2 + choiceWidth / 2;
+        return startPosition;
+    }
 }

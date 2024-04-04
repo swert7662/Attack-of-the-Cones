@@ -13,34 +13,27 @@ public class AbilityManager : MonoBehaviour
     [SerializeField] private PowerupStats _powerupStats;
     [SerializeField] private ParticleSystemForceField _suctionField;
 
-    [SerializeField] private List<Transform> _lightningStormSourcePoints;
     [SerializeField] private GameEvent _lightningDamageEvent;
-    [SerializeField] private GameEvent _lightningArcEvent;
-    [SerializeField] private GameEvent _teslaActiveEvent;
+    [SerializeField] private GameEvent _lightningArcEvent;    
 
     [SerializeField] private Explosion ExplosionPrefab;
     [SerializeField] private BurnArea BurnAreaPrefab;
+
+    [SerializeField] private GameObject _burningEffectPrefab;
 
     [SerializeField] private PowerupList basePlayerPowerupList;
     [SerializeField] private PowerupList activePlayerPowerupList;
     [SerializeField] private PowerupList baseFirePowerupList;
     [SerializeField] private PowerupList activeFirePowerupList;
     [SerializeField] private PowerupList baseLightningPowerupList;
-    [SerializeField] private PowerupList activeLightningPowerupList;
-
-    public LayerMask enemyLayer;
+    [SerializeField] private PowerupList activeLightningPowerupList;    
 
     public GameObject Player;
-
-    private bool teslaCoilReadySignaled = false;
-    private float lastTeslaCoilActivationTime = float.MinValue;
-    private float lastLightningStormActivationTime = float.MinValue;
+    public LayerMask enemyLayer;
 
     #region Awake, Start, Update, OnEnable, OnDisable
     private void Awake()
     {
-        //Find the playerController as the gameobject for player always has one
-        //Player = GameObject.Find("PlayerController");
         if (Player == null) { Debug.LogError("Couldnt find a PlayerController!"); }
         if (_player == null) { Debug.LogError("Player is null!"); }
         if (_powerupStats == null) { Debug.LogError("PowerupStats is null!"); }
@@ -55,12 +48,6 @@ public class AbilityManager : MonoBehaviour
         activeLightningPowerupList.Powerups = new List<PowerUpEffect>(baseLightningPowerupList.Powerups);
 
         _suctionField.endRange = _player.SuctionRange;
-        //InvokeRepeating(nameof(ActivateTimeBasedAbilities), 2.0f, 2.0f);
-    }
-
-    private void Update()
-    {
-        ActivateTimeBasedAbilities();
     }
 
     private void OnEnable()
@@ -103,13 +90,7 @@ public class AbilityManager : MonoBehaviour
 
         if (_powerupStats.FloorFire)
         {
-            BurnArea burnArea = Instantiate(BurnAreaPrefab, enemyDeathData.Position, Quaternion.identity);
-            int damage = (int)Mathf.Ceil(_powerupStats.DamageLevel + (2 * _powerupStats.FireDamageMultiplier));
-            burnArea.Initialization(damage,
-                                    _powerupStats.FireRange,
-                                    _powerupStats.BurnDuration,
-                                    _powerupStats.BurnTickRate,
-                                     enemyLayer);
+            Instantiate(BurnAreaPrefab, enemyDeathData.Position, Quaternion.identity);
         }
     }
     public void HandlePowerupActivated()
@@ -129,86 +110,6 @@ public class AbilityManager : MonoBehaviour
     }
     #endregion
 
-    // --------------------- Time Based Abilities ---------------------
-    #region Time Based Abilities
-    private void ActivateTimeBasedAbilities()
-    {
-        bool isTeslaCoilReady = _powerupStats.TeslaCoil && _player.IsAlive && Time.time >= lastTeslaCoilActivationTime + _powerupStats.TeslaCoilCooldown;
-
-        if (isTeslaCoilReady)
-        {
-            if (!teslaCoilReadySignaled)
-            {
-                Debug.Log("Tesla coil ready!");
-                _teslaActiveEvent.Raise(); // Signal readiness
-                teslaCoilReadySignaled = true;
-            }
-
-            // Start the coroutine to handle target acquisition and effects after a delay
-            StartCoroutine(ActivateTeslaCoilAfterDelay());
-        }
-
-        if (_powerupStats.LightningStorm && _player.IsAlive && Time.time >= lastLightningStormActivationTime + _powerupStats.LightningStormCooldown)
-        {
-            lastLightningStormActivationTime = Time.time;
-            Debug.Log("Lightning storm activated");
-            GameObject target = UtilityMethods.FindNextTargetWith<NewEnemy>(_player.Position, 15f, enemyLayer);
-            if (target != null)
-            {
-                LightningStruck lightningStruck = target.AddComponent<LightningStruck>();
-                int damage = (int)Mathf.Ceil(_powerupStats.DamageLevel + (4 * _powerupStats.LightningDamageMultiplier));
-                lightningStruck.Initialize(damage,
-                                           _powerupStats.ChainAmount,
-                                           _powerupStats.ArcRange,
-                                           _powerupStats.StunDuration,
-                                           _lightningDamageEvent,
-                                           _lightningArcEvent,
-                                           enemyLayer);
-
-                if (_lightningArcEvent != null)
-                {
-                    // Choose a random index based on the length of your source points array
-                    int randomIndex = UnityEngine.Random.Range(0, _lightningStormSourcePoints.Count);
-                    Transform randomSourcePoint = _lightningStormSourcePoints[randomIndex];
-
-                    // Now use this random source point in your LightningDamageData
-                    LightningDamageData lightningDamageData = new LightningDamageData(randomSourcePoint.position, target.transform.position, false);
-                    _lightningArcEvent.Raise(this, lightningDamageData);
-                }
-            }
-        }
-    }
-
-    private IEnumerator ActivateTeslaCoilAfterDelay()
-    {
-        yield return new WaitForSeconds(0.1f);
-
-        GameObject target = UtilityMethods.FindNextTargetWith<NewEnemy>(_player.Position, _powerupStats.ArcRange, enemyLayer);
-        if (target != null)
-        {
-            LightningStruck lightningStruck = target.AddComponent<LightningStruck>();
-            int damage = (int)Mathf.Ceil(_powerupStats.DamageLevel + (2 * _powerupStats.LightningDamageMultiplier));
-            lightningStruck.Initialize(damage,
-                                       _powerupStats.ChainAmount,
-                                       _powerupStats.ArcRange,
-                                       _powerupStats.StunDuration,
-                                       _lightningDamageEvent,
-                                       _lightningArcEvent,
-                                       enemyLayer);
-
-            if (_lightningArcEvent != null)
-            {
-                LightningDamageData lightningDamageData = new LightningDamageData(_player.Position, target.transform.position, true);
-                _lightningArcEvent.Raise(this, lightningDamageData);
-            }
-            Debug.Log("Tesla coil activated!");
-            lastTeslaCoilActivationTime = Time.time;
-            _teslaActiveEvent.Raise(); // Acknowledge use
-            teslaCoilReadySignaled = false; // Reset the signal for next availability
-        }
-    }
-
-    #endregion
     // --------------------- On Hit Effects ---------------------
     #region On Hit Effects
     private void LightningBulletHit(GameObject target, Vector2 position)
@@ -229,7 +130,26 @@ public class AbilityManager : MonoBehaviour
 
     private void FireBulletHit(GameObject target)
     {
-        Burning burningEffect = target.GetComponent<Burning>();
+        bool alreadyBurning = false;
+
+        for (int i = target.transform.childCount - 1; i >= 0; i--)
+        {
+            if (target == null) { return; } 
+
+            Burning burningEffect = target.transform.GetChild(i).GetComponent<Burning>();
+            if (burningEffect != null)
+            {
+                burningEffect.ResetTimer();
+                alreadyBurning = true;
+                break; // Exit the loop as we've found an existing effect
+            }
+        }
+
+        if (!alreadyBurning)
+        {
+            Instantiate(_burningEffectPrefab, target.transform.position, Quaternion.identity, target.transform);
+        }
+        /*Burning burningEffect = target.GetComponent<Burning>();
         if (burningEffect == null)
         {
             int burnDamage = (int)Mathf.Ceil(_powerupStats.DamageLevel * 0.5f * _powerupStats.FireDamageMultiplier);
@@ -242,6 +162,7 @@ public class AbilityManager : MonoBehaviour
         {
             burningEffect.ResetTimer();
         }
+        */
     }
     #endregion
     

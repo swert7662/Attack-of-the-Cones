@@ -10,9 +10,9 @@ public class PowerupStats : Stats
     //Fire Powerups
     public int FireLevel = 0;
 
-    public bool FloorFire = false;
-    public bool EnemyExplode = false;
-    public bool FireBullets = false;
+    public bool FloorFire;
+    public bool EnemyExplode;
+    public bool FireBullets;
 
     public float FireRange; // Add Powerup
     public float BurnDuration; // Add Powerup
@@ -22,9 +22,9 @@ public class PowerupStats : Stats
     // Lightning Powerups
     public int LightningLevel = 0;
 
-    public bool LightningBullets = false;
-    public bool TeslaCoil = false;
-    public bool LightningStorm = false;
+    public bool LightningBullets;
+    public bool TeslaCoil;
+    public bool LightningStorm;
     
     public float TeslaCoilCooldown; // Add Powerup
     public float LightningStormCooldown; // Add Powerup
@@ -45,9 +45,9 @@ public class PowerupStats : Stats
         //Fire Powerups
         FireLevel = 0;
 
-        FloorFire = false;
-        EnemyExplode = false;
-        FireBullets = false;
+        FloorFire = _baseStats.FloorFire;
+        EnemyExplode = _baseStats.EnemyExplode;
+        FireBullets = _baseStats.FireBullets;
 
         FireRange = _baseStats.FireRange;
         BurnDuration = _baseStats.BurnDuration;
@@ -57,9 +57,9 @@ public class PowerupStats : Stats
         // Lightning Powerups
         LightningLevel = 0;
 
-        LightningBullets = false;
-        TeslaCoil = false;
-        LightningStorm = false;
+        LightningBullets = _baseStats.LightningBullets;
+        TeslaCoil = _baseStats.TeslaCoil;
+        LightningStorm = _baseStats.LightningStorm;
 
         TeslaCoilCooldown = _baseStats.TeslaCoilCooldown;
         LightningStormCooldown = _baseStats.LightningStormCooldown;

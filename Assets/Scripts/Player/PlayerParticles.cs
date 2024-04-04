@@ -15,21 +15,21 @@ public class PlayerParticles : MonoBehaviour
 
     public void PlayerXPGainedParticles()
     {
-        Debug.Log("XP Gained Particles");
+        //Debug.Log("XP Gained Particles");
     }
     public void PlayerLevelUpParticles()
     {
-        Debug.Log("Level Up Particles");
+        //Debug.Log("Level Up Particles");
     }
     public void PlayerDeathParticles()
     {
-        Debug.Log("Player Death Particles");
+        //Debug.Log("Player Death Particles");
     }
     public void TogglePlayerElectricParticles()
     {
         if (!_electricVFX.activeSelf)
         {
-            Debug.Log("Electric Particles Active: true");
+            //Debug.Log("Electric Particles Active: true");
             _electricVFX.SetActive(true);
         }
         else

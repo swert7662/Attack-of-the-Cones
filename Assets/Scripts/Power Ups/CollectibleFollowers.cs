@@ -23,30 +23,11 @@ public class CollectibleFollowers : MonoBehaviour
             return;
         }
 
-        //ResetFollower(followers[index]);
+        Debug.Log("Removed follower: " + followers[index]);
         followers.RemoveAt(index);
-        if (followers.Count > 0)
-        {
-            Collectible followerCollectible = followers[0].GetComponent<Collectible>();
-            if (followerCollectible != null)
-            {
-                followerCollectible.followTarget = this.transform;
-            }
-        }
-        /*
-        for (int i = index; i < followers.Count; i++)
-        {
-            Collectible followerCollectible = followers[i].GetComponent<Collectible>();
-            // The new follow target is the predecessor in the list, or this transform if it's now the first follower
-            Transform newFollowTarget = i > 0 ? followers[i - 1] : this.transform;
-            if (followerCollectible != null)
-            {
-                followerCollectible.followTarget = newFollowTarget;
-            }
-        }
-        */
-    }
 
+        SetFollowerTarget(index);
+    }
 
     public void DropFollowersAtIndex(int index)
     {
@@ -69,6 +50,34 @@ public class CollectibleFollowers : MonoBehaviour
     public int GetFollowerIndex(Transform follower)
     {
         return followers.IndexOf(follower);
+    }
+
+    private void SetFollowerTarget(int index)
+    {
+        if (index == 0 && followers.Count > 0)
+        {
+            Collectible firstFollowerCollectible = followers[0].GetComponent<Collectible>();
+            if (firstFollowerCollectible != null)
+            {
+                firstFollowerCollectible.followTarget = this.transform;
+            }
+        }
+        // If a follower was removed from somewhere else in the list (not the first one),
+        // update the followTarget of the next follower in the list (now at the index of the removed follower)
+        else if (index < followers.Count) // Check if there's a follower after the removed one
+        {
+            // The follower that was following the removed follower should now follow
+            // the predecessor of the removed follower.
+            // Since we've already removed the follower at 'index', the new follower at 'index'
+            // (previously at index + 1) should now follow the one at index - 1.
+            Collectible nextFollowerCollectible = followers[index].GetComponent<Collectible>();
+            if (nextFollowerCollectible != null)
+            {
+                // Set its new followTarget to the follower that was ahead of the removed follower
+                Transform newFollowTarget = (index - 1 >= 0) ? followers[index - 1] : this.transform;
+                nextFollowerCollectible.followTarget = newFollowTarget;
+            }
+        }
     }
 
     public void ResetFollowers()

@@ -1,56 +1,76 @@
+using System.Collections;
 using UnityEngine;
 
 public class BurnArea : MonoBehaviour
 {
-    [SerializeField] private BoxCollider2D BoxCollider2D;
-    [SerializeField] private SpriteRenderer SpriteRenderer;
+    [SerializeField] private PowerupStats _powerupStats;
+    [SerializeField] private LayerMask TargetLayerMask;
+    private BoxCollider2D BoxCollider2D;
 
     private int Damage;
-    private float Range; 
-    private float MaxLifetime; 
-    private float tickRate; 
+    private float TickTimer; 
+    private float Timer;   
 
-    private float tickTimer; 
-    private float timer;
-    private LayerMask targetLayerMask;
+    private ParticleSystem BurnAreaEffect;
+    private ParticleSystem.EmissionModule EmissionModule;
+    private float BaseEmissionRate;
 
-    public void Initialization(int damage, float range, float duration, float tickRate, LayerMask targetLayerMask)
+    private bool despawning = false;
+
+    private void Awake()
     {
-        this.Damage = damage;
-        this.Range = range;
-        this.MaxLifetime = duration;
-        this.tickRate = tickRate;
-        this.targetLayerMask = targetLayerMask;
+        BoxCollider2D = GetComponent<BoxCollider2D>();
+        BurnAreaEffect = GetComponent<ParticleSystem>();
+        EmissionModule = BurnAreaEffect.emission;        
+        BaseEmissionRate = EmissionModule.rateOverTime.constant;
+    }
 
-        Vector2 newSize = new Vector2(range, BoxCollider2D.size.y);
-        BoxCollider2D.size = newSize;
-        Vector2 newSpriteSize = new Vector2(range, 2.46f);
-        SpriteRenderer.size = newSize;
+    private void OnEnable()
+    {
+        BurnAreaEffect.Play();
+        UpdateEffect();
+        ResetTimer();
+        ResetTickTimer();
+    }
 
-        timer = MaxLifetime;
-        tickTimer = tickRate;
+    private void UpdateEffect()
+    {
+        Damage = (int)Mathf.Ceil(_powerupStats.DamageLevel * 2f * _powerupStats.FireDamageMultiplier);
+        gameObject.transform.localScale = new Vector3(_powerupStats.FireRange, 1, 1);
+        EmissionModule.rateOverTime = BaseEmissionRate * _powerupStats.FireRange;
     }
 
     private void Update()
     {
-        timer -= Time.deltaTime;
-        tickTimer -= Time.deltaTime;
+        if (despawning) { return; }
 
-        if (timer <= 0)
+        Timer -= Time.deltaTime;
+        TickTimer -= Time.deltaTime;
+
+        if (Timer <= TickTimer)
         {
-            Destroy(gameObject); // Destroy the area effect after its lifetime ends
+            EmissionModule.enabled = false;
+            StartCoroutine(DespawnAfterDelay(5f));
         }
-        else if (tickTimer <= 0)
+
+        else if (TickTimer <= 0)
         {
-            tickTimer = tickRate;
+            ResetTickTimer();
             ApplyDamage();
         }
+    }
+
+    private IEnumerator DespawnAfterDelay(float delay)
+    {
+        despawning = true;
+        yield return new WaitForSeconds(delay); 
+        Despawn();
     }
 
     private void ApplyDamage()
     {
         Bounds bounds = BoxCollider2D.bounds;
-        Collider2D[] hits = Physics2D.OverlapBoxAll(bounds.center, bounds.size, 0f, targetLayerMask);
+        Collider2D[] hits = Physics2D.OverlapBoxAll(bounds.center, bounds.size, 0f, TargetLayerMask);
         foreach (Collider2D hit in hits)
         {
             IHealth enemyHealth = hit.GetComponent<IHealth>();
@@ -61,9 +81,27 @@ public class BurnArea : MonoBehaviour
         }
     }
 
-    void OnDrawGizmos()
+    private void Despawn()
     {
-        Gizmos.color = Color.red; // Set the color of the Gizmo to visually indicate the burn area
-        Gizmos.DrawWireSphere(transform.position, Range); // Draw a wireframe sphere with the specified range
+        Destroy(gameObject);
+        //ObjectPoolManager.DespawnObject(gameObject);
+    }
+
+    public void ResetTimer()
+    {
+        Timer = _powerupStats.BurnDuration;
+        despawning = false;
+        EmissionModule.enabled = true;
+        StopAllCoroutines();
+    }
+
+    private void ResetTickTimer()
+    {
+        TickTimer = _powerupStats.BurnTickRate;
+    }
+
+    private void OnDisable()
+    {
+        Despawn();
     }
 }

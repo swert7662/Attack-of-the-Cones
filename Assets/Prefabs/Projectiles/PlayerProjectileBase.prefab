@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: _chainLightning
       value: 
       objectReference: {fileID: 1414384902848028741, guid: 9337883f2e416ca41a50e50bb72889d6, type: 3}
+    - target: {fileID: 1213179218457457380, guid: 25c30d134c253a8479a395e1a607cac9, type: 3}
+      propertyPath: projectileSpeed
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 1560668973868375279, guid: 25c30d134c253a8479a395e1a607cac9, type: 3}
       propertyPath: m_Sprite
       value: 

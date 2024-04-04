@@ -6,13 +6,8 @@ using UnityEngine.Pool;
 public class Projectile : MonoBehaviour, IDespawn
 {
     #region Variables and Properties
-    [SerializeField] private float projectileSpeed = 1f; 
+    [SerializeField] private float projectileSpeed; 
     [SerializeField] private PlayerStats _player;
-
-    private Transform targetTransform;
-    private Transform startingTransform;
-    public float journeyTime = 3.0f;
-    private float startTime;
 
     private Rigidbody2D rb;
 
@@ -31,11 +26,12 @@ public class Projectile : MonoBehaviour, IDespawn
     private void OnEnable() 
     {
         OnProjectileShoot?.Invoke();
-        startingTransform = transform;
-        startTime = Time.time;
     }
 
-    private void FixedUpdate() { MoveProjectile(); }
+    private void FixedUpdate() 
+    { 
+        MoveProjectile(); 
+    }
     #endregion
 
     #region Physics Methods
@@ -43,29 +39,8 @@ public class Projectile : MonoBehaviour, IDespawn
     private void MoveProjectile()
     {
         rb.velocity = transform.up * projectileSpeed;
-        //Vector3 center = (startingTransform.position + targetTransform.position) * 0.5F;
-
-        //// move the center a bit downwards to make the arc vertical
-        //center -= new Vector3(0, .25f, 0);
-
-        //// Interpolate over the arc relative to center
-        //Vector3 riseRelCenter = startingTransform.position - center;
-        //Vector3 setRelCenter = targetTransform.position - center;
-
-        //// The fraction of the animation that has happened so far is
-        //// equal to the elapsed time divided by the desired time for
-        //// the total journey.
-        //float fracComplete = (Time.time - startTime) / journeyTime;
-
-        //transform.position = Vector3.Slerp(riseRelCenter, setRelCenter, fracComplete);
-        //transform.position += center;
     }
     #endregion
-
-    public void SetTarget(Transform target)
-    {
-        targetTransform = target;
-    }
 
     #region Collision Handling
     private void OnCollisionEnter2D(Collision2D collision)
@@ -99,8 +74,6 @@ public class Projectile : MonoBehaviour, IDespawn
     public void ResetForPool()
     {
         rb.velocity = Vector2.zero;
-        startingTransform = null;
-        startTime = 0f;
     }
 
     #endregion
